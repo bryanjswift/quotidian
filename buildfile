@@ -26,12 +26,14 @@ define 'quotidian' do
 	# Project config
 	gaelibshared = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.1','lib/shared','**/*.jar')]
 	gaelibuser = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.1','lib/user','**/*.jar')]
-	DEPS = [SCALA] << gaelibuser
+	libs = FileList[_('src/main/lib/*.jar')]
+	DEPS = [SCALA] << gaelibuser << libs
 	CLASSPATH = DEPS + gaelibshared
 	TEST_DEPS = [SPECS] << DEPS
 	# Build config
 	webapp = _('src/main/webapp/*')
 	resources = _('target/resources/*')
+	lib = _('src/main/lib')
 	src = _('target/classes/*')
 	war = _('target/war')
 	warclasses = _(war, 'WEB-INF/classes')
