@@ -1,3 +1,10 @@
 package quotidian.model
 
-class Quote(val text:String, val source:String, val context:String)
+import com.bryanjswift.persistence.{Savable}
+import com.bryanjswift.persistence.annotations.{Entity,Persistent}
+
+@Entity{val name = "Quote"}
+class Quote(
+	@Persistent val text:String,
+	@Persistent val source:String,
+	@Persistent val context:String) extends Savable
