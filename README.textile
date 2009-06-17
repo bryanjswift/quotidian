@@ -1,0 +1,5 @@
+h1. Working Title: Quotidian
+
+This is a my version of "Alex Payne's Quotidian idea":quotidian
+
+[quotidian]http://ideas.al3x.net/quotidian
