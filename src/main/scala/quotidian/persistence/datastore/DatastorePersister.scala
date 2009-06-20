@@ -1,10 +1,9 @@
 package quotidian.persistence.datastore
 
-import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity}
+import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Query}
 import com.bryanjswift.persistence.{Persister,Savable}
 import java.io.Serializable
-import scala.collection.mutable.Map
-import scala.xml.NodeSeq
+import scala.collection.jcl.MutableIterator.Wrapper
 
 object DatastorePersister extends Persister {
 	val datastore = DatastoreServiceFactory.getDatastoreService()
@@ -17,9 +16,24 @@ object DatastorePersister extends Persister {
 		datastore.put(entity)
 	}
 	def get(table:String,id:Serializable):Savable = {
-		new Quote("","","")
+		new { val id = "0L" } with Savable
+	}
+	def getAll(table:String):List[Savable] = {
+		val query = datastore.prepare(new Query(table))
+		val mapFcn = PersisterHelper.mapper(table)
+		val entities = new Wrapper(query.asIterator)
+		val it = for {
+			val entity <- entities
+		} yield mapFcn(PersisterHelper.toXml(entity))
+		it.toList
 	}
 	def search(table:String,field:String,value:Any):List[Savable] = {
-		List[Savable]()
+		val query = datastore.prepare(new Query(table).addFilter(field,Query.FilterOperator.EQUAL,value))
+		val mapFcn = PersisterHelper.mapper(table)
+		val entities = new Wrapper(query.asIterator)
+		val it = for {
+			val entity <- entities
+		} yield mapFcn(PersisterHelper.toXml(entity))
+		it.toList
 	}
 }
