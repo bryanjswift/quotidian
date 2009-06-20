@@ -3,6 +3,8 @@ package quotidian.persistence.datastore
 import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity}
 import com.bryanjswift.persistence.{Persister,Savable}
 import java.io.Serializable
+import scala.collection.mutable.Map
+import scala.xml.NodeSeq
 
 object DatastorePersister extends Persister {
 	val datastore = DatastoreServiceFactory.getDatastoreService()
@@ -13,5 +15,11 @@ object DatastorePersister extends Persister {
 			entity.setProperty(t._1,t._2)
 		})
 		datastore.put(entity)
+	}
+	def get(table:String,id:Serializable):Savable = {
+		new Quote("","","")
+	}
+	def search(table:String,field:String,value:Any):List[Savable] = {
+		List[Savable]()
 	}
 }
