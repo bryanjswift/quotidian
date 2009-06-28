@@ -1,6 +1,6 @@
 package quotidian.persistence.datastore
 
-import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Query}
+import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,Query}
 import com.bryanjswift.persistence.{Persister,Savable}
 import java.io.Serializable
 import scala.collection.jcl.MutableIterator.Wrapper
@@ -16,7 +16,13 @@ object DatastorePersister extends Persister {
 		datastore.put(entity)
 	}
 	def get(table:String,id:Serializable):Savable = {
-		new { val id = "0L" } with Savable
+		if (id.isInstanceOf[Key]) {
+			val mapFcn = PersisterHelper.mapper(table)
+			val entity = datastore.get(id.asInstanceOf[Key])
+			mapFcn(PersisterHelper.toXml(entity))
+		} else {
+			throw new IllegalArgumentException("id must be of type com.google.appengine.api.datastore.Key")
+		}
 	}
 	def getAll(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table))
