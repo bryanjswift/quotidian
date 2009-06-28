@@ -10,6 +10,18 @@
 	</head>
 	<body>
 		<h1>Hello Quotes!</h1>
+		<table>
+			<%
+				List<Quote> quotes = QuoteController.getAll();
+				Quote quote = null;
+				for (int i = 0; i < quotes.length(); i++) {
+					quote = quotes.apply(i);
+			%>
+				<tr><td><%= quote.text() %></td></tr>
+			<%
+				}
+			%>
+		</table>
 		<form action="/quote" method="post">
 			<label for="text">Text</label>
 			<textarea name="text" id="text"></textarea>
