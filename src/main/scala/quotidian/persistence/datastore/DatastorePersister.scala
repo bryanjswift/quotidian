@@ -17,7 +17,7 @@ object DatastorePersister extends Persister {
 	}
 	def get(table:String,id:Serializable):Savable = {
 		if (id.isInstanceOf[Key]) {
-			val mapFcn = PersisterHelper.mapper(table)
+			val mapFcn = PersisterHelper.fetch(table)
 			val entity = datastore.get(id.asInstanceOf[Key])
 			mapFcn(PersisterHelper.toXml(entity))
 		} else {
@@ -26,7 +26,7 @@ object DatastorePersister extends Persister {
 	}
 	def getAll(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table))
-		val mapFcn = PersisterHelper.mapper(table)
+		val mapFcn = PersisterHelper.fetch(table)
 		val entities = new Wrapper(query.asIterator)
 		val it = for {
 			val entity <- entities
@@ -35,7 +35,7 @@ object DatastorePersister extends Persister {
 	}
 	def search(table:String,field:String,value:Any):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addFilter(field,Query.FilterOperator.EQUAL,value))
-		val mapFcn = PersisterHelper.mapper(table)
+		val mapFcn = PersisterHelper.fetch(table)
 		val entities = new Wrapper(query.asIterator)
 		val it = for {
 			val entity <- entities

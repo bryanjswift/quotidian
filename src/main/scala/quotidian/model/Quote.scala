@@ -19,7 +19,7 @@ class Quote(@Persistent val text:String, @Persistent val source:String, @Persist
 
 object Quote {
 	val f = Quote.fromXml(_)
-	PersisterHelper.mapper += ("Quote" -> f)
+	PersisterHelper.register("Quote",f)
 	def fromXml(xml:NodeSeq):Quote = {
 		new Quote((xml \\ "text")(0).text,(xml \\ "source")(0).text,(xml \\ "context")(0).text)
 	}
