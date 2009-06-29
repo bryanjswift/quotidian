@@ -1,11 +1,13 @@
 package quotidian.persistence.datastore
 
 import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,Query}
+import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit}
 import com.bryanjswift.persistence.{Persister,Savable}
 import java.io.Serializable
-import scala.collection.jcl.MutableIterator.Wrapper
+import quotidian.Logging
+import scala.collection.jcl.Conversions._
 
-object DatastorePersister extends Persister {
+object DatastorePersister extends Persister with Logging {
 	val datastore = DatastoreServiceFactory.getDatastoreService()
 	def save(obj:Savable):Serializable = {
 		val entity = if (obj.id == 0) new Entity(obj.table) else new Entity(obj.table,obj.id.toString)
@@ -27,7 +29,7 @@ object DatastorePersister extends Persister {
 	def getAll(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table))
 		val mapFcn = PersisterHelper.fetch(table)
-		val entities = new Wrapper(query.asIterator)
+		val entities = query.asList(withLimit(10))
 		val it = for {
 			val entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
@@ -36,7 +38,7 @@ object DatastorePersister extends Persister {
 	def search(table:String,field:String,value:Any):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addFilter(field,Query.FilterOperator.EQUAL,value))
 		val mapFcn = PersisterHelper.fetch(table)
-		val entities = new Wrapper(query.asIterator)
+		val entities = query.asList(withLimit(10))
 		val it = for {
 			val entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))

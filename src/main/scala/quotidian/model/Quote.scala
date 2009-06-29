@@ -3,6 +3,7 @@ package quotidian.model
 import com.bryanjswift.persistence.{Savable}
 import com.bryanjswift.persistence.annotations.{Entity,Persistent}
 import java.io.Serializable
+import quotidian.Logging
 import quotidian.persistence.datastore.PersisterHelper
 import scala.xml.NodeSeq
 
@@ -17,9 +18,10 @@ class Quote(@Persistent val text:String, @Persistent val source:String, @Persist
 	}
 }
 
-object Quote {
-	val f = Quote.fromXml(_)
-	PersisterHelper.register("Quote",f)
+object Quote extends Logging {
+	val kind = "Quote"
+	private val f = Quote.fromXml(_)
+	PersisterHelper.register(kind,f)
 	def fromXml(xml:NodeSeq):Quote = {
 		new Quote((xml \\ "text")(0).text,(xml \\ "source")(0).text,(xml \\ "context")(0).text)
 	}
