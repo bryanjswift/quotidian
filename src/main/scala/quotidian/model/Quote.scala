@@ -10,6 +10,15 @@ import scala.xml.NodeSeq
 @Entity{val name = "Quote"}
 class Quote(@Persistent val text:String, @Persistent val source:String, @Persistent val context:String) extends Savable {
 	val id:Serializable = 0
+	def canEqual(a:Any) = a.isInstanceOf[Quote]
+	def equals(q:Quote) = {
+		this.text == q.text && this.source == q.source && this.context == q.context
+	}
+	override def equals(q:Any) = q match {
+		case that:Quote => this.canEqual(q) && equals(that)
+		case _ => false
+	}
+	override def hashCode = 41 * (41 * (41 + text.hashCode) + source.hashCode) + context.hashCode
 	override def toString = {
 		"Quote(" + List[String](text,source,context).mkString(",") + ")"
 	}
