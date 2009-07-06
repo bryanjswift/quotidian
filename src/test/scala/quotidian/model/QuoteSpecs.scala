@@ -4,21 +4,19 @@ import org.specs.Specification
 
 object QuoteSpecs extends Specification {
 	def have = addToSusVerb("have")
-	"Quote with same values" should {
+	"Quote with same values" should have {
 		val q1 = new Quote("This is a quote","This is a source","This is some context")
 		val q2 = new Quote("This is a quote","This is a source","This is some context")
-		have {
-			"the same hashCode" in {
-				q1.hashCode mustEqual q2.hashCode
-			}
-			"the same XML representation" in {
-				q1.toXml mustEqual q2.toXml
-			}
-			"the same String representation" in {
-				q1.toString mustEqual q2.toString
-			}
+		"the same hashCode" in {
+			q1.hashCode mustEqual q2.hashCode
 		}
-		"be equal" in {
+		"the same XML representation" in {
+			q1.toXml mustEqual q2.toXml
+		}
+		"the same String representation" in {
+			q1.toString mustEqual q2.toString
+		}
+		"equality" in {
 			q1 mustEqual q2
 		}
 	}
