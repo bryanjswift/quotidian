@@ -6,8 +6,19 @@ import quotidian.model.Quote
 import quotidian.persistence.datastore.DatastorePersister
 
 object QuoteController extends Logging {
-	def getAll():List[Quote] = {
-		val savables:List[Savable] = DatastorePersister.getAll(Quote.kind)
+	private var quotes = List[Quote]()
+	def getAll:List[Quote] = {
+		savablesToQuotes(DatastorePersister.getAll(Quote.kind))
+	}
+	def getRandom:Quote = {
+		val quotes = getAll
+		val position = (quotes.length * Math.random).toInt
+		quotes(position)
+	}
+	def getBySource(source:String):List[Quote] = {
+		savablesToQuotes(DatastorePersister.search(Quote.kind,"source",source))
+	}
+	private def savablesToQuotes(savables:List[Savable]) = {
 		for {
 			savable <- savables
 		} yield savable.asInstanceOf[Quote]
