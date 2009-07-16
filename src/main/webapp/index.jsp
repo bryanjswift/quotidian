@@ -2,7 +2,7 @@
 <%@ page import="quotidian.model.Quote" %>
 <%@ page import="quotidian.web.controller.QuoteController" %>
 <%@ page import="scala.List" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -11,13 +11,22 @@
 	<body>
 		<h1>Hello Quotes!</h1>
 		<table>
+			<tr>
+				<th>Quote</th>
+				<th>Source</th>
+				<th>Context</th>
+			</tr>
 			<%
 				List<Quote> quotes = QuoteController.getAll();
 				Quote quote = null;
 				for (int i = 0; i < quotes.length(); i++) {
 					quote = quotes.apply(i);
 			%>
-				<tr><td><%= quote.text() %></td></tr>
+				<tr>
+					<td><%= quote.text() %></td>
+					<td><%= quote.source() %></td>
+					<td><%= quote.context() %></td>
+				</tr>
 			<%
 				}
 			%>
