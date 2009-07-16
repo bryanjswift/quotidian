@@ -14,6 +14,6 @@ class QuoteServlet extends HttpServlet {
 		val context = request.getParameterValues("context")(0)
 		val quote = new Quote(text,source,context)
 		DatastorePersister.save(quote)
-		response.sendRedirect("/index.jsp")
+		response.sendRedirect("/quote")
 	}
 }
