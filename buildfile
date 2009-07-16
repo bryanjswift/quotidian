@@ -24,8 +24,8 @@ ENV['USE_FSC'] = 'yes'
 desc 'Quotidian: A place to store and organize quotations'
 define 'quotidian' do
 	# Project config
-	gaelibshared = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.1','lib/shared','**/*.jar')]
-	gaelibuser = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.1','lib/user','**/*.jar')]
+	gaelibshared = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.2','lib/shared','**/*.jar')]
+	gaelibuser = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.2','lib/user','**/*.jar')]
 	libs = FileList[_('src/main/lib/*.jar')]
 	DEPS = [SCALA] << gaelibuser << libs
 	CLASSPATH = DEPS + gaelibshared
