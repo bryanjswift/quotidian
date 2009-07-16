@@ -1,7 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="quotidian.model.Quote" %>
-<%@ page import="quotidian.web.controller.QuoteController" %>
-<%@ page import="scala.List" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -10,27 +8,7 @@
 	</head>
 	<body>
 		<h1>Hello Quotes!</h1>
-		<table>
-			<tr>
-				<th>Quote</th>
-				<th>Source</th>
-				<th>Context</th>
-			</tr>
-			<%
-				List<Quote> quotes = QuoteController.getAll();
-				Quote quote = null;
-				for (int i = 0; i < quotes.length(); i++) {
-					quote = quotes.apply(i);
-			%>
-				<tr>
-					<td><%= quote.text() %></td>
-					<td><%= quote.source() %></td>
-					<td><%= quote.context() %></td>
-				</tr>
-			<%
-				}
-			%>
-		</table>
+		<p><c:out value="${test}" /></p>
 		<form action="/quote" method="post">
 			<label for="text">Text</label>
 			<textarea name="text" id="text"></textarea>
@@ -40,5 +18,19 @@
 			<input type="text" name="context" id="context" />
 			<input type="submit" name="submit" value="Add Quote" />
 		</form>
+		<table>
+			<tr>
+				<th>Quote</th>
+				<th>Source</th>
+				<th>Context</th>
+			</tr>
+			<c:forEach items="${quotes}" var="quote" varStatus="status">
+				<tr>
+					<td><c:out value="${quote.text}" /></td>
+					<td><c:out value="${quote.soruce}" /></td>
+					<td><c:out value="${quote.context}" /></td>
+				</tr>
+			</c:forEach>
+		</table>
 	</body>
 </html>
