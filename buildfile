@@ -63,6 +63,12 @@ define 'quotidian' do
 				flattenedDeps.each do |dep|
 					if (dep.to_s == lib.to_s) then
 						cp lib.to_s, warlib
+					else
+						parts = dep.to_s.split(':')
+						path = lib.to_s
+						if (path.include?(parts[0].gsub(/\./,'/')) && path.include?(parts[1]) && path.include?(parts[2]) && path.include?(parts[3]))
+							cp lib.to_s, warlib
+						end
 					end
 				end
 			end

@@ -1,18 +1,15 @@
 package quotidian.web
 
+import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
 import quotidian.model.Quote
 import quotidian.persistence.datastore.DatastorePersister
 import quotidian.web.controller.QuoteController
-import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
-import javax.servlet.jsp.{JspFactory,PageContext}
+import velocity.{VelocityHelper,VelocityView}
 
 class QuoteServlet extends HttpServlet {
-	val jspFactory = JspFactory.getDefaultFactory()
 	override def doGet(request:Request, response:Response) {
-		val pageContext = jspFactory.getPageContext(this,request,response,null,true,8192,true)
-		pageContext.setAttribute("test","test string from servlet")
-		pageContext.setAttribute("quotes",QuoteController.all)
-		response.sendRedirect("/index.jsp")
+		val view = new VelocityView(VelocityHelper.getTemplate("default.vm"))
+		view.render(Map("quotes" -> QuoteController.all,"test" -> "string from servlet"),request,response)
 	}
 	override def doPost(request:Request, response:Response) {
 		val text = request.getParameterValues("text")(0)
