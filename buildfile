@@ -15,6 +15,9 @@ VERSION_NUMBER = '1.0'
 # Dependencies
 # Scala Jars should be included from SCALA_HOME environment variable (or macports install)
 SCALA = group('scala-library','scala-compiler',:under => 'org.scala-lang', :version => '2.7.5')
+VELOCITY = 'org.apache.velocity:velocity:jar:1.6.1'
+COMMONS_COLLECTIONS = 'commons-collections:commons-collections:jar:3.2.1'
+COMMONS_LANG = 'commons-lang:commons-lang:jar:2.4'
 # Testing Dependencies
 SPECS = 'org.scala-tools.testing:specs:jar:1.5.0'
 # Set to use Java 1.5 because Java 6 (1.6) is not working
@@ -27,7 +30,7 @@ define 'quotidian' do
 	gaelibshared = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.2','lib/shared','**/*.jar')]
 	gaelibuser = FileList[_(ENV['HOME'],'Documents/src/gae','appengine-java-sdk-1.2.2','lib/user','**/*.jar')]
 	libs = FileList[_('src/main/lib/*.jar')]
-	DEPS = [SCALA] << gaelibuser << libs
+	DEPS = [SCALA,VELOCITY,COMMONS_COLLECTIONS,COMMONS_LANG] << gaelibuser << libs
 	CLASSPATH = DEPS + gaelibshared
 	TEST_DEPS = [SPECS] << DEPS
 	# Build config
