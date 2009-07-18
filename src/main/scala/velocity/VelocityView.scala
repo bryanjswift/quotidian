@@ -7,17 +7,8 @@ import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.context.Context
 
 object VelocityHelper {
-	private class Props extends Properties {
-		def setProperties(properties:Map[String,String]) = {
-			properties.foreach(prop => setProperty(prop._1,prop._2))
-			this
-		}
-	}
-	private[this] val properties = new Props().setProperties(Map(
-		"resource.loader" -> "class",
-		"class.resource.loader.class" -> "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader",
-		"class.resource.loader.cache" -> "true"
-	))
+	private[this] val properties = new Properties()
+	properties.load(getClass().getClassLoader().getResourceAsStream("velocity/velocity.properties"))
 	private[this] val engine = new VelocityEngine(properties)
 	def getTemplate(template:String) = engine.getTemplate(template)
 }
