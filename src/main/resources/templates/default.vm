@@ -6,7 +6,6 @@
 	</head>
 	<body>
 		<h1>Hello Quotes!</h1>
-		<p>$test</p>
 		<form action="/quote" method="post">
 			<label for="text">Text</label>
 			<textarea name="text" id="text"></textarea>
@@ -24,9 +23,9 @@
 			</tr>
 			#foreach ($quote in $quotes)
 				<tr>
-					<td>$quote.text</td>
-					<td>$quote.source</td>
-					<td>$quote.context</td>
+					<td>$quote.text()</td>
+					<td>$quote.source()</td>
+					<td>$quote.context()</td>
 				</tr>
 			#end
 		</table>

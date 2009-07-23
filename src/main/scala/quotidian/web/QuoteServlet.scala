@@ -8,8 +8,8 @@ import velocity.{VelocityHelper,VelocityView}
 
 class QuoteServlet extends HttpServlet {
 	override def doGet(request:Request, response:Response) {
-		val view = new VelocityView(VelocityHelper.getTemplate("default.vm"))
-		view.render(Map("quotes" -> QuoteController.all,"test" -> "string from servlet"),request,response)
+		val view = new VelocityView("templates/default.vm")
+		view.render(Map("quotes" -> QuoteController.all),request,response)
 	}
 	override def doPost(request:Request, response:Response) {
 		val text = request.getParameterValues("text")(0)
