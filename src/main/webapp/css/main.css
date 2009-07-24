@@ -1,0 +1,18 @@
+/* Reset */
+body, h1, h2, h3, h4, h5, h6, p, ul, li, input, textarea, button { margin: 0; padding: 0; }
+h1, h2, h3, h4, h5, h6, p { font-size: 1em; line-height: 1; }
+/* General Styles */
+body { font: normal 16px Helvetica, Arial, sans-serif; }
+h1 { font-size: 3em; }
+h2 { font-size: 2em; }
+/* General Classes */
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; line-height: 0; }
+.clearfix { display: inline-block; }
+html[xmlns] .clearfix { display: block; }
+* html .clearfix { height: 1%; }
+/* Styles */
+#primary { width: 75%; }
+#secondary { position: absolute; top: 0; right: 0; width: 20%; }
+ul li { }
+ul li blockquote { }
+ul li blockquote p { }

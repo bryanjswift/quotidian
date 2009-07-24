@@ -3,31 +3,38 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title>Hello Quotes</title>
+		<link type="text/css" rel="stylesheet" href="/css/main.css" />
 	</head>
 	<body>
-		<h1>Hello Quotes!</h1>
-		<form action="/quote" method="post">
-			<label for="text">Text</label>
-			<textarea name="text" id="text"></textarea>
-			<label for="source">Source</label>
-			<input type="text" name="source" id="source" />
-			<label for="context">Context</label>
-			<input type="text" name="context" id="context" />
-			<input type="submit" name="submit" value="Add Quote" />
-		</form>
-		<table>
-			<tr>
-				<th>Quote</th>
-				<th>Source</th>
-				<th>Context</th>
-			</tr>
-			#foreach ($quote in $quotes)
-				<tr>
-					<td>$quote.text()</td>
-					<td>$quote.source()</td>
-					<td>$quote.context()</td>
-				</tr>
-			#end
-		</table>
+		<div id="primary">
+			<h1>Quote 'em on it</h1>
+			<form action="/quote" method="post">
+				<label class="text" for="text">Text</label>
+				<textarea id="text" name="text"></textarea>
+				<label class="source" for="source">Source</label>
+				<input id="source" type="text" name="source" />
+				<label class="context" for="context">Context</label>
+				<input id="context" type="text" name="context" />
+				<button id="add" name="add" value="add">Add Quote</button>
+			</form>
+			<h2>Recent Quotes</h2>
+			<ul>
+				#foreach ($quote in $quotes)
+					<li>
+						<blockquote cite="$quote.source()">
+							<p>$quote.text()</p>
+						</blockquote>
+						<cite>$quote.source()</cite>
+						<p class="context">$quote.context()</p>
+					</li>
+				#end
+			</ul>
+		</div>
+		<div id="secondary">
+			<h2>Search</h2>
+			<input id="search" type="text" name="search" />
+			<button id="go" name="submit" value="go">Go</button>
+		</div>
+		<script type="text/javascript" src="/js/main.js"></script>
 	</body>
 </html>
