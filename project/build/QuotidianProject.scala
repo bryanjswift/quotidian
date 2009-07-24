@@ -12,7 +12,9 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val gaeUserJars = gaeHome / "lib" / "user" ** "*.jar"
 	val gaeSharedJars = gaeHome / "lib" / "shared" ** "*.jar"
 
-	val srcMainLib = "src" / "main" / "lib" ** "*.jar"
+	val libs = "src" / "main" / "lib" ** "*.jar"
 
-	override def unmanagedClasspath = super.unmanagedClasspath +++ gaeUserJars +++ gaeSharedJars +++ srcMainLib
+	override def compileClasspath = super.compileClasspath +++ gaeUserJars +++ libs +++ gaeSharedJars 
+
+	//override def testDependencies = Set("org.scala-tools.testing" % "specs" % "1.5.0") ++ super.testDependencies
 }
