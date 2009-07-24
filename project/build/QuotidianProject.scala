@@ -19,7 +19,6 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val gaeSharedJars = gaeHome / "lib" / "shared" ** "*.jar"
 
 	// override looking for jars in ./lib
-	// TODO: need to include gaeUserJars in dependencyPath in order to deploy
 	override def dependencyPath = "src" / "main" / "lib"
 	// override output of war to target/webapp
 	override def temporaryWarPath = outputPath / "war"
