@@ -46,7 +46,7 @@ define 'quotidian' do
 	project.group = 'quotidian'
 	project.version = VERSION_NUMBER
 	manifest['Copyright'] = 'Bryan J Swift (C) 2009'
-	compile.using(:warnings => 'true', :target => '1.5').with DEPS, CLASSPATH
+	compile.using(:warnings => 'true', :target => '1.5').with CLASSPATH
 	test.with TEST_DEPS
 	test.using :specs
 	package(:war, :id => 'quotidian').with DEPS
