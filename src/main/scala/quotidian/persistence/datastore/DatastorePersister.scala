@@ -11,8 +11,8 @@ object DatastorePersister extends Persister with Logging {
 	val datastore = DatastoreServiceFactory.getDatastoreService()
 	def save(obj:Savable):Serializable = {
 		val entity = if (obj.id == 0) new Entity(obj.table) else new Entity(obj.table,obj.id.toString)
-		val map = obj.fields zip obj.values
-		map.foreach(t => {
+		val properties = obj.fields zip obj.values
+		properties.foreach(t => {
 			entity.setProperty(t._1,t._2)
 		})
 		datastore.put(entity)
@@ -30,18 +30,18 @@ object DatastorePersister extends Persister with Logging {
 		val query = datastore.prepare(new Query(table))
 		val mapFcn = PersisterHelper.fetch(table)
 		val entities = query.asList(withLimit(10))
-		val it = for {
+		val savables = for {
 			val entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
-		it.toList
+		savables.toList
 	}
 	def search(table:String,field:String,value:Any):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addFilter(field,Query.FilterOperator.EQUAL,value))
 		val mapFcn = PersisterHelper.fetch(table)
 		val entities = query.asList(withLimit(10))
-		val it = for {
+		val savables = for {
 			val entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
-		it.toList
+		savables.toList
 	}
 }

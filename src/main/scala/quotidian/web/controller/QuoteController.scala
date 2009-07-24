@@ -6,7 +6,6 @@ import quotidian.model.Quote
 import quotidian.persistence.datastore.DatastorePersister
 
 object QuoteController extends Logging {
-	private var quotes = List[Quote]()
 	def all:List[Quote] = {
 		savablesToQuotes(DatastorePersister.getAll(Quote.kind))
 	}
