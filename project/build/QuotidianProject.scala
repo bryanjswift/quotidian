@@ -16,7 +16,6 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// App Engine paths
 	val gaeHome = Path.fromFile(userHome.value + "/Documents/src/gae/") / "appengine-java-sdk-1.2.2"
-	val gaeUserJars = gaeHome / "lib" / "user" ** "*.jar"
 	val gaeSharedJars = gaeHome / "lib" / "shared" ** "*.jar"
 
 	// override looking for jars in ./lib
