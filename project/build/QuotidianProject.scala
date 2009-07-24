@@ -24,4 +24,6 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	override def temporaryWarPath = outputPath / "war"
 	// compile with App Engine jars
 	override def compileClasspath = super.compileClasspath +++ gaeSharedJars 
+	// override path to managed dependency cache
+	override def managedDependencyPath = "project" / "lib_managed"
 }
