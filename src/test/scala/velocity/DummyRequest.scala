@@ -10,7 +10,7 @@ import javax.servlet.http.{Cookie,HttpServletRequest,HttpSession}
 /**
  * @author bryanjswift
  */
-trait MockRequest extends HttpServletRequest {
+trait DummyRequest extends HttpServletRequest {
 	private[this] class UnsupportedMethodException extends RuntimeException
 	def getAuthType():String = throw new UnsupportedMethodException()
 	def getContextPath():String = throw new UnsupportedMethodException()

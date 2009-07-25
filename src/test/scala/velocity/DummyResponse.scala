@@ -7,7 +7,7 @@ import javax.servlet.ServletOutputStream
 import javax.servlet.http.{Cookie,HttpServletResponse}
 
 
-trait MockResponse extends HttpServletResponse {
+trait DummyResponse extends HttpServletResponse {
 	private[this] class UnsupportedMethodException extends RuntimeException
 	def addCookie(cookie:Cookie):Unit = throw new UnsupportedMethodException()
 	def addDateHeader(name:String,date:Long):Unit = throw new UnsupportedMethodException()

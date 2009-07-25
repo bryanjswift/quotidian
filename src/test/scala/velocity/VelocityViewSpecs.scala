@@ -2,15 +2,14 @@ package velocity
 
 import java.io.{PrintWriter,StringWriter}
 import org.specs.Specification
-import velocity.{MockRequest => Request, MockResponse => Response}
 
 object VelocityViewSpecs extends Specification {
 	class Tester {
 		val test = "Tester.test"
 		override def toString() = "Tester.toString"
 	}
-	class RequestMock extends Request { }
-	class ResponseMock extends Response {
+	class Request extends DummyRequest { }
+	class Response extends DummyResponse {
 		val writer = new StringWriter()
 		override def getWriter():PrintWriter = new PrintWriter(writer)
 	}
@@ -32,8 +31,8 @@ object VelocityViewSpecs extends Specification {
 	}
 	"rendering with an object (obj)" should {
 		val view = new VelocityView("templates/objTest.vm")
-		val request = new RequestMock()
-		val response = new ResponseMock()
+		val request = new Request()
+		val response = new Response()
 		val obj = new Tester()
 		view.render(Map("obj" -> obj),request,response)
 		val result = response.writer.toString
@@ -46,8 +45,8 @@ object VelocityViewSpecs extends Specification {
 	}
 	"rendering with list of Strings" should {
 		val view = new VelocityView("templates/listTest.vm")
-		val request = new RequestMock()
-		val response = new ResponseMock()
+		val request = new Request()
+		val response = new Response()
 		val list = List("list test","list test2","another test")
 		view.render(Map("tests" -> list),request,response)
 		val result = response.writer.toString
