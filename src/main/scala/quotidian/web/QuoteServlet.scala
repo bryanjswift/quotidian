@@ -2,7 +2,6 @@ package quotidian.web
 
 import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
 import quotidian.model.Quote
-import quotidian.persistence.datastore.DatastorePersister
 import quotidian.web.controller.QuoteController
 import velocity.{VelocityHelper,VelocityView}
 
@@ -16,7 +15,7 @@ class QuoteServlet extends HttpServlet {
 		val source = request.getParameterValues("source")(0)
 		val context = request.getParameterValues("context")(0)
 		val quote = new Quote(text,source,context)
-		DatastorePersister.save(quote)
+		QuoteController.save(quote)
 		response.sendRedirect("/quote")
 	}
 }
