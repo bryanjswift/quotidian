@@ -7,6 +7,7 @@ import quotidian.model.Quote
 import quotidian.persistence.datastore.DatastorePersister
 
 object QuoteController extends Logging {
+// TODO: DatastorePersister should be abstracted to a Persister
 	def all:List[Quote] = savablesToQuotes(DatastorePersister.getAll(Quote.kind))
 	def bySource(source:String):List[Quote] = savablesToQuotes(DatastorePersister.search(Quote.kind,"source",source))
 	def get(id:Serializable):Quote = DatastorePersister.get(Quote.kind,id).asInstanceOf[Quote]

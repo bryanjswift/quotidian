@@ -8,13 +8,14 @@ import quotidian.Logging
 import scala.collection.jcl.Conversions._
 
 object DatastorePersister extends Persister with Logging {
-	val datastore = DatastoreServiceFactory.getDatastoreService()
+	private val datastore = DatastoreServiceFactory.getDatastoreService()
 	def save(obj:Savable):Serializable = {
 		val entity = if (obj.id == 0) new Entity(obj.table) else new Entity(obj.table,obj.id.toString)
 		val properties = obj.fields zip obj.values
 		properties.foreach(t => {
 			entity.setProperty(t._1,t._2)
 		})
+// TODO: set created date
 		datastore.put(entity)
 	}
 	def get(table:String,id:Serializable):Savable = {
