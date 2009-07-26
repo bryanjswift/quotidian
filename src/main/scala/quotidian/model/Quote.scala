@@ -8,8 +8,13 @@ import quotidian.persistence.datastore.PersisterHelper
 import scala.xml.NodeSeq
 
 @Entity{val name = "Quote"}
-class Quote(@Persistent val text:String, @Persistent val source:String, @Persistent val context:String) extends Savable {
-	val id:Serializable = 0
+class Quote(
+	val id:Serializable,
+	@Persistent val text:String,
+	@Persistent val source:String,
+	@Persistent val context:String
+) extends Savable {
+	def this(text:String,source:String,context:String) = this(0,text,source,context)
 	def canEqual(a:Any) = a.isInstanceOf[Quote]
 	def equals(q:Quote) = {
 		this.text == q.text && this.source == q.source && this.context == q.context
