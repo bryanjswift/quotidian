@@ -1,3 +1,7 @@
+.classpath
+.manager
+.project
+bin
 lib_managed
 project/build/target
 project/boot
