@@ -9,6 +9,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
 	val commonsCollections = "commons-collections" % "commons-collections" % "3.2.1"
 	val commonsLang = "commons-lang" % "commons-lang" % "2.4"
+	val luceneCore = "org.apache.lucene" % "lucene-core" % "2.4.1"
 
 	// Dependencies for testing
 	val junit = "junit" % "junit" % "4.5" % "test->default"
