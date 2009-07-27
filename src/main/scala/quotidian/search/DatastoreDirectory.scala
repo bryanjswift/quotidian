@@ -1,7 +1,7 @@
 package quotidian.search
 
-import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,Query}
-import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit}
+import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Query}
+import com.google.appengine.api.datastore.FetchOptions.Builder.{withChunkSize}
 import org.apache.lucene.store.{Directory,IndexInput,IndexOutput}
 
 class DatastoreDirectory extends Directory {
@@ -9,13 +9,30 @@ class DatastoreDirectory extends Directory {
 	def close:Unit = { }
 	def createOutput(name:String):IndexOutput = null
 	def deleteFile(name:String):Unit = { }
-	def fileExists(name:String):Boolean = false
+	def fileExists(name:String):Boolean = {
+		val query = datastore.prepare(
+			new Query(DatastoreDirectory.kind).addFilter(DatastoreDirectory.filename,Query.FilterOperator.EQUAL,name))
+		query.countEntities > 0
+	}
 	def fileLength(name:String):Long = 0
 	def fileModified(name:String):Long = 0
-	def list:Array[String] = null
+	def list:Array[String] = {
+		val query = datastore.prepare(new Query(DatastoreDirectory.kind))
+		val entities = query.asIterator(withChunkSize(Integer.MAX_VALUE))
+		var names = List[String]()
+		while (entities.hasNext) {
+			names = entities.next.getProperty(DatastoreDirectory.filename).toString :: names
+		}
+		names.toArray
+	}
 	def openInput(name:String):IndexInput = null
 	def renameFile(from:String,to:String):Unit = { }
 	def touchFile(name:String):Unit = { }
+}
+
+object DatastoreDirectory {
+	val kind = "DatastoreFile"
+	val filename = "filename"
 }
 
 class DatastoreIndexInput extends IndexInput {
