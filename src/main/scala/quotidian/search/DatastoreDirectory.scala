@@ -57,22 +57,6 @@ object DatastoreDirectory {
 	}
 }
 
-class DatastoreFile(private val entity:Entity) {
-	def this() = this(new Entity(DatastoreFile.Kind))
-	def contents = entity.getProperty(DatastoreFile.Contents).asInstanceOf[Array[Byte]]
-	def dateModified = entity.getProperty(DatastoreFile.DateModified).asInstanceOf[Long]
-	def deleted = entity.getProperty(DatastoreFile.Deleted).asInstanceOf[Boolean]
-}
-
-object DatastoreFile {
-	val Contents = "contents"
-	val DateModified = "datemodified"
-	val Deleted = "deleted"
-	val Filename = "filename"
-	val Kind = "DatastoreFile"
-	val Size = "size"
-}
-
 class DatastoreIndexInput(private val entity:Entity) extends IndexInput {
 	def this() = this(new Entity(DatastoreFile.Kind))
 	def close:Unit = { }
