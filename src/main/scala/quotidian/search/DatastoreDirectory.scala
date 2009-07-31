@@ -55,23 +55,3 @@ object DatastoreDirectory {
 	}
 }
 
-class DatastoreIndexInput(private val file:DatastoreFile) extends IndexInput {
-	def this() = this(DatastoreFile())
-	def close:Unit = { }
-	def getFilePointer():Long = 0
-	def length:Long = 0
-	def readByte:Byte = 0
-	def readBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = { }
-	def seek(pos:Long):Unit = { }
-}
-
-class DatastoreIndexOutput(private val file:DatastoreFile) extends IndexOutput {
-	def this() = this(DatastoreFile())
-	def close:Unit = { }
-	def flush:Unit = { }
-	def getFilePointer():Long = 0
-	def length:Long = 0
-	def seek(pos:Long):Unit = { }
-	def writeByte(b:Byte):Unit = { }
-	def writeBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = { }
-}
