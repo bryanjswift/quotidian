@@ -1,5 +1,6 @@
 package quotidian.search
 
+import DatastoreDirectory.{datastore,save,fileByName}
 import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,PreparedQuery,Query}
 import com.google.appengine.api.datastore.FetchOptions.Builder.{withChunkSize}
 import java.io.Serializable
@@ -7,7 +8,6 @@ import java.util.Calendar
 import org.apache.lucene.store.{Directory,IndexInput,IndexOutput}
 
 class DatastoreDirectory extends Directory {
-	import DatastoreDirectory._
 	def close:Unit = { }
 	def createOutput(name:String):IndexOutput = null
 	def deleteFile(name:String):Unit = {
