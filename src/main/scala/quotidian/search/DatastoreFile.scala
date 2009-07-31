@@ -22,7 +22,7 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	private def this(entity:Entity) = this(0,entity)
 	/** Last modified date of the file
 		* @return time in milliseconds when this file was last modified */
-	def dateModified = ent.getProperty(DatastoreFile.DateModified).asInstanceOf[Long]
+	def dateModified:Long = ent.getProperty(DatastoreFile.DateModified).asInstanceOf[Long]
 	/** Number of bytes in the file
 		* @return size of the file*/
 	def length:Int = bytes.length
@@ -32,19 +32,23 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	/** Move the position pointer to the new position
 		* @param pos				new pointer position to set
 		* @return file with the new pointer set */
-	def seek(pos:Int) = DatastoreFile(pos,bytes,entity)
+	def seek(pos:Int):DatastoreFile = DatastoreFile(pos,bytes,entity)
+	def seek(pos:Long):DatastoreFile = {
+		if (pos > scala.Math.MAX_INT) throw new IllegalArgumentException("pos is too large to be used as an array index")
+		else seek(pos.asInstanceOf[Int])
+	}
 	/** Sets a property on the underlying Entity
 		* @param property		name of the property to set
 		* @param value			value to set into property
 		* @return file with the new property set */
-	def set(property:String,value:Any) = {
+	def set(property:String,value:Any):DatastoreFile = {
 		ent.setProperty(property,value)
 		DatastoreFile(position,bytes,ent)
 	}
 	/** Write a new byte to the current position filling in any space between the current length and the position
 		* @param b					the byte to write
 		* @return file with the new byte writte */
-	def write(b:Byte) = {
+	def write(b:Byte):DatastoreFile = {
 		if (position == length) {
 			DatastoreFile(position,bytes ++ Array(b),entity)
 		} else if (position > length) {
@@ -69,5 +73,10 @@ object DatastoreFile {
 	def apply(entity:Entity) = new DatastoreFile(entity)
 	def apply(position:Int,entity:Entity) = new DatastoreFile(position,entity)
 	def apply(position:Int,bytes:Array[Byte],entity:Entity) = new DatastoreFile(position,bytes,entity)
+	def apply(filename:String):DatastoreFile = {
+		val entity = new Entity(Kind)
+		entity.setProperty(Filename,filename)
+		apply(entity)
+	}
 	def rename(file:DatastoreFile,to:String) = file.set(Filename,to)
 }
