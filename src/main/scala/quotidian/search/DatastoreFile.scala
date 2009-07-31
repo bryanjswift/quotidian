@@ -87,6 +87,27 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 			DatastoreFile(position + 1,(bytes.take(position) ++ Array(b) ++ bytes.drop((position + 1))).toArray,entity)
 		}
 	}
+	/** Write the provided array of bytes into this file's contents
+		* @param bits				array of bytes to be written to file
+		* @param offset			position in file to start writing bytes
+		* @param len				number of bytes to write
+		* @return file with bits written to it */
+	def write(bits:Array[Byte],offset:Int,len:Int):DatastoreFile = write(0,bits,offset,len)
+	/** Write the provided array of bytes into this file's contents
+		* @param current		current position in the bits array
+		* @param bits				array of bytes to be written to file
+		* @param offset			position in file to start writing bytes
+		* @param len				number of bytes to write
+		* @return file with bits written to it */
+	private def write(current:Int,bits:Array[Byte],offset:Int,len:Int):DatastoreFile = {
+		// This could be written using bytes.take(offset) ++ bits ++ bytes.drop(offset + len) or something similar
+		if (current == len) {
+			DatastoreFile(position + current,bytes,ent)
+		} else {
+			bytes(offset) = if (current < bits.length) bits(current) else 0
+			write(current + 1,bits,offset + 1,len)
+		}
+	}
 	/** Retrieve the underlying entity
 		* @return the datastore representation which can be sent to storage */
 	def entity:Entity = set(Contents,bytes).set(Size,length).set(Deleted,false).ent
