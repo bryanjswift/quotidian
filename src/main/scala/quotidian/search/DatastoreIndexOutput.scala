@@ -10,5 +10,5 @@ class DatastoreIndexOutput(private var file:DatastoreFile) extends IndexOutput {
 	def length:Long = file.length
 	def seek(pos:Long):Unit = file = file.seek(pos)
 	def writeByte(b:Byte):Unit = file = file.write(b)
-	def writeBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = { }
+	def writeBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = { /* TODO: IMPLEMENT ME */ }
 }
