@@ -2,6 +2,7 @@ package quotidian.search
 
 import DatastoreFile.{Contents,DateModified,Deleted,Filename,Kind,Size}
 import com.google.appengine.api.datastore.Entity
+import java.io.IOException
 import java.util.Calendar
 
 /** Representation of a file which relies on Datastore Entity objects
@@ -26,15 +27,43 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	/** Number of bytes in the file
 		* @return size of the file*/
 	def length:Int = bytes.length
-	/** Reads the byte at the current position
-		* @return byte found at the current position*/
-	def read:Byte = bytes(position)
+	/** Reads the byte at the current position and advances the position by one
+		* @return tuple containing byte found at the current position and file with position advanced by one */
+	def read:Tuple2[Byte,DatastoreFile] = (bytes(position),seek(position + 1))
+	/** Read byte at offset into bits at current if current is less than or equal to length
+		* @param bits				array of bytes to write into
+		* @param offset			position in file's bytes to read from
+		* @param length			total number of bytes to read
+		* @returns array of bytes written into while reading */
+	def read(bits:Array[Byte],offset:Int,length:Int):Array[Byte] = {
+		if (bits.length < length) throw new IOException("Array to read into is not large enough for the length specified")
+		read(0,bits,offset,length)
+		bits
+	}
+	/** Read byte at offset into bits at current if current is less than or equal to length
+		* @param current		the current position to write to in bits
+		* @param bits				array of bytes to write into
+		* @param offset			position in file's bytes to read from
+		* @param length			total number of bytes to read
+		* @returns array of bytes written into while reading */
+	private def read(current:Int,bits:Array[Byte],offset:Int,length:Int):Array[Byte] = {
+		if (current == length) {
+			bits
+		} else {
+			bits(current) = if (offset < length) bytes(offset) else 0
+			read(current + 1,bits,offset + 1,length)
+		}
+	}
 	/** Move the position pointer to the new position
 		* @param pos				new pointer position to set
 		* @return file with the new pointer set */
 	def seek(pos:Int):DatastoreFile = DatastoreFile(pos,bytes,entity)
+	/** Move the position pointer to the new position
+		* @param pos				new pointer position to set
+		* @return file with the new pointer set
+		* @throws IllegalArgumentException when pos is greater than scala.Math.MAX_INT */
 	def seek(pos:Long):DatastoreFile = {
-		if (pos > scala.Math.MAX_INT) throw new IllegalArgumentException("pos is too large to be used as an array index")
+		if (pos > scala.Math.MAX_INT) throw new IOException("pos is too large to be used as an array index")
 		else seek(pos.asInstanceOf[Int])
 	}
 	/** Sets a property on the underlying Entity
@@ -46,15 +75,16 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 		DatastoreFile(position,bytes,ent)
 	}
 	/** Write a new byte to the current position filling in any space between the current length and the position
+		* Advances position by one
 		* @param b					the byte to write
 		* @return file with the new byte writte */
 	def write(b:Byte):DatastoreFile = {
 		if (position == length) {
-			DatastoreFile(position,bytes ++ Array(b),entity)
+			DatastoreFile(position + 1,bytes ++ Array(b),entity)
 		} else if (position > length) {
-			DatastoreFile(position,bytes ++ new Array[Byte](position - length) ++ Array(b),entity)
+			DatastoreFile(position + 1,bytes ++ new Array[Byte](position - length) ++ Array(b),entity)
 		} else {
-			DatastoreFile(position,(bytes.take(position) ++ Array(b) ++ bytes.drop((position + 1))).toArray,entity)
+			DatastoreFile(position + 1,(bytes.take(position) ++ Array(b) ++ bytes.drop((position + 1))).toArray,entity)
 		}
 	}
 	/** Retrieve the underlying entity
