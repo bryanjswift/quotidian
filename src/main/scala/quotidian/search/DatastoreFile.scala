@@ -33,25 +33,25 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	/** Read byte at offset into bits at current if current is less than or equal to length
 		* @param bits				array of bytes to write into
 		* @param offset			position in file's bytes to read from
-		* @param length			total number of bytes to read
+		* @param len				total number of bytes to read
 		* @returns array of bytes written into while reading */
-	def read(bits:Array[Byte],offset:Int,length:Int):Array[Byte] = {
-		if (bits.length < length) throw new IOException("Array to read into is not large enough for the length specified")
-		read(0,bits,offset,length)
+	def read(bits:Array[Byte],offset:Int,len:Int):Array[Byte] = {
+		if (bits.length < len) throw new IOException("Array to read into is not large enough for the length specified")
+		read(0,bits,offset,len)
 		bits
 	}
 	/** Read byte at offset into bits at current if current is less than or equal to length
 		* @param current		the current position to write to in bits
 		* @param bits				array of bytes to write into
 		* @param offset			position in file's bytes to read from
-		* @param length			total number of bytes to read
+		* @param len				total number of bytes to read
 		* @returns array of bytes written into while reading */
-	private def read(current:Int,bits:Array[Byte],offset:Int,length:Int):Array[Byte] = {
-		if (current == length) {
+	private def read(current:Int,bits:Array[Byte],offset:Int,len:Int):Array[Byte] = {
+		if (current == len) {
 			bits
 		} else {
-			bits(current) = if (offset < length) bytes(offset) else 0
-			read(current + 1,bits,offset + 1,length)
+			bits(current) = if (offset < len) bytes(offset) else 0
+			read(current + 1,bits,offset + 1,len)
 		}
 	}
 	/** Move the position pointer to the new position
