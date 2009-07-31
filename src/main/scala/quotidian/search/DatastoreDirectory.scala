@@ -32,10 +32,11 @@ object DatastoreDirectory {
 		datastore.delete(file.entity.getKey)
 	}
 	def fileByName(name:String):DatastoreFile = {
-		val query = datastore.prepare(
-			new Query(DatastoreFile.Kind).addFilter(DatastoreFile.Filename,Query.FilterOperator.EQUAL,name))
-		if (fileExists(name)) DatastoreFile(query.asSingleEntity)
-		else DatastoreFile(name)
+		if (fileExists(name)) {
+			val query = datastore.prepare(
+				new Query(DatastoreFile.Kind).addFilter(DatastoreFile.Filename,Query.FilterOperator.EQUAL,name))
+			DatastoreFile(query.asSingleEntity)
+		} else { DatastoreFile(name) }
 	}
 	def fileExists(name:String):Boolean = {
 		val query = datastore.prepare(
