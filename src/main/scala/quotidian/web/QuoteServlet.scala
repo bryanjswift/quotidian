@@ -2,7 +2,7 @@ package quotidian.web
 
 import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
 import quotidian.model.Quote
-import quotidian.web.controller.{DatastoreQuoteController,QuoteController}
+import quotidian.web.controller.QuoteController
 import velocity.{VelocityHelper,VelocityView}
 
 class QuoteServlet extends HttpServlet {
@@ -21,5 +21,5 @@ class QuoteServlet extends HttpServlet {
 }
 
 object QuoteServlet {
-	val controller:QuoteController = DatastoreQuoteController
+	val controller = ConfigFactory.objectForProperty("quote.controller").asInstanceOf[QuoteController]
 }

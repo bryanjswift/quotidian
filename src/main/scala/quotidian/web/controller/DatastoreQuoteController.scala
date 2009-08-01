@@ -2,6 +2,6 @@ package quotidian.web.controller
 
 import quotidian.persistence.datastore.DatastorePersister
 
-object DatastoreQuoteController extends QuoteController {
+class DatastoreQuoteController extends QuoteController {
 	val persister = DatastorePersister
 }
