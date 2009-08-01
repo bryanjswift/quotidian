@@ -29,6 +29,7 @@ object DatastorePersister extends Persister with Logging {
 	}
 	def getAll(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table))
+// TODO: sort by created date
 		val mapFcn = PersisterHelper.fetch(table)
 		val entities = query.asList(withLimit(10))
 		val savables = for {
