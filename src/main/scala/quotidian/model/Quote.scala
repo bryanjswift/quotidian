@@ -1,7 +1,7 @@
 package quotidian.model
 
-import com.bryanjswift.persistence.{Savable}
-import com.bryanjswift.persistence.annotations.{Entity,Persistent}
+import basic.persistence.{Savable}
+import basic.persistence.annotations.{Entity,Persistent}
 import java.io.Serializable
 import quotidian.Logging
 import quotidian.persistence.datastore.PersisterHelper

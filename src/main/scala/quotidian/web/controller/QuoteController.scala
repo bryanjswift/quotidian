@@ -1,13 +1,13 @@
 package quotidian.web.controller
 
-import com.bryanjswift.persistence.{Persister,Savable}
+import basic.persistence.{Persister,Savable}
 import java.io.Serializable
 import quotidian.Logging
 import quotidian.model.Quote
 
 abstract class QuoteController extends Logging {
 	def persister:Persister
-	def all:List[Quote] = savablesToQuotes(persister.getAll(Quote.kind))
+	def all:List[Quote] = savablesToQuotes(persister.all(Quote.kind))
 	def bySource(source:String):List[Quote] = savablesToQuotes(persister.search(Quote.kind,"source",source))
 	def get(id:Serializable):Quote = persister.get(Quote.kind,id).asInstanceOf[Quote]
 	def random:Quote = {

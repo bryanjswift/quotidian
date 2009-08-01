@@ -1,6 +1,6 @@
 package quotidian.persistence.datastore
 
-import com.bryanjswift.persistence.Savable
+import basic.persistence.Savable
 import com.google.appengine.api.datastore.Entity
 import quotidian.Logging
 import scala.collection.jcl.Conversions._
