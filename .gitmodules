@@ -1,0 +1,3 @@
+[submodule "simple-scala-persistence"]
+	path = simple-scala-persistence
+	url = git://github.com/bryanjswift/simple-scala-persistence.git
