@@ -40,4 +40,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	override def testClasspath = super.testClasspath +++ jars +++ testingJars
 	// override path to managed dependency cache
 	override def managedDependencyPath = "project" / "lib_managed"
+	// override webapp resources to filter out .less files
+	val lessCssFiles = webappPath ** "*.less"
+	override def webappResources = descendents(webappPath ##, "*") +++ extraWebappFiles --- lessCssFiles
 }
