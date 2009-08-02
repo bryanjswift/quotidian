@@ -4,6 +4,9 @@ import sbt._
 class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// locate the Home directory
 	val userHome = system[File]("user.home")
+	// define custom property
+	val defaultGaeHome = userHome.value + "/Documents/src/gae/" + "appengine-java-sdk-1.2.2"
+	val gaeHome = propertyOptional[String](defaultGaeHome)
 
 	// Dependencies for compiling
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
@@ -15,8 +18,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val specs = "org.scala-tools.testing" % "specs" % "1.5.0" % "test->default"
 
 	// App Engine paths
-	val gaeHome = Path.fromFile(userHome.value + "/Documents/src/gae/") / "appengine-java-sdk-1.2.2"
-	val gaeSharedJars = gaeHome / "lib" / "shared" * "*.jar"
+	val gaeSharedJars = Path.fromFile(gaeHome.value) / "lib" / "shared" * "*.jar"
 
 	// simple-scala-persistence
 	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*.jar"
