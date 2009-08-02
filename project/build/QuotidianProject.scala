@@ -20,16 +20,13 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// App Engine paths
 	val gaeSharedJars = Path.fromFile(gaeHome.value) / "lib" / "shared" * "*.jar"
+	val gaeTestingJars = Path.fromFile(gaeHome.value) / "lib" / "impl" * "*.jar"
 
 	// simple-scala-persistence
 	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*.jar"
 
 	val jars = gaeSharedJars +++ simpleScalaPersistence
-
-	// simple-scala-persistence
-	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*.jar"
-
-	val jars = gaeSharedJars +++ simpleScalaPersistence
+	val testingJars = gaeTestingJars
 
 	// override looking for jars in ./lib
 	override def dependencyPath = "src" / "main" / "lib"
@@ -40,7 +37,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// add App Engine jars to console classpath
 	override def consoleClasspath = super.consoleClasspath +++ jars
 	// compile tests with App Engine jars
-	override def testClasspath = super.testClasspath +++ jars
+	override def testClasspath = super.testClasspath +++ jars +++ testingJars
 	// override path to managed dependency cache
 	override def managedDependencyPath = "project" / "lib_managed"
 }
