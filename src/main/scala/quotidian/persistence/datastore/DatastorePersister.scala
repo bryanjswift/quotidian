@@ -47,5 +47,5 @@ object DatastorePersister extends Persister with Logging {
 		} yield mapFcn(PersisterHelper.toXml(entity))
 		savables.toList
 	}
-	def some(table:String,o:Int,n:Long):List[Savable] = all(table)
+	def some(table:String,count:Int,offset:Int):List[Savable] = all(table)
 }
