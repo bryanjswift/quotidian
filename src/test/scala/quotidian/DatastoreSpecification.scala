@@ -7,7 +7,7 @@ import java.io.File
 import org.specs.Specification
 
 class DatastoreSpecification extends Specification {
-	val proxy = new ApiProxyLocalImpl(new File(".")){ }
+	val proxy = new ApiProxyLocalImpl(new File("./target/")){ }
 	proxy.setProperty(LocalDatastoreService.NO_STORAGE_PROPERTY,true.toString)
 	val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
 	def datastoreSetup:Unit = {
