@@ -4,10 +4,8 @@ import basic.persistence.{Persister,Savable}
 import java.io.Serializable
 import quotidian.Logging
 import quotidian.model.Quote
-import quotidian.persistence.datastore.DatastorePersister
 
 abstract class QuoteController extends Logging {
-// TODO: DatastorePersister should be abstracted to a Persister
 	def persister:Persister
 	def all:List[Quote] = savablesToQuotes(persister.all(Quote.kind))
 	def bySource(source:String):List[Quote] = savablesToQuotes(persister.search(Quote.kind,"source",source))
@@ -22,5 +20,5 @@ abstract class QuoteController extends Logging {
 			savable <- savables
 		} yield savable.asInstanceOf[Quote]
 	}
-	def save(quote:Quote):Serializable = DatastorePersister.save(quote)
+	def save(quote:Quote):Serializable = persister.save(quote)
 }
