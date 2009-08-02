@@ -2,10 +2,11 @@ package quotidian
 
 import com.google.apphosting.api.ApiProxy.Environment
 
-class GaeEnvironment extends Environment {
+class GaeEnvironment(private val requestNamespace:String) extends Environment {
+	def this() = this("")
 	def getAppId = "Quotidian Specs"
 	def getVersionId = "1.0"
-	def getRequestNamespace = ""
+	def getRequestNamespace = requestNamespace
 	def getAuthDomain = "gmail.com"
 	def isLoggedIn = throw new UnsupportedOperationException()
 	def getEmail = ""

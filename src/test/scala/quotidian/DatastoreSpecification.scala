@@ -11,7 +11,7 @@ class DatastoreSpecification extends Specification {
 	proxy.setProperty(LocalDatastoreService.NO_STORAGE_PROPERTY,true.toString)
 	val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
 	def datastoreSetup:Unit = {
-		ApiProxy.setEnvironmentForCurrentThread(new GaeEnvironment())
+		ApiProxy.setEnvironmentForCurrentThread(new GaeEnvironment)
 		ApiProxy.setDelegate(proxy)
 	}
 	def datastoreTeardown:Unit = {
