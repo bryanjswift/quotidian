@@ -19,6 +19,6 @@ class DatastoreSpecification extends Specification {
 		ApiProxy.setEnvironmentForCurrentThread(null)
 	}
 	def datastoreCleanup:Unit = service.clearProfiles
-	doBeforeSpec { datastoreSetup() }
-	doAfterSpec { datastoreTeardown() }
+	doBeforeSpec { datastoreSetup }
+	doAfterSpec { datastoreTeardown }
 }
