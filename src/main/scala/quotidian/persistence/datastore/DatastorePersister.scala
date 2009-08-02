@@ -37,6 +37,7 @@ object DatastorePersister extends Persister with Logging {
 		} yield mapFcn(PersisterHelper.toXml(entity))
 		savables.toList
 	}
+	def count(table:String) = datastore.prepare(new Query(table)).countEntities
 	def search(table:String,field:String,value:Any):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addFilter(field,Query.FilterOperator.EQUAL,value))
 		val mapFcn = PersisterHelper.fetch(table)
