@@ -2,7 +2,7 @@ package quotidian.persistence.datastore
 
 import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,Query}
 import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit}
-import com.bryanjswift.persistence.{Persister,Savable}
+import basic.persistence.{Persister,Savable}
 import java.io.Serializable
 import quotidian.Logging
 import scala.collection.jcl.Conversions._
@@ -27,7 +27,7 @@ object DatastorePersister extends Persister with Logging {
 			throw new IllegalArgumentException("id must be of type com.google.appengine.api.datastore.Key")
 		}
 	}
-	def getAll(table:String):List[Savable] = {
+	def all(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table))
 		val mapFcn = PersisterHelper.fetch(table)
 		val entities = query.asList(withLimit(10))
@@ -45,4 +45,5 @@ object DatastorePersister extends Persister with Logging {
 		} yield mapFcn(PersisterHelper.toXml(entity))
 		savables.toList
 	}
+	def some(table:String,o:Int,n:Long):List[Savable] = all(table)
 }
