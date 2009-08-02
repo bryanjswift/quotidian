@@ -7,7 +7,7 @@ import quotidian.model.Quote
 object DatastorePersisterSpecs extends DatastoreSpecification {
 	"saving a Savable" should {
 		"return a Serializable id" >> {
-			val quote = new Quote("This is a test","source","context")
+			val quote = Quote("This is a test","source","context")
 			val id = DatastorePersister.save(quote)
 			id must haveSuperClass[Serializable]
 		}
