@@ -50,6 +50,8 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	override def temporaryWarPath = outputPath / "war"
 	// compile with App Engine jars
 	override def compileClasspath = super.compileClasspath +++ jars
+	// webapp classpath with App Engine jars
+	override def webappClasspath = super.webappClasspath +++ simpleScalaPersistence
 	// add App Engine jars to console classpath
 	override def consoleClasspath = super.consoleClasspath +++ jars
 	// compile tests with App Engine jars
