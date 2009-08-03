@@ -31,7 +31,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// if lessc is on $PATH, call it on any outdated .less files in webappPath
 	def lessc(sources:PathFinder):Task = {
 		val products = for (path <- sources.get) yield Path.fromString(".",path.toString.replaceAll("less$","css"))
-		task {
+		fileTask("less", products from sources) {
 			val runtime = Runtime.getRuntime
 			try {
 				val paths = lessFiles.getPaths
