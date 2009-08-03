@@ -132,4 +132,4 @@ object DatastoreFile {
 	def rename(file:DatastoreFile,to:String) = file.set(Filename,to)
 }
 
-sealed class ByteAndFile(val byte:Byte,val file:DatastoreFile)
+sealed case class ByteAndFile(val byte:Byte,val file:DatastoreFile)
