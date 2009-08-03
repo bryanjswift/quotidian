@@ -28,6 +28,21 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val jars = gaeSharedJars +++ simpleScalaPersistence
 	val testingJars = gaeTestingJars
 
+	// if lessc is on $PATH, call it on any outdated .less files in webappPath
+	def lessc(sources:PathFinder):Task = {
+		val products = for (path <- sources.get) yield Path.fromString(".",path.toString.replaceAll("less$","css"))
+		task {
+			val runtime = Runtime.getRuntime
+			try {
+				val paths = lessFiles.getPaths
+				val processes = for (path <- paths) yield runtime.exec("lessc " + path)
+				None
+			} catch {
+				case e:Exception => Some(e.getMessage)
+			}
+		}
+	}
+
 	// override looking for jars in ./lib
 	override def dependencyPath = "src" / "main" / "lib"
 	// override output of war to target/webapp
@@ -41,6 +56,9 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// override path to managed dependency cache
 	override def managedDependencyPath = "project" / "lib_managed"
 	// override webapp resources to filter out .less files
-	val lessCssFiles = webappPath ** "*.less"
-	override def webappResources = descendents(webappPath ##, "*") +++ extraWebappFiles --- lessCssFiles
+	val lessFiles = webappPath ** "*.less"
+	override def webappResources = descendents(webappPath ##, "*") +++ extraWebappFiles --- lessFiles
+	// modify the prepareWebappAction to compile .less files
+	lazy val lessCompile = lessc(lessFiles)
+	override def prepareWebappAction = super.prepareWebappAction dependsOn(lessCompile)
 }
