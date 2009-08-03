@@ -36,7 +36,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 			val runtime = Runtime.getRuntime
 			try {
 				val paths = lessFiles.getPaths
-				val processes = for (path <- paths) yield runtime.exec(lessCompiler + " " + path)
+				val processes = for (path <- paths) yield runtime.exec(lessCompiler.value + " " + path)
 				None
 			} catch {
 				case e:Exception => Some(e.getMessage)
