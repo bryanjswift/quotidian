@@ -7,6 +7,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// define custom property
 	val defaultGaeHome = userHome.value + "/Documents/src/gae/" + "appengine-java-sdk-1.2.2"
 	val gaeHome = propertyOptional[String](defaultGaeHome)
+	val lessCompiler = propertyOptional[String]("lessc")
 
 	// Dependencies for compiling
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
@@ -35,7 +36,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 			val runtime = Runtime.getRuntime
 			try {
 				val paths = lessFiles.getPaths
-				val processes = for (path <- paths) yield runtime.exec("lessc " + path)
+				val processes = for (path <- paths) yield runtime.exec(lessCompiler + " " + path)
 				None
 			} catch {
 				case e:Exception => Some(e.getMessage)
