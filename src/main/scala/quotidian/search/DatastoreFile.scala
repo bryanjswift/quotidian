@@ -29,7 +29,7 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	def length:Int = bytes.length
 	/** Reads the byte at the current position and advances the position by one
 		* @return tuple containing byte found at the current position and file with position advanced by one */
-	def read:Tuple2[Byte,DatastoreFile] = (bytes(position),seek(position + 1))
+	def read:ByteAndFile = new ByteAndFile(bytes(position),seek(position + 1))
 	/** Read byte at offset into bits at current if current is less than or equal to length
 		* @param bits				array of bytes to write into
 		* @param offset			position in file's bytes to read from
@@ -131,3 +131,5 @@ object DatastoreFile {
 	}
 	def rename(file:DatastoreFile,to:String) = file.set(Filename,to)
 }
+
+sealed class ByteAndFile(val byte:Byte,val file:DatastoreFile)

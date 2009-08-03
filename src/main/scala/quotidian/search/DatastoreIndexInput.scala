@@ -9,8 +9,8 @@ class DatastoreIndexInput(private var file:DatastoreFile) extends IndexInput {
 	def length:Long = file.length
 	def readByte:Byte = {
 		val byteAndFile = file.read
-		file = byteAndFile._2
-		byteAndFile._1
+		file = byteAndFile.file
+		byteAndFile.byte
 	}
 	def readBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = file.read(bytes,offset,length)
 	def seek(pos:Long):Unit = file = file.seek(pos)
