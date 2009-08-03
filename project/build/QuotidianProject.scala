@@ -1,5 +1,6 @@
 import java.io.File
 import sbt._
+import Process._
 
 class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// locate the Home directory
@@ -33,10 +34,9 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	def lessc(sources:PathFinder):Task = {
 		val products = for (path <- sources.get) yield Path.fromString(".",path.toString.replaceAll("less$","css"))
 		fileTask("less", products from sources) {
-			val runtime = Runtime.getRuntime
 			try {
 				val paths = lessFiles.getPaths
-				val processes = for (path <- paths) yield runtime.exec(lessCompiler.value + " " + path)
+				for (path <- paths) { (lessCompiler.value + " " + path) ! log }
 				None
 			} catch {
 				case e:Exception => Some(e.getMessage)
