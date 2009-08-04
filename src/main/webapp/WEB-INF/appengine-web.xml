@@ -2,7 +2,13 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
 	<application>ovrhrd</application>
 	<version>1</version>
-	<static-files />
+	<static-files>
+		<include path="/**.js" />
+		<include path="/**.css" />
+		<include path="/**.jpg" />
+		<include path="/**.gif" />
+		<include path="/**.png" />
+	</static-files>
 	<resource-files />
 	<system-properties />
 	<env-variables />
