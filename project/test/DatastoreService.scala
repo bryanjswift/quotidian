@@ -18,10 +18,9 @@ object DatastoreService {
 	}
 	val proxy = new ApiProxyLocalImpl(new File("./target/")){ }
 	val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
-	val env = new GaeEnvironment
 	def start = {
 		proxy.setProperty(LocalDatastoreService.NO_STORAGE_PROPERTY,true.toString)
-		ApiProxy.setEnvironmentForCurrentThread(env)
+		ApiProxy.setEnvironmentForCurrentThread(new GaeEnvironment)
 		ApiProxy.setDelegate(proxy)
 	}
 	def stop = {
