@@ -26,6 +26,8 @@ object DatastoreService {
 	}
 	def stop = {
 		service.clearProfiles
+		proxy.stop
+		service.stop
 		ApiProxy.setDelegate(null)
 		ApiProxy.setEnvironmentForCurrentThread(null)
 		ApiProxy.clearEnvironmentForCurrentThread()
