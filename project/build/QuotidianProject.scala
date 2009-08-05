@@ -53,7 +53,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// webapp classpath with App Engine jars
 	override def webappClasspath = super.webappClasspath +++ simpleScalaPersistence
 	// add App Engine jars to console classpath
-	override def consoleClasspath = super.consoleClasspath +++ jars
+	override def consoleClasspath = super.consoleClasspath +++ jars +++ testingJars
 	// compile tests with App Engine jars
 	override def testClasspath = super.testClasspath +++ jars +++ testingJars
 	// override path to managed dependency cache
