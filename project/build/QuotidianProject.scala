@@ -43,6 +43,8 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 			}
 		}
 	}
+	val lessFiles = webappPath ** "*.less"
+	lazy val lessCompile = lessc(lessFiles)
 
 	// override looking for jars in ./lib
 	override def dependencyPath = "src" / "main" / "lib"
@@ -59,9 +61,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// override path to managed dependency cache
 	override def managedDependencyPath = "project" / "lib_managed"
 	// override webapp resources to filter out .less files
-	val lessFiles = webappPath ** "*.less"
 	override def webappResources = descendents(webappPath ##, "*") +++ extraWebappFiles --- lessFiles
 	// modify the prepareWebappAction to compile .less files
-	lazy val lessCompile = lessc(lessFiles)
 	override def prepareWebappAction = super.prepareWebappAction dependsOn(lessCompile)
 }
