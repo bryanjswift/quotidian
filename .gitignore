@@ -6,4 +6,5 @@ lib_managed
 project/build/target
 project/boot
 src/main/webapp/css/*.css
+tags
 target
