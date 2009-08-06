@@ -38,7 +38,7 @@ trait DummyResponse extends HttpServletResponse {
 	def resetBuffer():Unit = throw new UnsupportedMethodException()
 	def setBufferSize(size:Int):Unit = throw new UnsupportedMethodException()
 	def setContentLength(len:Int):Unit = throw new UnsupportedMethodException()
-	def setContentType(contentType:String):Unit = { }
+	def setContentType(contentType:String):Unit = throw new UnsupportedMethodException()
 	def setCharacterEncoding(ce:String):Unit = throw new UnsupportedMethodException()
 	def setLocale(loc:Locale):Unit = throw new UnsupportedMethodException()
 }

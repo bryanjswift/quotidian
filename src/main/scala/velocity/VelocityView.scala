@@ -39,7 +39,7 @@ class VelocityView(path:String) {
 	}
 	def render(model:Map[String,Any],request:Request,response:Response):Unit = {
 		val context = createVelocityContext(model,request,response)
-		response.setContentType("UTF-8")
+		response.setCharacterEncoding("UTF-8")
 		template.merge(context,response.getWriter())
 	}
 }
