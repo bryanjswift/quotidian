@@ -101,18 +101,13 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 		* @return file with bits written to it */
 	private def write(current:Int,bits:Array[Byte],offset:Int,len:Int):DatastoreFile = {
 		// This could be written using bytes.take(offset) ++ bits ++ bytes.drop(offset + len) or something similar
-		try {
-			if (current == len) { // all bytes have been written
-				DatastoreFile(position + current,bytes,ent)
-			} else if (offset == bytes.length) { // position in file to write is outside bytes
-				DatastoreFile(bits.length,bytes ++ bits.drop(offset),ent)
-			} else {
-				bytes(offset) = if (current < bits.length) bits(current) else 0
-				write(current + 1,bits,offset + 1,len)
-			}
-		} catch {
-			case e:NullPointerException => throw new NullPointerException(current + "::" + bits + "::" + offset + "::" + len + "::" + bytes);
-			case e:Exception => throw e
+		if (current == len) { // all bytes have been written
+			DatastoreFile(position + current,bytes,ent)
+		} else if (offset == bytes.length) { // position in file to write is outside bytes
+			DatastoreFile(bits.length,bytes ++ bits.drop(offset),ent)
+		} else {
+			bytes(offset) = if (current < bits.length) bits(current) else 0
+			write(current + 1,bits,offset + 1,len)
 		}
 	}
 	/** Retrieve the underlying entity
