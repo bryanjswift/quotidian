@@ -2,8 +2,8 @@ package quotidian.search
 
 import org.apache.lucene.store.IndexInput
 
-class DatastoreIndexInput(private var file:DatastoreFile) extends IndexInput {
-	def this() = this(DatastoreFile())
+class DatastoreIndexInput(private val directory:DatastoreDirectory, private var file:DatastoreFile) extends IndexInput {
+	def this(directory:DatastoreDirectory) = this(directory,DatastoreFile())
 	def close:Unit = { /* nothing to do here */ }
 	def getFilePointer():Long = file.position
 	def length:Long = file.length
