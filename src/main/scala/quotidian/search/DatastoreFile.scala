@@ -1,7 +1,7 @@
 package quotidian.search
 
 import DatastoreFile.{Contents,DateModified,Deleted,Filename,Kind,Size}
-import com.google.appengine.api.datastore.Entity
+import com.google.appengine.api.datastore.{Blob,Entity}
 import java.io.IOException
 import java.util.Calendar
 
@@ -17,7 +17,7 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	/** Constructor with entity and initial position
 		* @param position		starting position for reading/writing from bytes
 		* @param entity			savable datastore representation of the file */
-	private def this(position:Int, entity:Entity) = this(position,entity.getProperty(Contents).asInstanceOf[Array[Byte]],entity)
+	private def this(position:Int, entity:Entity) = this(position,entity.getProperty(Contents).asInstanceOf[Blob].getBytes,entity)
 	/** Constructor with only an entity, bytes are read from entity and position is set to 0
 		* @param entity			savable datastore representation of the file */
 	private def this(entity:Entity) = this(0,entity)
@@ -101,16 +101,23 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 		* @return file with bits written to it */
 	private def write(current:Int,bits:Array[Byte],offset:Int,len:Int):DatastoreFile = {
 		// This could be written using bytes.take(offset) ++ bits ++ bytes.drop(offset + len) or something similar
-		if (current == len) {
-			DatastoreFile(position + current,bytes,ent)
-		} else {
-			bytes(offset) = if (current < bits.length) bits(current) else 0
-			write(current + 1,bits,offset + 1,len)
+		try {
+			if (current == len) { // all bytes have been written
+				DatastoreFile(position + current,bytes,ent)
+			} else if (offset == bytes.length) { // position in file to write is outside bytes
+				DatastoreFile(bits.length,bytes ++ bits.drop(offset),ent)
+			} else {
+				bytes(offset) = if (current < bits.length) bits(current) else 0
+				write(current + 1,bits,offset + 1,len)
+			}
+		} catch {
+			case e:NullPointerException => throw new NullPointerException(current + "::" + bits + "::" + offset + "::" + len + "::" + bytes);
+			case e:Exception => throw e
 		}
 	}
 	/** Retrieve the underlying entity
 		* @return the datastore representation which can be sent to storage */
-	def entity:Entity = set(Contents,bytes).set(Size,length).set(Deleted,false).ent
+	def entity:Entity = set(Contents,new Blob(bytes)).set(Size,length).set(Deleted,false).ent
 }
 
 object DatastoreFile {
@@ -120,13 +127,20 @@ object DatastoreFile {
 	val Filename = "filename"
 	val Kind = "DatastoreFile"
 	val Size = "size"
-	def apply() = new DatastoreFile()
-	def apply(entity:Entity) = new DatastoreFile(entity)
-	def apply(position:Int,entity:Entity) = new DatastoreFile(position,entity)
-	def apply(position:Int,bytes:Array[Byte],entity:Entity) = new DatastoreFile(position,bytes,entity)
+	def apply():DatastoreFile = new DatastoreFile()
+	def apply(entity:Entity):DatastoreFile = apply(0,entity)
+	def apply(position:Int,entity:Entity):DatastoreFile = {
+		if (!entity.hasProperty(Contents)) {
+			new DatastoreFile(position,new Array[Byte](1),entity)
+		} else {
+			new DatastoreFile(position,entity)
+		}
+	}
+	def apply(position:Int,bytes:Array[Byte],entity:Entity):DatastoreFile = new DatastoreFile(position,bytes,entity)
 	def apply(filename:String):DatastoreFile = {
 		val entity = new Entity(Kind)
 		entity.setProperty(Filename,filename)
+		entity.setProperty(Contents,new Blob(new Array[Byte](1)))
 		apply(entity)
 	}
 	def rename(file:DatastoreFile,to:String) = file.set(Filename,to)
