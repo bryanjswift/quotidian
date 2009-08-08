@@ -47,7 +47,7 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 		* @param len				total number of bytes to read
 		* @returns array of bytes written into while reading */
 	private def read(current:Int,bits:Array[Byte],offset:Int,len:Int):Array[Byte] = {
-		if (current == len) {
+		if (current == len || offset >= length) {
 			bits
 		} else {
 			bits(current) = if (offset < len) bytes(offset) else 0
@@ -57,7 +57,14 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	/** Move the position pointer to the new position
 		* @param pos				new pointer position to set
 		* @return file with the new pointer set */
-	def seek(pos:Int):DatastoreFile = DatastoreFile(pos,bytes,entity)
+	def seek(pos:Int):DatastoreFile = {
+		if (pos >= length) {
+			val bits = bytes ++ new Array[Byte](pos - length + 1)
+			DatastoreFile(pos,bits,ent)
+		} else {
+			DatastoreFile(pos,bytes,ent)
+		}
+	}
 	/** Move the position pointer to the new position
 		* @param pos				new pointer position to set
 		* @return file with the new pointer set
@@ -80,11 +87,11 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 		* @return file with the new byte writte */
 	def write(b:Byte):DatastoreFile = {
 		if (position == length) {
-			DatastoreFile(position + 1,bytes ++ Array(b),entity)
+			DatastoreFile(position + 1,bytes ++ Array(b),ent)
 		} else if (position > length) {
-			DatastoreFile(position + 1,bytes ++ new Array[Byte](position - length) ++ Array(b),entity)
+			DatastoreFile(position + 1,bytes ++ new Array[Byte](position - length) ++ Array(b),ent)
 		} else {
-			DatastoreFile(position + 1,(bytes.take(position) ++ Array(b) ++ bytes.drop((position + 1))).toArray,entity)
+			DatastoreFile(position + 1,(bytes.take(position) ++ Array(b) ++ bytes.drop((position + 1))).toArray,ent)
 		}
 	}
 	/** Write the provided array of bytes into this file's contents
