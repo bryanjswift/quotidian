@@ -20,7 +20,7 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 		}
 		"be able to read existing files" >> {
 			val input = directory.openInput(filename)
-			input.readByte must_== bytes(0)
+			input.readByte mustEqual bytes(0)
 		}
 		"be able to rename existing files" >> {
 			val renamed = "wilbur"
