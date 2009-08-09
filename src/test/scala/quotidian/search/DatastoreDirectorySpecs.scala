@@ -43,7 +43,7 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 		"be able to list file names" >> {
 			val filenames = directory.list
 			1 mustEqual filenames.length
-			filenames must containMatch(filename)
+			filenames mustContain(filename)
 		}
 	}
 }
