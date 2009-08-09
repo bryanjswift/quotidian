@@ -28,4 +28,14 @@ object DatastoreFileSpecs extends DatastoreSpecification {
 			bits(0) mustEqual 15
 		}
 	}
+	"A file with bytes written" should {
+		"provide an entity with the written bytes contained" >> {
+			val ints = (0 until 15)
+			val bytes = for (i <- ints) yield i.asInstanceOf[Byte]
+			val file = DatastoreFile()
+			val bits = new Array[Byte](15)
+			file.write(bytes.toArray,0,15).read(bits,0,15)
+			bits must haveTheSameElementsAs(bytes)
+		}
+	}
 }
