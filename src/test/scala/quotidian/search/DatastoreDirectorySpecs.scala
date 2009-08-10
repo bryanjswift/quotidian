@@ -32,7 +32,7 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 			directory.fileExists(renamed) must be(false)
 		}
 		"be able to check the fileLength of files" >> {
-			bytes.length mustEqual directory.fileLength(filename)
+			directory.fileLength(filename).toInt must beGreaterThanOrEqualTo(bytes.length)
 		}
 		"be able to check the last modified date of a file" >> {
 			val modified = directory.fileModified(filename)
