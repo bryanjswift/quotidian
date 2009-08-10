@@ -4,6 +4,7 @@ import DatastoreFile.{Contents,DateModified,Deleted,Filename,Kind,Size}
 import com.google.appengine.api.datastore.{Blob,Entity}
 import java.io.IOException
 import java.util.Calendar
+import quotidian.Logging
 
 /** Representation of a file which relies on Datastore Entity objects
 	*
@@ -11,9 +12,9 @@ import java.util.Calendar
 	* @param position		starting position for reading/writing from bytes
 	* @param bytes			array of bytes representing the starting data of this file
 	* @param ent				savable datastore representation of the file */
-class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val ent:Entity) {
+class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val ent:Entity) extends Logging {
 	/** Default constructor, no entity is provided so a new one is created */
-	private def this() = this(0,new Array[Byte](1),new Entity(Kind))
+	private def this() = this(0,new Array[Byte](32),new Entity(Kind))
 	/** Constructor with entity and initial position
 		* @param position		starting position for reading/writing from bytes
 		* @param entity			savable datastore representation of the file */
@@ -57,14 +58,7 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	/** Move the position pointer to the new position
 		* @param pos				new pointer position to set
 		* @return file with the new pointer set */
-	def seek(pos:Int):DatastoreFile = {
-		if (pos >= length) {
-			val bits = bytes ++ new Array[Byte](pos - length + 1)
-			DatastoreFile(pos,bits,ent)
-		} else {
-			DatastoreFile(pos,bytes,ent)
-		}
-	}
+	def seek(pos:Int):DatastoreFile = DatastoreFile(pos,bytes,ent)
 	/** Move the position pointer to the new position
 		* @param pos				new pointer position to set
 		* @return file with the new pointer set
@@ -142,7 +136,7 @@ object DatastoreFile {
 	def apply(filename:String):DatastoreFile = {
 		val entity = new Entity(Kind)
 		entity.setProperty(Filename,filename)
-		entity.setProperty(Contents,new Blob(new Array[Byte](1)))
+		entity.setProperty(Contents,new Blob(new Array[Byte](32)))
 		apply(entity)
 	}
 	def rename(file:DatastoreFile,to:String) = file.set(Filename,to)

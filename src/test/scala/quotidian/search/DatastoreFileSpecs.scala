@@ -10,16 +10,12 @@ object DatastoreFileSpecs extends DatastoreSpecification {
 			val file = DatastoreFile()
 			file.position mustEqual 0
 		}
-		"have a single zero byte" >> {
+		"have a all bytes equal to zero" >> {
 			val file = DatastoreFile()
-			val bf = file.read
-			bf.byte mustEqual 0
-			file.length mustEqual 1
-		}
-		"be able to read beyond it's current capacity without error" >> {
-			val file = DatastoreFile()
-			val bf = file.read.file.read
-			bf.file.length mustEqual 3
+			val bits = new Array[Byte](file.length)
+			file.read(bits,0,file.length)
+			val b = new Array[Byte](file.length)
+			bits must containInOrder(b)
 		}
 		"be able to write bytes" >> {
 			val file = DatastoreFile()
@@ -45,7 +41,7 @@ object DatastoreFileSpecs extends DatastoreSpecification {
 		}
 		"have a length equal to the number of bytes written" >> {
 			val file = DatastoreFile().write(bytes,0,15)
-			file.length mustEqual bytes.length
+			file.length must beGreaterThanOrEqualTo(bytes.length)
 		}
 		"be able to seek within the bytes written" >> {
 			val file = DatastoreFile().write(bytes,0,15)
