@@ -5,9 +5,10 @@ import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFact
 import com.google.appengine.api.datastore.FetchOptions.Builder.{withChunkSize}
 import java.io.{IOException,Serializable}
 import java.util.Calendar
-import org.apache.lucene.store.{Directory,IndexInput,IndexOutput}
+import org.apache.lucene.store.{Directory,IndexInput,IndexOutput,LockFactory,NoLockFactory}
 
-class DatastoreDirectory extends Directory {
+class DatastoreDirectory extends Directory with Logging {
+	lockFactory = new DatastoreLockFactory
 	def close:Unit = { /* nothing to do here */ }
 	def createOutput(name:String):IndexOutput = new DatastoreIndexOutput(this,fileByName(name))
 	def deleteFile(name:String):Unit = DatastoreDirectory.delete(name)
@@ -22,6 +23,7 @@ class DatastoreDirectory extends Directory {
 		DatastoreDirectory.save(DatastoreFile.rename(file,to))
 	}
 	def save(file:DatastoreFile) = DatastoreDirectory.save(file)
+	override def setLockFactory(lf:LockFactory):Unit = { /* nothing to do here */ }
 	def touchFile(name:String):Unit = DatastoreDirectory.save(fileByName(name))
 }
 

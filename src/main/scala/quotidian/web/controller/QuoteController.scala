@@ -14,7 +14,7 @@ import QuoteController.quote2document
 abstract class QuoteController extends Logging {
 	def persister:Persister
 	def directory:Directory
-	lazy val indexWriter = new IndexWriter(directory,new StandardAnalyzer(),false,UNLIMITED)
+	lazy val indexWriter = new IndexWriter(directory,new StandardAnalyzer(),true,UNLIMITED)
 	def all:List[Quote] = savablesToQuotes(persister.all(Quote.kind))
 	def bySource(source:String):List[Quote] = savablesToQuotes(persister.search(Quote.kind,"source",source))
 	def get(id:Serializable):Quote = persister.get(Quote.kind,id).asInstanceOf[Quote]
