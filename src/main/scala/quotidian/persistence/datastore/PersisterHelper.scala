@@ -11,9 +11,10 @@ object PersisterHelper extends Logging {
 	def toXml(entity:Entity):NodeSeq = {
 		val properties = entity.getProperties	
 		val keys = properties.keySet
-		val nodes = for {
+		val id = "<id>" + entity.getKey.getId + "</id>"
+		val nodes = List(id) ++ (for {
 			val key <- keys
-		} yield "<" + key + ">" + properties.get(key) + "</" + key + ">"
+		} yield "<" + key + ">" + properties.get(key) + "</" + key + ">")
 		val s = nodes.mkString("<" + entity.getKind() + ">","","</" + entity.getKind() + ">")
 		XML.loadString(s)
 	}

@@ -28,22 +28,22 @@ class Quote(
 	override def toString = {
 		Quote.Kind + "(" + List[String](text,source,context).mkString(",") + ")"
 	}
-	def toXml:NodeSeq = {
-		<quote><text>{text}</text><source>{source}</source><context>{context}</context></quote>
-	}
 }
 
 object Quote extends Logging {
-	val Kind = "Quote"
-	val Text = "text"
-	val Source = "source"
 	val Context = "context"
+	val Id = "id"
+	val Kind = "Quote"
+	val Source = "source"
+	val Text = "text"
 	private val f = Quote.fromXml(_)
 	PersisterHelper.register(Kind,f)
 	def apply(text:String,source:String,context:String) = new Quote(text,source,context)
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
-	def fromXml(xml:NodeSeq):Quote = new Quote((xml \\ Text)(0).text,(xml \\ Source)(0).text,(xml \\ Context)(0).text)
+	def fromXml(xml:NodeSeq):Quote = {
+		new Quote((xml \\ Id)(0).text,(xml \\ Text)(0).text,(xml \\ Source)(0).text,(xml \\ Context)(0).text)
+	}
 	implicit def quote2document(quote:Quote):Document = {
 		val document = new Document()
 		document.add(new Field(Text,quote.text,Field.Store.YES,Field.Index.ANALYZED))
