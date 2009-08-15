@@ -11,9 +11,9 @@ class QuoteServlet extends HttpServlet {
 		view.render(Map("quotes" -> QuoteServlet.controller.all),request,response)
 	}
 	override def doPost(request:Request, response:Response) {
-		val text = request.getParameterValues("text")(0)
-		val source = request.getParameterValues("source")(0)
-		val context = request.getParameterValues("context")(0)
+		val text = request.getParameterValues(Quote.Text)(0)
+		val source = request.getParameterValues(Quote.Source)(0)
+		val context = request.getParameterValues(Quote.Context)(0)
 		val quote = new Quote(text,source,context)
 		QuoteServlet.controller.save(quote)
 		response.sendRedirect("/quote")

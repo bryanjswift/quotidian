@@ -13,9 +13,9 @@ abstract class QuoteController extends Logging {
 	def persister:Persister
 	def directory:Directory
 	lazy val indexWriter = new IndexWriter(directory,new StandardAnalyzer(),true,UNLIMITED)
-	def all:List[Quote] = savablesToQuotes(persister.all(Quote.kind))
-	def bySource(source:String):List[Quote] = savablesToQuotes(persister.search(Quote.kind,"source",source))
-	def get(id:Serializable):Quote = persister.get(Quote.kind,id).asInstanceOf[Quote]
+	def all:List[Quote] = savablesToQuotes(persister.all(Quote.Kind))
+	def bySource(source:String):List[Quote] = savablesToQuotes(persister.search(Quote.Kind,Quote.Source,source))
+	def get(id:Serializable):Quote = persister.get(Quote.Kind,id).asInstanceOf[Quote]
 	def random:Quote = {
 		val quotes = all
 		val position = (quotes.length * Math.random).toInt

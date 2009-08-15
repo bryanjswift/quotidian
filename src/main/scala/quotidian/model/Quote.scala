@@ -26,7 +26,7 @@ class Quote(
 	}
 	override def hashCode = 41 * (41 * (41 + text.hashCode) + source.hashCode) + context.hashCode
 	override def toString = {
-		"Quote(" + List[String](text,source,context).mkString(",") + ")"
+		Quote.Kind + "(" + List[String](text,source,context).mkString(",") + ")"
 	}
 	def toXml:NodeSeq = {
 		<quote><text>{text}</text><source>{source}</source><context>{context}</context></quote>
@@ -34,18 +34,21 @@ class Quote(
 }
 
 object Quote extends Logging {
-	val kind = "Quote"
+	val Kind = "Quote"
+	val Text = "text"
+	val Source = "source"
+	val Context = "context"
 	private val f = Quote.fromXml(_)
-	PersisterHelper.register(kind,f)
+	PersisterHelper.register(Kind,f)
 	def apply(text:String,source:String,context:String) = new Quote(text,source,context)
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
-	def fromXml(xml:NodeSeq):Quote = new Quote((xml \\ "text")(0).text,(xml \\ "source")(0).text,(xml \\ "context")(0).text)
+	def fromXml(xml:NodeSeq):Quote = new Quote((xml \\ Text)(0).text,(xml \\ Source)(0).text,(xml \\ Context)(0).text)
 	implicit def quote2document(quote:Quote):Document = {
 		val document = new Document()
-		document.add(new Field("text",quote.text,Field.Store.YES,Field.Index.ANALYZED))
-		document.add(new Field("source",quote.source,Field.Store.YES,Field.Index.ANALYZED))
-		document.add(new Field("context",quote.context,Field.Store.YES,Field.Index.ANALYZED))
+		document.add(new Field(Text,quote.text,Field.Store.YES,Field.Index.ANALYZED))
+		document.add(new Field(Source,quote.source,Field.Store.YES,Field.Index.ANALYZED))
+		document.add(new Field(Context,quote.context,Field.Store.YES,Field.Index.ANALYZED))
 		document
 	}
 }
