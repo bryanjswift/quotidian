@@ -14,7 +14,11 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
 	val commonsCollections = "commons-collections" % "commons-collections" % "3.2.1"
 	val commonsLang = "commons-lang" % "commons-lang" % "2.4"
-	val luceneCore = "org.apache.lucene" % "lucene-core" % "2.4.1"
+
+	// lucene
+	private def luceneBase = "org.apache.lucene" % "lucene-core" % "2.4.1"
+	val luceneCore = luceneBase
+	val luceneCoreSrc = luceneBase % "sources" classifier "sources"
 
 	// Dependencies for testing
 	val junit = "junit" % "junit" % "4.5" % "test->default"
@@ -64,4 +68,6 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	override def webappResources = descendents(webappPath ##, "*") +++ extraWebappFiles --- lessFiles
 	// modify the prepareWebappAction to compile .less files
 	override def prepareWebappAction = super.prepareWebappAction dependsOn(lessCompile)
+	// add debug information to scala compile
+	override def compileOptions = CompileOption("-g") :: super.compileOptions.toList
 }
