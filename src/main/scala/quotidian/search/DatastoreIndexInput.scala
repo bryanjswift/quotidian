@@ -13,7 +13,7 @@ class DatastoreIndexInput(private val directory:DatastoreDirectory, private var 
 		file = byteAndFile.file
 		byteAndFile.byte
 	}
-	def readBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = file.read(bytes,offset,length)
+	def readBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = file = file.read(bytes,offset,length)
 	def seek(pos:Long):Unit = file = file.seek(pos)
 }
 

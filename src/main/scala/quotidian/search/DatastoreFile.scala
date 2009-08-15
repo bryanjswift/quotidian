@@ -10,11 +10,16 @@ import quotidian.Logging
 	*
 	* Primary constructor providing position, bytes and entity
 	* @param position		starting position for reading/writing from bytes
-	* @param bytes			array of bytes representing the starting data of this file
+	* @param bytes			list of bytes representing the starting data of this file
 	* @param ent				savable datastore representation of the file */
-class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val ent:Entity) extends Logging {
+class DatastoreFile(val position:Int, private val bytes:List[Byte], private val ent:Entity) extends Logging {
 	/** Default constructor, no entity is provided so a new one is created */
-	private def this() = this(0,new Array[Byte](32),new Entity(Kind))
+	private def this() = this(0,List[Byte](),new Entity(Kind))
+	/** Constructor with entity, initial position and an array
+		* @param position		starting position for reading/writing from bytes
+		* @param bytes			array of bytes representing the starting data of this file
+		* @param entity			savable datastore representation of the file */
+	private def this(position:Int, bytes:Array[Byte], entity:Entity) = this(position,bytes.toList,entity)
 	/** Constructor with entity and initial position
 		* @param position		starting position for reading/writing from bytes
 		* @param entity			savable datastore representation of the file */
@@ -30,30 +35,25 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 	def length:Int = bytes.length
 	/** Reads the byte at the current position and advances the position by one
 		* @return tuple containing byte found at the current position and file with position advanced by one */
-	def read:ByteAndFile = new ByteAndFile(bytes(position),seek(position + 1))
-	/** Read byte at offset into bits at current if current is less than or equal to length
-		* @param bits				array of bytes to write into
-		* @param offset			position in file's bytes to read from
-		* @param len				total number of bytes to read
-		* @returns array of bytes written into while reading */
-	def read(bits:Array[Byte],offset:Int,len:Int):Array[Byte] = {
-		if (bits.length < len) throw new IOException("Array to read into is not large enough for the length specified")
-		read(0,bits,offset,len)
-		bits
+	def read:ByteAndFile = {
+		if (position < length) {
+			new ByteAndFile(bytes(position),seek(position + 1))
+		} else {
+			DatastoreFile(position,bytes ::: new Array[Byte](position - length + 1).toList,ent).read
+		}
 	}
 	/** Read byte at offset into bits at current if current is less than or equal to length
-		* @param current		the current position to write to in bits
 		* @param bits				array of bytes to write into
 		* @param offset			position in file's bytes to read from
 		* @param len				total number of bytes to read
 		* @returns array of bytes written into while reading */
-	private def read(current:Int,bits:Array[Byte],offset:Int,len:Int):Array[Byte] = {
-		if (current == len || offset >= length) {
-			bits
-		} else {
-			bits(current) = if (offset < len) bytes(offset) else 0
-			read(current + 1,bits,offset + 1,len)
+	def read(bits:Array[Byte],offset:Int,len:Int):DatastoreFile = {
+		if (bits.length < len) throw new IOException("Array to read into is not large enough for the length specified")
+		val a = bytes.drop(offset).take(len)
+		for (i <- offset until (offset + len)) {
+			bits(i) = a(i)
 		}
+		seek(position + len)
 	}
 	/** Move the position pointer to the new position
 		* @param pos				new pointer position to set
@@ -81,11 +81,11 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 		* @return file with the new byte writte */
 	def write(b:Byte):DatastoreFile = {
 		if (position == length) {
-			DatastoreFile(position + 1,bytes ++ Array(b),ent)
+			DatastoreFile(position + 1,bytes ::: List(b),ent)
 		} else if (position > length) {
-			DatastoreFile(position + 1,bytes ++ new Array[Byte](position - length) ++ Array(b),ent)
+			DatastoreFile(position + 1,bytes ::: new Array[Byte](position - length).toList ::: List(b),ent)
 		} else {
-			DatastoreFile(position + 1,(bytes.take(position) ++ Array(b) ++ bytes.drop((position + 1))).toArray,ent)
+			DatastoreFile(position + 1,(bytes.take(position) ::: List(b) ::: bytes.drop(position + 1)),ent)
 		}
 	}
 	/** Write the provided array of bytes into this file's contents
@@ -93,27 +93,11 @@ class DatastoreFile(val position:Int, private val bytes:Array[Byte], private val
 		* @param offset			position in file to start writing bytes
 		* @param len				number of bytes to write
 		* @return file with bits written to it */
-	def write(bits:Array[Byte],offset:Int,len:Int):DatastoreFile = write(0,bits,offset,len)
-	/** Write the provided array of bytes into this file's contents
-		* @param current		current position in the bits array
-		* @param bits				array of bytes to be written to file
-		* @param offset			position in file to start writing bytes
-		* @param len				number of bytes to write
-		* @return file with bits written to it */
-	private def write(current:Int,bits:Array[Byte],offset:Int,len:Int):DatastoreFile = {
-		// This could be written using bytes.take(offset) ++ bits ++ bytes.drop(offset + len) or something similar
-		if (current == len) { // all bytes have been written
-			DatastoreFile(position + current,bytes,ent)
-		} else if (offset == bytes.length) { // position in file to write is outside bytes
-			DatastoreFile(bits.length,bytes ++ bits.drop(offset),ent)
-		} else {
-			bytes(offset) = if (current < bits.length) bits(current) else 0
-			write(current + 1,bits,offset + 1,len)
-		}
-	}
+	def write(bits:Array[Byte],offset:Int,len:Int):DatastoreFile = 
+		DatastoreFile(position + len,(bytes.take(offset) ::: bits.toList ::: bytes.drop(offset + len)),ent)
 	/** Retrieve the underlying entity
 		* @return the datastore representation which can be sent to storage */
-	def entity:Entity = set(Contents,new Blob(bytes)).set(Size,length).set(Deleted,false).ent
+	def entity:Entity = set(Contents,new Blob(bytes.toArray)).set(Size,length).set(Deleted,false).ent
 }
 
 object DatastoreFile {
@@ -127,16 +111,17 @@ object DatastoreFile {
 	def apply(entity:Entity):DatastoreFile = apply(0,entity)
 	def apply(position:Int,entity:Entity):DatastoreFile = {
 		if (!entity.hasProperty(Contents)) {
-			new DatastoreFile(position,new Array[Byte](1),entity)
+			new DatastoreFile(position,List[Byte](),entity)
 		} else {
 			new DatastoreFile(position,entity)
 		}
 	}
-	def apply(position:Int,bytes:Array[Byte],entity:Entity):DatastoreFile = new DatastoreFile(position,bytes,entity)
+	def apply(position:Int,bytes:List[Byte],entity:Entity):DatastoreFile = new DatastoreFile(position,bytes,entity)
 	def apply(filename:String):DatastoreFile = {
+		val bytes = List[Byte]()
 		val entity = new Entity(Kind)
 		entity.setProperty(Filename,filename)
-		entity.setProperty(Contents,new Blob(new Array[Byte](32)))
+		entity.setProperty(Contents,new Blob(bytes.toArray))
 		apply(entity)
 	}
 	def rename(file:DatastoreFile,to:String) = file.set(Filename,to)
