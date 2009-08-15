@@ -4,10 +4,12 @@ import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFact
 import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit}
 import basic.persistence.{Persister,Savable}
 import java.io.Serializable
+import java.util.Calendar
 import quotidian.Logging
 import scala.collection.jcl.Conversions._
 
 object DatastorePersister extends Persister with Logging {
+	private val DateCreated = "datecreated"
 	private val datastore = DatastoreServiceFactory.getDatastoreService()
 	def save(obj:Savable):Serializable = {
 		val entity = if (obj.id == 0) new Entity(obj.table) else new Entity(obj.table,obj.id.toString)
@@ -15,7 +17,7 @@ object DatastorePersister extends Persister with Logging {
 		properties.foreach(t => {
 			entity.setProperty(t._1,t._2)
 		})
-// TODO: set created date
+		entity.setProperty(DateCreated,Calendar.getInstance.getTimeInMillis)
 		datastore.put(entity)
 	}
 	def get(table:String,id:Serializable):Savable = {
@@ -28,8 +30,7 @@ object DatastorePersister extends Persister with Logging {
 		}
 	}
 	def all(table:String):List[Savable] = {
-		val query = datastore.prepare(new Query(table))
-// TODO: sort by created date
+		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING))
 		val mapFcn = PersisterHelper.fetch(table)
 		val entities = query.asList(withLimit(10))
 		val savables = for {

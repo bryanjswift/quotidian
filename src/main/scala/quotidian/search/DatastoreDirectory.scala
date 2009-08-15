@@ -47,7 +47,8 @@ object DatastoreDirectory {
 		query.countEntities > 0
 	}
 	private def listFiles:Array[String] = {
-		val query = datastore.prepare(new Query(DatastoreFile.Kind))
+		val q = new Query(DatastoreFile.Kind).addSort(DatastoreFile.DateModified,Query.SortDirection.DESCENDING)
+		val query = datastore.prepare(q)
 		val entities = query.asIterator(withChunkSize(Integer.MAX_VALUE))
 		var names = List[String]()
 		while (entities.hasNext) {
@@ -56,8 +57,7 @@ object DatastoreDirectory {
 		names.toArray
 	}
 	private def save(file:DatastoreFile):Serializable = {
-		val date = Calendar.getInstance.getTimeInMillis
-		datastore.put(file.set(DatastoreFile.DateModified,date).entity)
+		datastore.put(file.set(DatastoreFile.DateModified,Calendar.getInstance.getTimeInMillis).entity)
 	}
 }
 
