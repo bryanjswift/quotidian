@@ -3,6 +3,7 @@ package quotidian.model
 import basic.persistence.{Savable}
 import basic.persistence.annotations.{Entity,Persistent}
 import java.io.Serializable
+import org.apache.lucene.document.{Document,Field}
 import quotidian.Logging
 import quotidian.persistence.datastore.PersisterHelper
 import scala.xml.NodeSeq
@@ -40,4 +41,11 @@ object Quote extends Logging {
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
 	def fromXml(xml:NodeSeq):Quote = new Quote((xml \\ "text")(0).text,(xml \\ "source")(0).text,(xml \\ "context")(0).text)
+	implicit def quote2document(quote:Quote):Document = {
+		val document = new Document()
+		document.add(new Field("text",quote.text,Field.Store.YES,Field.Index.ANALYZED))
+		document.add(new Field("source",quote.source,Field.Store.YES,Field.Index.ANALYZED))
+		document.add(new Field("context",quote.context,Field.Store.YES,Field.Index.ANALYZED))
+		document
+	}
 }
