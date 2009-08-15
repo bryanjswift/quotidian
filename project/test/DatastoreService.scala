@@ -3,6 +3,10 @@ import com.google.appengine.tools.development.ApiProxyLocalImpl
 import com.google.apphosting.api.ApiProxy
 import com.google.apphosting.api.ApiProxy.Environment
 import java.io.File
+import java.util.zip.{Checksum,CRC32}
+import org.apache.lucene.index._
+import org.apache.lucene.store._
+import quotidian.search._
 
 object DatastoreService {
 	class GaeEnvironment(private val requestNamespace:String) extends Environment {
