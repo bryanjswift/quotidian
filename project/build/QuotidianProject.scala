@@ -68,6 +68,4 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	override def webappResources = descendents(webappPath ##, "*") +++ extraWebappFiles --- lessFiles
 	// modify the prepareWebappAction to compile .less files
 	override def prepareWebappAction = super.prepareWebappAction dependsOn(lessCompile)
-	// add debug information to scala compile
-	override def compileOptions = CompileOption("-g") :: super.compileOptions.toList
 }
