@@ -1,8 +1,10 @@
 package quotidian.search
 
 import org.apache.lucene.store.IndexInput
+import java.util.zip.{Checksum,CRC32}
 
 class DatastoreIndexInput(private val directory:DatastoreDirectory, private var file:DatastoreFile) extends IndexInput {
+	private val digest:Checksum = new CRC32
 	def this(directory:DatastoreDirectory) = this(directory,DatastoreFile())
 	def close:Unit = { /* nothing to do here */ }
 	def getFilePointer():Long = file.position
@@ -10,6 +12,7 @@ class DatastoreIndexInput(private val directory:DatastoreDirectory, private var 
 	def readByte:Byte = {
 		val byteAndFile = file.read
 		file = byteAndFile.file
+		digest.update(byteAndFile.byte)
 		byteAndFile.byte
 	}
 	def readBytes(bytes:Array[Byte],offset:Int,length:Int):Unit = file.read(bytes,offset,length)
