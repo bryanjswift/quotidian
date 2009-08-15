@@ -10,18 +10,22 @@ object DatastoreFileSpecs extends DatastoreSpecification {
 			val file = DatastoreFile()
 			file.position mustEqual 0
 		}
-		"have a all bytes equal to zero" >> {
+		"have zero bytes" >> {
 			val file = DatastoreFile()
-			val bits = new Array[Byte](file.length)
-			file.read(bits,0,file.length)
-			val b = new Array[Byte](file.length)
-			bits must containInOrder(b)
+			file.length mustEqual 0
 		}
 		"be able to write bytes" >> {
 			val file = DatastoreFile()
-			file.position mustEqual 0
+			file.write(byte).length mustEqual 1
+		}
+		"be able to read a written byte" >> {
+			val file = DatastoreFile().write(byte)
+			file.seek(0).read.byte mustEqual byte
+		}
+		"be able to read a written byte into an array" >> {
+			val file = DatastoreFile().write(byte)
 			val bits = new Array[Byte](1)
-			file.write(byte).read(bits,0,1)
+			file.read(bits,0,1)
 			bits(0) mustEqual byte
 		}
 	}

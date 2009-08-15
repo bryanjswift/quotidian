@@ -15,7 +15,7 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 		"be able to create new files" >> {
 			val output = directory.createOutput(filename)
 			output.writeBytes(bytes,0,bytes.length)
-			output.flush
+			output.close
 			directory.fileExists("test") must be(true)
 		}
 		"be able to read existing files" >> {
