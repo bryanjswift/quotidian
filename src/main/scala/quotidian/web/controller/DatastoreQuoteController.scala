@@ -7,9 +7,9 @@ import quotidian.persistence.datastore.DatastorePersister
 import quotidian.search.DatastoreDirectory
 
 class DatastoreQuoteController extends QuoteController {
-	val persister = DatastoreQuoteController.persister
-	val directory = DatastoreQuoteController.directory
-	lazy val writer = DatastoreQuoteController.writer
+	protected val persister = DatastoreQuoteController.persister
+	protected val directory = DatastoreQuoteController.directory
+	protected lazy val writer = DatastoreQuoteController.writer
 }
 
 private object DatastoreQuoteController {

@@ -9,13 +9,13 @@ import quotidian.Logging
 import quotidian.model.Quote
 
 abstract class QuoteController extends Logging {
-	def persister:Persister
-	def directory:Directory
-	def writer:IndexWriter
+	protected def persister:Persister
+	protected def directory:Directory
+	protected def writer:IndexWriter
 	lazy val searcher = new IndexSearcher(directory)
-	lazy val textTerm = new Term(Quote.Text)
-	lazy val sourceTerm = new Term(Quote.Source)
-	lazy val contextTerm = new Term(Quote.Context)
+	private lazy val textTerm = new Term(Quote.Text)
+	private lazy val sourceTerm = new Term(Quote.Source)
+	private lazy val contextTerm = new Term(Quote.Context)
 	def all:List[Quote] = savablesToQuotes(persister.all(Quote.Kind))
 	def bySource(source:String):Array[Quote] = {
 		val scoreDocs = searcher.search(new FuzzyQuery(sourceTerm.createTerm(source)),10).scoreDocs
