@@ -25,7 +25,7 @@ object DatastoreFileSpecs extends DatastoreSpecification {
 		"be able to read a written byte into an array" >> {
 			val file = DatastoreFile().write(byte)
 			val bits = new Array[Byte](1)
-			file.read(bits,0,1)
+			file.seek(0).read(bits,0,1)
 			bits(0) mustEqual byte
 		}
 	}
@@ -35,7 +35,7 @@ object DatastoreFileSpecs extends DatastoreSpecification {
 		"be able to read all written bytes" >> {
 			val file = DatastoreFile()
 			val bits = new Array[Byte](15)
-			file.write(bytes,0,15).read(bits,0,15)
+			file.write(bytes,0,15).seek(0).read(bits,0,15)
 			bits must containInOrder(bytes)
 		}
 		"provide an entity with the written bytes contained" >> {
