@@ -25,6 +25,7 @@ class DatastoreDirectory extends Directory with Logging {
 	def save(file:DatastoreFile) = DatastoreDirectory.save(file)
 	override def setLockFactory(lf:LockFactory):Unit = { /* nothing to do here */ }
 	def touchFile(name:String):Unit = DatastoreDirectory.save(fileByName(name))
+	override def toString = DatastoreDirectory.listFiles.mkString("FilesNames[",",","]")
 }
 
 object DatastoreDirectory {
