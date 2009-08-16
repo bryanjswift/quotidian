@@ -49,6 +49,7 @@ class DatastoreFile(val position:Int, private val bytes:List[Byte], private val 
 		* @returns array of bytes written into while reading */
 	def read(bits:Array[Byte],offset:Int,len:Int):DatastoreFile = {
 		if (bits.length < len) throw new IOException("Array to read into is not large enough for the length specified")
+		if (position + len > length) throw new IOException("read past EOF")
 		val a = bytes.drop(offset).take(len)
 		for (i <- offset until (offset + len)) {
 			bits(i) = a(i)
@@ -94,7 +95,7 @@ class DatastoreFile(val position:Int, private val bytes:List[Byte], private val 
 		* @param len				number of bytes to write
 		* @return file with bits written to it */
 	def write(bits:Array[Byte],offset:Int,len:Int):DatastoreFile = 
-		DatastoreFile(position + len,(bytes.take(offset) ::: bits.toList ::: bytes.drop(offset + len)),ent)
+		DatastoreFile(position + len,bytes.drop(position - 1) ::: bits.drop(offset).take(len).toList ::: bytes.take(position + 1),ent)
 	/** Retrieve the underlying entity
 		* @return the datastore representation which can be sent to storage */
 	def entity:Entity = set(Contents,new Blob(bytes.toArray)).set(Size,length).set(Deleted,false).ent
