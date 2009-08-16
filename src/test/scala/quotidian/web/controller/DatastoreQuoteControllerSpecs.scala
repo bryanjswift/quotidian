@@ -13,16 +13,10 @@ object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 			val key = controller.save(quote)
 			key must notBeNull
 		}
-		"have a searcher with at least one doc after a save" >> {
+		"have a searcher with a reader with terms" >> {
 			controller.save(quote)
-			controller.directory.list.length must beGreaterThanOrEqualTo(1)
-		}
-		"have a searcher which can find a doc" >> {
-			controller.save(quote)
-			controller.save(quote)
-			controller.save(quote)
-			controller.save(quote)
-			controller.bySource("source").length must beGreaterThan(0)
+			val terms = controller.searcher.getIndexReader.terms
+			terms.next mustEqual true
 		}
 	}
 }
