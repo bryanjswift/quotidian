@@ -5,8 +5,8 @@ import java.util.zip.{Checksum,CRC32}
 
 class DatastoreIndexOutput(private val directory:DatastoreDirectory, private var file:DatastoreFile) extends IndexOutput {
 	def this(directory:DatastoreDirectory) = this(directory,DatastoreFile())
-	def close:Unit = directory.save(file)
-	def flush:Unit = { /* nothing to do here */ }
+	def close:Unit = flush
+	def flush:Unit = directory.save(file)
 	def getFilePointer():Long = file.position
 	def length:Long = file.length
 	def seek(pos:Long):Unit = file = file.seek(pos)
