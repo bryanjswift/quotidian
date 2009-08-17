@@ -7,6 +7,7 @@ import java.io.File
 import org.specs.Specification
 
 class DatastoreSpecification extends Specification {
+	val directoryName = "target/index"
 	val proxy = new ApiProxyLocalImpl(new File("./target/")){ }
 	proxy.setProperty(LocalDatastoreService.NO_STORAGE_PROPERTY,true.toString)
 	val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
@@ -19,6 +20,10 @@ class DatastoreSpecification extends Specification {
 		ApiProxy.setEnvironmentForCurrentThread(null)
 	}
 	def datastoreCleanup:Unit = service.clearProfiles
+	def filesystemCleanup:Unit = {
+		val file = new File(directoryName)
+		if (file.exists) file.delete
+	}
 	doBeforeSpec { datastoreSetup }
 	doAfterSpec { datastoreTeardown }
 }
