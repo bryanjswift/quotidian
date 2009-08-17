@@ -30,9 +30,8 @@ class DatastoreFile(val position:Int, private val bytes:List[Byte], private val 
 	/** Last modified date of the file
 		* @return time in milliseconds when this file was last modified */
 	def dateModified:Long = ent.getProperty(DatastoreFile.DateModified).asInstanceOf[Long]
-	/** Number of bytes in the file
-		* @return size of the file*/
-	def length:Int = bytes.length
+	/** Number of bytes in the file */
+	lazy val length:Int = bytes.length
 	/** Reads the byte at the current position and advances the position by one
 		* @return tuple containing byte found at the current position and file with position advanced by one */
 	def read:ByteAndFile = {
