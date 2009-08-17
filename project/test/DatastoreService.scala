@@ -35,4 +35,13 @@ object DatastoreService {
 		ApiProxy.setEnvironmentForCurrentThread(null)
 		ApiProxy.clearEnvironmentForCurrentThread()
 	}
+	def setup(filename:String) = {
+		val fsd = FSDirectory.getDirectory("target/index")
+		val fso = fsd.createOutput(filename)
+		val fsi = fsd.openInput(filename)
+		val dsd = new DatastoreDirectory
+		val dso = dsd.createOutput(filename)
+		val dsi = dsd.openInput(filename)
+		(fsd,fso,fsi,dsd,dso,dsi)
+	}
 }
