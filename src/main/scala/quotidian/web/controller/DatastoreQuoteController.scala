@@ -14,6 +14,6 @@ class DatastoreQuoteController extends QuoteController {
 
 private object DatastoreQuoteController {
 	private val persister = DatastorePersister
-	private val directory = new DatastoreDirectory()
+	private val directory = new DatastoreDirectory
 	private lazy val writer = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
 }
