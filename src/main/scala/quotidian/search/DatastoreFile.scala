@@ -49,7 +49,7 @@ class DatastoreFile(val position:Int, private val bytes:List[Byte], private val 
 	def read(bits:Array[Byte],offset:Int,len:Int):DatastoreFile = {
 		if (bits.length < len) throw new IOException("Array to read into is not large enough for the length specified")
 		if (position + len > length) throw new IOException("read past EOF")
-		val a = bytes.drop(offset)
+		val a = bytes.drop(position)
 		for (i <- offset until (offset + len)) {
 			bits(i) = a(i)
 		}
