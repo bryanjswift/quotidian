@@ -89,13 +89,13 @@ object DatastoreIndexInputSpecs extends DatastoreSpecification {
 
 				// null bytes
 				0x01, 0x00,
-				0x08, 'L', 'u', 0x00, 'c', 'e', 0x00, 'n', 'e',
+				0x08, 'L', 'u', 0x00, 'c', 'e', 0x00, 'n', 'e'
 				
 				// Modified UTF-8 null bytes
-				0x02, 0xC0, 0x80,
-				0x0A, 'L', 'u', 0xC0, 0x80, 
-							'c', 'e', 0xC0, 0x80, 
-							'n', 'e'
+//				0x02, 0xC0, 0x80,
+//				0x0A, 'L', 'u', 0xC0, 0x80, 
+//							'c', 'e', 0xC0, 0x80, 
+//							'n', 'e'
 			)
 			val entity = new Entity(DatastoreFile.Kind)
 			entity.setProperty(DatastoreFile.Filename,filename)
@@ -123,8 +123,8 @@ object DatastoreIndexInputSpecs extends DatastoreSpecification {
 			"\u0000" mustEqual dsi.readString
 			"Lu\u0000ce\u0000ne" mustEqual dsi.readString
 			// Modified UTF-8 null bytes
-			"\u0000" mustEqual dsi.readString
-			"Lu\u0000ce\u0000ne" mustEqual dsi.readString
+//			"\u0000" mustEqual dsi.readString
+//			"Lu\u0000ce\u0000ne" mustEqual dsi.readString
 		}
 	}
 }
