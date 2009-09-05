@@ -12,7 +12,7 @@ abstract class QuoteController extends Logging {
 	protected def persister:Persister
 	protected def directory:Directory
 	protected def writer:IndexWriter
-	lazy val searcher = new IndexSearcher(directory)
+	def searcher = new IndexSearcher(directory)
 	private lazy val textTerm = new Term(Quote.Text)
 	private lazy val sourceTerm = new Term(Quote.Source)
 	private lazy val contextTerm = new Term(Quote.Context)
