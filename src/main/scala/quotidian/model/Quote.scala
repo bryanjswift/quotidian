@@ -41,12 +41,12 @@ object Quote extends Logging {
 	def apply(text:String,source:String,context:String) = new Quote(text,source,context)
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
-	def fromXml(xml:NodeSeq):Quote = {
+	private def fromXml(xml:NodeSeq):Quote = {
 		new Quote((xml \\ Id)(0).text,(xml \\ Text)(0).text,(xml \\ Source)(0).text,(xml \\ Context)(0).text)
 	}
 	implicit def quote2document(quote:Quote):Document = {
 		val document = new Document()
-		document.add(new Field(Id,quote.id,Field.Store.YES,Field.Index.NO))
+		document.add(new Field(Id,quote.id.toString,Field.Store.YES,Field.Index.NO))
 		document.add(new Field(Text,quote.text,Field.Store.YES,Field.Index.ANALYZED))
 		document.add(new Field(Source,quote.source,Field.Store.YES,Field.Index.NOT_ANALYZED))
 		document.add(new Field(Context,quote.context,Field.Store.YES,Field.Index.NOT_ANALYZED))

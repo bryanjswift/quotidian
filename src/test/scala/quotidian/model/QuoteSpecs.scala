@@ -20,9 +20,9 @@ object QuoteSpecs extends Specification {
 	"XML representation of Quote" should {
 		val q1 = new Quote("This is a quote","This is a source","This is some context")
 		val q2xml = <quote><id>0</id><text>This is a quote</text><source>This is a source</source><context>This is some context</context></quote>
-		val q2 = Quote.fromXml(q2xml)
+		val q2 = Quote(q2xml)
 		"equal Quote generated from XML with same values" in {
-			Quote.fromXml(q2xml) mustEqual q1
+			Quote(q2xml) mustEqual q1
 		}
 		"generate a Quote equal to one with the same values" in {
 			q2 mustEqual q1
