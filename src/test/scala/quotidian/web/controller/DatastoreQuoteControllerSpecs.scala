@@ -34,10 +34,8 @@ object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 		}
 		"have a searcher with a reader with terms" >> {
 			controller.save(quote)
-			val reader = controller.searcher.getIndexReader
-			val terms = reader.terms
+			val terms = controller.searcher.getIndexReader.terms
 			terms.next mustEqual true
-			reader.close
 		}
 	}
 }
