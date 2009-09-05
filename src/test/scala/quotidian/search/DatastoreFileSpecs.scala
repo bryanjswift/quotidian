@@ -55,5 +55,14 @@ object DatastoreFileSpecs extends DatastoreSpecification {
 			val file = DatastoreFile().write(bytes,0,15)
 			file.seek(bytes.length + 5).position mustEqual(bytes.length + 5)
 		}
+		"be able to write in the middle of the file" >> {
+			val file = DatastoreFile().write(bytes,0,15)
+			val written = file.seek(5).write(bytes,10,3)
+			written.seek(4).read.byte mustEqual bytes(4)
+			written.seek(5).read.byte mustEqual bytes(10)
+			written.seek(6).read.byte mustEqual bytes(11)
+			written.seek(7).read.byte mustEqual bytes(12)
+			written.seek(8).read.byte mustEqual bytes(8)
+		}
 	}
 }
