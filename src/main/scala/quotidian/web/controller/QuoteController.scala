@@ -20,10 +20,11 @@ abstract class QuoteController extends Logging {
 	private lazy val contextTerm = new Term(Quote.Context)
 	def all:List[Quote] = savablesToQuotes(persister.all(Quote.Kind))
 	def bySource(source:String):Array[Quote] = {
-		val scoreDocs = searcher.search(new FuzzyQuery(sourceTerm.createTerm(source)),10).scoreDocs
+		val s = searcher
+		val scoreDocs = s.search(new FuzzyQuery(sourceTerm.createTerm(source)),10).scoreDocs
 		for {
 			scoreDoc <- scoreDocs
-			doc = searcher.doc(scoreDoc.doc)
+			doc = s.doc(scoreDoc.doc)
 		} yield Quote(doc.getValues(Quote.Text)(0),doc.getValues(Quote.Source)(0),doc.getValues(Quote.Context)(0))
 	}
 	def get(id:Serializable):Quote = persister.get(Quote.Kind,id).asInstanceOf[Quote]
