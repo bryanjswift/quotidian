@@ -2,7 +2,9 @@ package quotidian.web.controller
 
 import basic.persistence.{Persister,Savable}
 import java.io.Serializable
+import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.index.{IndexWriter,Term}
+import org.apache.lucene.index.IndexWriter.MaxFieldLength.UNLIMITED
 import org.apache.lucene.search.{FuzzyQuery,IndexSearcher,TermQuery}
 import org.apache.lucene.store.Directory
 import quotidian.Logging
@@ -11,7 +13,7 @@ import quotidian.model.Quote
 abstract class QuoteController extends Logging {
 	protected def persister:Persister
 	protected def directory:Directory
-	protected def writer:IndexWriter
+	protected def writer:IndexWriter = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
 	def searcher = new IndexSearcher(directory)
 	private lazy val textTerm = new Term(Quote.Text)
 	private lazy val sourceTerm = new Term(Quote.Source)
@@ -37,8 +39,13 @@ abstract class QuoteController extends Logging {
 	}
 	def save(quote:Quote):Serializable = {
 		val key = persister.save(quote)
-		writer.addDocument(quote)
-		writer.commit
+		val w = writer
+		try {
+			w.addDocument(quote)
+			w.commit
+		} finally {
+			w.close
+		}
 		key
 	}
 }
