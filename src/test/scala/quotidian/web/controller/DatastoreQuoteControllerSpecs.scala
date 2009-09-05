@@ -13,10 +13,6 @@ object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 			val key = controller.save(quote)
 			key must notBeNull
 		}
-		"create files when saving a quote" >> {
-			controller.save(quote)
-			controller.directory.list.length must beGreaterThan(0)
-		}
 		"have a searcher with a reader with terms" >> {
 			controller.save(quote)
 			val terms = controller.searcher.getIndexReader.terms
