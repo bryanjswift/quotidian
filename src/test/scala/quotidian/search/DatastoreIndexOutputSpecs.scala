@@ -15,14 +15,16 @@ object DatastoreIndexOutputSpecs extends DatastoreSpecification {
 		var dso:IndexOutput = null
 		var dsi:IndexInput = null
 		doBefore {
-			datastoreCleanup
-			filesystemCleanup
 			fsd = FSDirectory.getDirectory(directoryName)
 			fso = fsd.createOutput(filename)
 			fsi = fsd.openInput(filename)
 			dsd = new DatastoreDirectory
 			dso = dsd.createOutput(filename)
 			dsi = dsd.openInput(filename)
+		}
+		doAfter {
+			datastoreCleanup
+			filesystemCleanup
 		}
 		"have the same position as FSIndexOuput after writing the same data" >> {
 			fso.getFilePointer mustEqual dso.getFilePointer

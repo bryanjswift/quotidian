@@ -8,7 +8,7 @@ object DatastorePersisterSpecs extends DatastoreSpecification {
 	val q1 = Quote("This is a test","source","context")
 	val q2 = Quote("Another test","source2","context2")
 	"saving a Savable" should {
-		datastoreCleanup.before
+		datastoreCleanup.after
 		"return a Serializable id" >> {
 			val id = DatastorePersister.save(q1)
 			id must haveSuperClass[Serializable]
@@ -20,7 +20,7 @@ object DatastorePersisterSpecs extends DatastoreSpecification {
 		}
 	}
 	"saving multiple Savables" should {
-		datastoreCleanup.before
+		datastoreCleanup.after
 		"return a different id for each Savable" >> {
 			val id1 = DatastorePersister.save(q1)
 			val id2 = DatastorePersister.save(q2)
@@ -28,7 +28,7 @@ object DatastorePersisterSpecs extends DatastoreSpecification {
 		}
 	}
 	"counting all Savables" should {
-		datastoreCleanup.before
+		datastoreCleanup.after
 		"return 0 with none saved" >> {
 			0 mustEqual DatastorePersister.count(Quote.Kind)
 		}
@@ -43,7 +43,7 @@ object DatastorePersisterSpecs extends DatastoreSpecification {
 		}
 	}
 	"retrieving all Savables" should {
-		datastoreCleanup.before
+		datastoreCleanup.after
 		"return a list containing each of the saved Savables" >> {
 			val id1 = DatastorePersister.save(q1)
 			val id2 = DatastorePersister.save(q2)

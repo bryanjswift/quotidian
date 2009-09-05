@@ -24,12 +24,14 @@ object DatastoreIndexInputSpecs extends DatastoreSpecification {
 		var dso:IndexOutput = null
 		var dsi:IndexInput = null
 		doBefore {
-			datastoreCleanup
-			filesystemCleanup
 			fsd = FSDirectory.getDirectory(directoryName)
 			fso = fsd.createOutput(filename)
 			dsd = new DatastoreDirectory
 			dso = dsd.createOutput(filename)
+		}
+		doAfter {
+			datastoreCleanup
+			filesystemCleanup
 		}
 		"throw an EOF error when reading while file pointer and length are the same" >> {
 			dsi = dsd.openInput(filename)

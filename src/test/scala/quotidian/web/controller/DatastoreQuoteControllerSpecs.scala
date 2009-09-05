@@ -12,7 +12,7 @@ object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 	val controller = new DatastoreQuoteController
 	val quote = Quote("this is some text","this is a source","and this is context")
 	"A DatastoreDirectory" should {
-		datastoreCleanup.before
+		datastoreCleanup.after
 		"be able to have Quotes written to it" >> {
 			val directory = new DatastoreDirectory()
 			val writer = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
@@ -26,7 +26,7 @@ object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 		}
 	}
 	"A controller" should {
-		datastoreCleanup.before
+		datastoreCleanup.after
 		"save a quote" >> {
 			val key = controller.save(quote)
 			key must notBeNull

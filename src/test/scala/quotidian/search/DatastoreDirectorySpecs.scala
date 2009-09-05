@@ -23,6 +23,9 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 		dir
 	}
 	"A new DatastoreDirectory" should {
+		doLast {
+			datastoreCleanup
+		}
 		val specsStart = Calendar.getInstance.getTimeInMillis
 		val directory = new DatastoreDirectory
 		val filename = "test"
