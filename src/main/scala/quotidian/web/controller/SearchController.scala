@@ -12,11 +12,9 @@ abstract class SearchController extends Logging {
 	protected def persister:Persister
 	protected def directory:Directory
 	def searcher = new IndexSearcher(directory)
-	private lazy val allTerm = new Term(Quote.All)
 	private lazy val contextTerm = new Term(Quote.Context)
 	private lazy val sourceTerm = new Term(Quote.Source)
 	private lazy val textTerm = new Term(Quote.Text)
-	def searchAll(s:String):Array[Quote] = search(new TermQuery(allTerm.createTerm(s)))
 	def searchContext(context:String):Array[Quote] = search(new TermQuery(contextTerm.createTerm(context)))
 	def searchSource(source:String):Array[Quote] = search(new TermQuery(sourceTerm.createTerm(source)))
 	def searchText(text:String):Array[Quote] = search(new TermQuery(textTerm.createTerm(text)))
