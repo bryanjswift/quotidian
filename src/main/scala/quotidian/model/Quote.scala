@@ -36,8 +36,7 @@ object Quote extends Logging {
 	val Kind = "Quote"
 	val Source = "source"
 	val Text = "text"
-	private val f = Quote.fromXml(_)
-	PersisterHelper.register(Kind,f)
+	PersisterHelper.register(Kind,fromXml)
 	def apply(text:String,source:String,context:String) = new Quote(text,source,context)
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
