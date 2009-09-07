@@ -60,5 +60,10 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 			val quotes = searchController.searchContext("barbeque")
 			quotes.length must beGreaterThan(0)
 		}
+		"find Quotes by text" >> {
+			val key = quoteController.save(quote)
+			val quotes = searchController.searchText("dick")
+			quotes.length must beGreaterThan(0)
+		}
 	}
 }
