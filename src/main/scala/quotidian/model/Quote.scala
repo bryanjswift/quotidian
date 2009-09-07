@@ -16,17 +16,19 @@ class Quote(
 	@Persistent val context:String
 ) extends Savable {
 	def this(text:String,source:String,context:String) = this(0,text,source,context)
-	def canEqual(a:Any) = a.isInstanceOf[Quote]
+	private lazy val all = List(text,source,context)
+	private def canEqual(a:Any) = a.isInstanceOf[Quote]
 	def equals(q:Quote) = {
 		this.text == q.text && this.source == q.source && this.context == q.context
 	}
 	override def equals(q:Any) = q match {
-		case that:Quote => this.canEqual(q) && equals(that)
+		case that:Quote =>
+			canEqual(q) && equals(that)
 		case _ => false
 	}
 	override def hashCode = 41 * (41 * (41 + text.hashCode) + source.hashCode) + context.hashCode
 	override def toString = {
-		Quote.Kind + "(" + List[String](text,source,context).mkString(",") + ")"
+		Quote.Kind + all.mkString("(",",",")")
 	}
 }
 
@@ -36,6 +38,7 @@ object Quote extends Logging {
 	val Kind = "Quote"
 	val Source = "source"
 	val Text = "text"
+	val All = "all"
 	PersisterHelper.register(Kind,fromXml)
 	def apply(text:String,source:String,context:String) = new Quote(text,source,context)
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
@@ -49,6 +52,7 @@ object Quote extends Logging {
 		document.add(new Field(Text,quote.text,Field.Store.YES,Field.Index.ANALYZED))
 		document.add(new Field(Source,quote.source,Field.Store.YES,Field.Index.NOT_ANALYZED))
 		document.add(new Field(Context,quote.context,Field.Store.YES,Field.Index.NOT_ANALYZED))
+		document.add(new Field(All,quote.all.mkString(" "),Field.Store.NO,Field.Index.ANALYZED))
 		document
 	}
 }
