@@ -6,5 +6,5 @@ object ConfigFactory {
 	private[this] val properties = new Properties()
 	properties.load(getClass().getClassLoader().getResourceAsStream("config.properties"))
 	def apply(property:String) = properties.getProperty(property)
-	def objectForProperty(property:String) = Class.forName(apply(property)).getConstructor().newInstance()
+	def objectForProperty[T](property:String) = Class.forName(apply(property)).getConstructor().newInstance().asInstanceOf[T]
 }

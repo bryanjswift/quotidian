@@ -11,11 +11,11 @@ import quotidian.search.DatastoreDirectory
 object DatastoreControllerSpecs extends DatastoreSpecification {
 	val quoteController = new DatastoreQuoteController
 	val searchController = new DatastoreSearchController
-	val quote = Quote("this is some text","Bryan","and this is context")
+	val quote = Quote("I like oysters but they never make me think 'I want dick in me'.","Mary Lee","A barbeque after some drinks")
 	"A DatastoreDirectory" should {
 		datastoreCleanup.after
 		"be able to have Quotes written to it" >> {
-			val directory = new DatastoreDirectory()
+			val directory = new DatastoreDirectory
 			val writer = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
 			writer.addDocument(quote)
 			writer.commit
@@ -31,8 +31,7 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 			writer.addDocument(quote)
 			writer.commit
 			val searcher = new IndexSearcher(directory)
-			val sourceTerm = new Term(Quote.Source)
-			val scoreDocs = searcher.search(new FuzzyQuery(sourceTerm.createTerm("Bryan")),10).scoreDocs
+			val scoreDocs = searcher.search(new TermQuery(new Term("source","Mary")),10).scoreDocs
 			val quotes = for {
 				scoreDoc <- scoreDocs
 				doc = searcher.doc(scoreDoc.doc)
@@ -53,7 +52,12 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 		}
 		"find Quotes by source" >> {
 			val key = quoteController.save(quote)
-			val quotes = searchController.searchSource("Bryan")
+			val quotes = searchController.searchSource("Mary")
+			quotes.length must beGreaterThan(0)
+		}
+		"find Quotes by context" >> {
+			val key = quoteController.save(quote)
+			val quotes = searchController.searchContext("barbeque")
 			quotes.length must beGreaterThan(0)
 		}
 	}

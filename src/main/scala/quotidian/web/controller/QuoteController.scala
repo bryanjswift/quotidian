@@ -37,4 +37,3 @@ abstract class QuoteController extends Logging {
 		} yield savable.asInstanceOf[Quote]
 	}
 }
-
