@@ -3,6 +3,7 @@ package quotidian.web.controller
 import basic.persistence.{Persister,Savable}
 import java.io.Serializable
 import org.apache.lucene.analysis.standard.StandardAnalyzer
+import org.apache.lucene.document.Document
 import org.apache.lucene.index.{IndexWriter,Term}
 import org.apache.lucene.index.IndexWriter.MaxFieldLength.UNLIMITED
 import org.apache.lucene.search.{FuzzyQuery,IndexSearcher,TermQuery}
@@ -24,8 +25,8 @@ abstract class QuoteController extends Logging {
 		val scoreDocs = s.search(new FuzzyQuery(sourceTerm.createTerm(source)),10).scoreDocs
 		for {
 			scoreDoc <- scoreDocs
-			doc = s.doc(scoreDoc.doc)
-		} yield Quote(doc.getValues(Quote.Text)(0),doc.getValues(Quote.Source)(0),doc.getValues(Quote.Context)(0))
+			doc = new DocumentWrapper(s.doc(scoreDoc.doc))
+		} yield Quote(doc(Quote.Id).get,doc(Quote.Text).get,doc(Quote.Source).getOrElse(""),doc(Quote.Context).getOrElse(""))
 	}
 	def get(id:Serializable):Quote = persister.get(Quote.Kind,id).asInstanceOf[Quote]
 	def random:Quote = {

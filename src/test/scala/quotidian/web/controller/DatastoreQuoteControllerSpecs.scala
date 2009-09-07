@@ -10,7 +10,7 @@ import quotidian.search.DatastoreDirectory
 
 object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 	val controller = new DatastoreQuoteController
-	val quote = Quote("this is some text","this is a source","and this is context")
+	val quote = Quote("this is some text","Bryan","and this is context")
 	"A DatastoreDirectory" should {
 		datastoreCleanup.after
 		"be able to have Quotes written to it" >> {
@@ -31,7 +31,7 @@ object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 			writer.commit
 			val searcher = new IndexSearcher(directory)
 			val sourceTerm = new Term(Quote.Source)
-			val scoreDocs = searcher.search(new FuzzyQuery(sourceTerm.createTerm("this source")),10).scoreDocs
+			val scoreDocs = searcher.search(new FuzzyQuery(sourceTerm.createTerm("Bryan")),10).scoreDocs
 			val quotes = for {
 				scoreDoc <- scoreDocs
 				doc = searcher.doc(scoreDoc.doc)
@@ -49,6 +49,11 @@ object DatastoreQuoteControllerSpecs extends DatastoreSpecification {
 			controller.save(quote)
 			val terms = controller.searcher.getIndexReader.terms
 			terms.next mustEqual true
+		}
+		"find Quotes by source" >> {
+			val key = controller.save(quote)
+			val quotes = controller.bySource("Bryan")
+			quotes.length must beGreaterThan(0)
 		}
 	}
 }
