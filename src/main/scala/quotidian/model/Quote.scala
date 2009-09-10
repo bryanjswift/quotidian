@@ -49,8 +49,8 @@ object Quote extends Logging {
 		val document = new Document()
 		document.add(new Field(Id,quote.id.toString,Field.Store.YES,Field.Index.NO))
 		document.add(new Field(Text,quote.text,Field.Store.YES,Field.Index.ANALYZED))
-		document.add(new Field(Source,quote.source,Field.Store.YES,Field.Index.NOT_ANALYZED))
-		document.add(new Field(Context,quote.context,Field.Store.YES,Field.Index.NOT_ANALYZED))
+		document.add(new Field(Source,quote.source,Field.Store.YES,Field.Index.ANALYZED))
+		document.add(new Field(Context,quote.context,Field.Store.YES,Field.Index.ANALYZED))
 		document
 	}
 }
