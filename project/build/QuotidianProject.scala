@@ -25,14 +25,13 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val specs = "org.scala-tools.testing" % "specs" % "1.5.0" % "test->default"
 
 	// App Engine paths
-	val gaeSdkJars = Path.fromFile(gaeHome.value) / "lib" / "user" * "*.jar"
 	val gaeSharedJars = Path.fromFile(gaeHome.value) / "lib" / "shared" * "*.jar"
 	val gaeTestingJars = Path.fromFile(gaeHome.value) / "lib" / "impl" * "*.jar"
 
 	// simple-scala-persistence
 	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*.jar"
 
-	val jars = gaeSdkJars +++ gaeSharedJars +++ simpleScalaPersistence
+	val jars = gaeSharedJars +++ simpleScalaPersistence
 	val testingJars = gaeTestingJars
 
 	// if lessc is on $PATH, call it on any outdated .less files in webappPath
