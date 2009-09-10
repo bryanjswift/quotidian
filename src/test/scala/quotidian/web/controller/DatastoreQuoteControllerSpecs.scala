@@ -33,12 +33,8 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 			writer.addDocument(q1)
 			writer.commit
 			val searcher = new IndexSearcher(directory)
-			val scoreDocs = searcher.search(new TermQuery(new Term("source","Mary")),10).scoreDocs
-			val quotes = for {
-				scoreDoc <- scoreDocs
-				doc = searcher.doc(scoreDoc.doc)
-			} yield Quote(doc.getValues(Quote.Text)(0),doc.getValues(Quote.Source)(0),doc.getValues(Quote.Context)(0))
-			quotes.length must beGreaterThan(0)
+			val scoreDocs = searcher.search(new FuzzyQuery(new Term(Quote.Source,"Mary")),10).scoreDocs
+			scoreDocs.length must beGreaterThan(0)
 		}
 	}
 	"A controller" should {
@@ -53,19 +49,20 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 			terms.next mustEqual true
 		}
 		"find Quotes by source" >> {
-			val key = quoteController.save(q1)
-			val quotes = searchController.searchSource("Mary")
-			quotes.length must beGreaterThan(0)
+			quoteController.save(q1)
+			quoteController.save(q2)
+			quoteController.save(q3)
+			searchController.searchSource("Mary").length must beGreaterThan(0)
+			searchController.search("(source:Mary Lee)").length must beGreaterThan(0)
+			searchController.searchSource("Mary Lee").length must beGreaterThan(0)
 		}
 		"find Quotes by context" >> {
-			val key = quoteController.save(q1)
-			val quotes = searchController.searchContext("barbeque")
-			quotes.length must beGreaterThan(0)
+			quoteController.save(q1)
+			searchController.searchContext("barbeque").length must beGreaterThan(0)
 		}
 		"find Quotes by text" >> {
-			val key = quoteController.save(q1)
-			val quotes = searchController.searchText("dick")
-			quotes.length must beGreaterThan(0)
+			quoteController.save(q1)
+			searchController.searchText("dick").length must beGreaterThan(0)
 		}
 	}
 }
