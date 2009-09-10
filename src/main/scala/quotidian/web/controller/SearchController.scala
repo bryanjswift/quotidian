@@ -1,23 +1,23 @@
 package quotidian.web.controller
 
-import basic.persistence.Persister
-import org.apache.lucene.document.Document
-import org.apache.lucene.index.Term
-import org.apache.lucene.search.{FuzzyQuery,IndexSearcher,Query,TermQuery}
+import org.apache.lucene.analysis.standard.StandardAnalyzer
+import org.apache.lucene.queryParser.QueryParser
+import org.apache.lucene.search.{IndexSearcher,Query}
 import org.apache.lucene.store.Directory
 import quotidian.Logging
 import quotidian.model.Quote
 
 abstract class SearchController extends Logging {
-	protected def persister:Persister
 	protected def directory:Directory
 	def searcher = new IndexSearcher(directory)
-	private lazy val contextTerm = new Term(Quote.Context)
-	private lazy val sourceTerm = new Term(Quote.Source)
-	private lazy val textTerm = new Term(Quote.Text)
-	def searchContext(context:String):Array[Quote] = search(new FuzzyQuery(contextTerm.createTerm(context)))
-	def searchSource(source:String):Array[Quote] = search(new FuzzyQuery(sourceTerm.createTerm(source)))
-	def searchText(text:String):Array[Quote] = search(new FuzzyQuery(textTerm.createTerm(text)))
+	private lazy val parser = new QueryParser(Quote.Text,new StandardAnalyzer())
+	def searchContext(context:String):Array[Quote] = search(Quote.Context + ":" + context)
+	def searchSource(source:String):Array[Quote] = search(Quote.Source + ":" + source)
+	def searchText(text:String):Array[Quote] = search(Quote.Text + ":" + text)
+	def search(query:String):Array[Quote] = {
+		val parser = new QueryParser(Quote.Text,new StandardAnalyzer())
+		search(parser.parse(query))
+	}
 	private def search(query:Query):Array[Quote] = {
 		val s = searcher
 		val scoreDocs = s.search(query,10).scoreDocs
