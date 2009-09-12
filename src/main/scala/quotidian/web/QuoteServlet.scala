@@ -1,6 +1,7 @@
 package quotidian.web
 
 import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
+import quotidian.ConfigFactory
 import quotidian.model.Quote
 import quotidian.web.controller.{QuoteController,SearchController}
 import velocity.{VelocityHelper,VelocityView}
