@@ -10,14 +10,14 @@
 			<h1>Quote 'em on it</h1>
 			<form action="/quote" method="post">
 				<fieldset>
-					<label class="text" for="text">Text</label>
-					<textarea id="text" name="text">Words to remember...</textarea>
+					<label class="text" for="text">Words to remember...</label>
+					<textarea id="text" name="text"></textarea>
 				</fieldset>
 				<fieldset>
-					<label class="source" for="source">Source</label>
-					<input id="source" type="text" name="source" value="The wordsmith.." />
-					<label class="context" for="context">Context</label>
-					<input id="context" type="text" name="context" value="Provide some context.." />
+					<label class="source" for="source">The wordsmith..</label>
+					<input id="source" type="text" name="source" />
+					<label class="context" for="context">Provide some context..</label>
+					<input id="context" type="text" name="context" />
 				</fieldset>
 				<button id="add" name="add" value="add" type="submit">Send to storage</button>
 			</form>
