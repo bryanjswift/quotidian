@@ -15,9 +15,9 @@
 				</fieldset>
 				<fieldset>
 					<label class="source" for="source">Source</label>
-					<input id="source" type="text" name="source" value="The wordsmith" />
+					<input id="source" type="text" name="source" value="The wordsmith.." />
 					<label class="context" for="context">Context</label>
-					<input id="context" type="text" name="context" value="Set the scene" />
+					<input id="context" type="text" name="context" value="Provide some context.." />
 				</fieldset>
 				<button id="add" name="add" value="add">Send to storage</button>
 			</form>
