@@ -10,15 +10,17 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val gaeHome = propertyOptional[String](defaultGaeHome)
 	val lessCompiler = propertyOptional[String]("lessc")
 
-	// Dependencies for compiling
+	// repository locations
+	val javaNet = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
+
+	// dependencies for compiling
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
 	val commonsCollections = "commons-collections" % "commons-collections" % "3.2.1"
 	val commonsLang = "commons-lang" % "commons-lang" % "2.4"
-
-	// lucene
-	private def luceneBase = "org.apache.lucene" % "lucene-core" % "2.4.1"
-	val luceneCore = luceneBase
-	val luceneCoreSrc = luceneBase % "sources" classifier "sources"
+	// Lucene
+	val luceneCore = "org.apache.lucene" % "lucene-core" % "2.4.1"
+	// Jersey
+	val jersey = "com.sun.jersey" % "jersey-server" % "1.1.2-ea"
 
 	// Dependencies for testing
 	val junit = "junit" % "junit" % "4.5" % "test->default"
