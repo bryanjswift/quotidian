@@ -9,9 +9,9 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li, fieldset, input, textarea, button { mar
 fieldset, input, textarea, button { border: none; background: none; }
 h1, h2, h3, h4, h5, h6, p { font-size: 1em; line-height: 1; }
 /* General Styles */
-body { margin: 4.5% 0 0; color: @bodyColor; font: normal 16px @defaultFaces; background: #fff; }
+body { margin: 0; color: @bodyColor; font: normal 16px @defaultFaces; background: #fff; }
 h1, h2, h3 { color: @headerColor; }
-h1 { font-size: 3.5em; }
+h1 { margin: 1em 0 0.5em; font-size: 3.5em; }
 h2 { margin: 1em 0 0; font-size: 2em; }
 /* General Classes */
 .clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; line-height: 0; }
@@ -20,11 +20,11 @@ html[xmlns] .clearfix { display: block; }
 * html .clearfix { height: 1%; }
 /* Styles */
 #primary { position: relative; margin: 0 5%; width: 65%; }
-form { display: block; padding: 0 5%; }
-form label { position: absolute; left: -1000%; }
-button { display: block; position: relative; left: -3px; cursor: pointer; }
+form { position: relative; display: block; padding: 0 5%; }
+form label { display: block; height: 0.5em; visibility: hidden; overflow: hidden; }
 textarea, input, button { margin: 0.6em 0 0; padding: 0.2em 0.5em 0; height: 1.2em; .bodyText; }
 textarea, input { display: block; border-bottom: 1px solid @borderColor; width: 100%; }
+button { display: block; position: relative; left: -3px; padding: 0; border: 2px solid @borderColor; cursor: pointer; }
 #secondary { position: absolute; top: 0; right: 0; width: 20%; }
 ul li { }
 ul li blockquote { }
