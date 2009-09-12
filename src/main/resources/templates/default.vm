@@ -34,6 +34,7 @@
 				#end
 			</ul>
 		</div>
+		<script type="text/javascript" src="/js/mootools-1.2.3-core.js"></script>
 		<script type="text/javascript" src="/js/main.js"></script>
 	</body>
 </html>

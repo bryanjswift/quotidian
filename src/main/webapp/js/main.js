@@ -1,18 +1,29 @@
-// Non-blocking loading function from http://www.nczonline.net/blog/2009/06/23/loading-javascript-without-blocking/
-function loadScript(url, callback) {
-	var script = document.createElement("script");
-	script.type = "text/javascript";
-	script.src = url;
-	if (script.readyState) { //IE
-		script.onreadystatechange = function() {
-			if (script.readyState == "loaded" || script.readyState == "complete") {
-				script.onreadystatechange = null;
-				callback();
-			}
-		};
-	} else { //Others
-		script.onload = callback;
-	}
-	document.body.appendChild(script);
-}
-
+(function() {
+	var TextAsLabelInput = new Class({
+		inputClass: 'defaultText',
+		labelClass: 'textAsLabel',
+		initialize: function(el) {
+			this.el = document.id(el);
+			this.label = $$('label[for=' + this.el.get('id') + ']');
+			this.defaultText = this.label.get('text');
+			this.el.set('value',this.defaultText)
+						 .addEvents({focus:this.focus.bind(this),blur:this.blur.bind(this)});
+			this.el.addClass(this.inputClass);
+			this.label.addClass(this.labelClass);
+		},
+		blur: function() {
+			if (this.el.get('value') == '') { this.el.set('value',this.defaultText).addClass(this.inputClass); }
+		},
+		focus: function() {
+			if (this.el.get('value') == this.defaultText) { this.el.set('value','').removeClass(this.inputClass); }
+		}
+	});
+	var ExpandingTextarea = new Class({
+		initialize: function(el) {
+			this.el = document.id(el);
+		}
+	});
+	var text = new TextAsLabelInput('text');
+	var source = new TextAsLabelInput('source');
+	var context = new TextAsLabelInput('context');
+})();
