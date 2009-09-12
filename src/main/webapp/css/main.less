@@ -1,6 +1,7 @@
 // Site Variables
 @bodyColor: #333333;
 @borderColor: @bodyColor * 4.6;
+@buttonBackground: @bodyColor * 4;
 @headerColor: #5b83ad;
 @defaultFaces: Helvetica, Arial, sans-serif;
 .bodyText { color: @bodyColor; font-family: @defaultFaces; }
@@ -11,7 +12,7 @@ h1, h2, h3, h4, h5, h6, p { font-size: 1em; line-height: 1; }
 /* General Styles */
 body { margin: 0; color: @bodyColor; font: normal 16px @defaultFaces; background: #fff; }
 h1, h2, h3 { color: @headerColor; }
-h1 { margin: 1em 0 0.5em; font-size: 3.5em; }
+h1 { margin: 0.75em 0 0.5em; font-size: 3.5em; }
 h2 { margin: 1em 0 0; font-size: 2em; }
 /* General Classes */
 .clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; line-height: 0; }
@@ -24,7 +25,7 @@ form { position: relative; display: block; padding: 0 5%; }
 form label { display: block; height: 0.5em; visibility: hidden; overflow: hidden; }
 textarea, input, button { margin: 0.6em 0 0; padding: 0.2em 0.5em 0; height: 1.2em; .bodyText; }
 textarea, input { display: block; border-bottom: 1px solid @borderColor; width: 100%; }
-button { display: block; position: relative; left: -3px; padding: 0; border: 2px solid @borderColor; cursor: pointer; }
+button { display: block; padding: 0 0.3em; border: 2px solid @borderColor; height: 2em; cursor: pointer; background: @buttonBackground; }
 #secondary { position: absolute; top: 0; right: 0; width: 20%; }
 ul li { }
 ul li blockquote { }
