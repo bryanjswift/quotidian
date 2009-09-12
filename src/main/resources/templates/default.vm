@@ -9,13 +9,17 @@
 		<div id="primary">
 			<h1>Quote 'em on it</h1>
 			<form action="/quote" method="post">
-				<label class="text" for="text">Text</label>
-				<textarea id="text" name="text"></textarea>
-				<label class="source" for="source">Source</label>
-				<input id="source" type="text" name="source" />
-				<label class="context" for="context">Context</label>
-				<input id="context" type="text" name="context" />
-				<button id="add" name="add" value="add">Add Quote</button>
+				<fieldset>
+					<label class="text" for="text">Text</label>
+					<textarea id="text" name="text">Words to remember...</textarea>
+				</fieldset>
+				<fieldset>
+					<label class="source" for="source">Source</label>
+					<input id="source" type="text" name="source" value="The wordsmith" />
+					<label class="context" for="context">Context</label>
+					<input id="context" type="text" name="context" value="Set the scene" />
+				</fieldset>
+				<button id="add" name="add" value="add">Send to storage</button>
 			</form>
 			<h2>Recent Quotes</h2>
 			<ul>
@@ -29,11 +33,6 @@
 					</li>
 				#end
 			</ul>
-		</div>
-		<div id="secondary">
-			<h2>Search</h2>
-			<input id="search" type="text" name="search" />
-			<button id="go" name="submit" value="go">Go</button>
 		</div>
 		<script type="text/javascript" src="/js/main.js"></script>
 	</body>
