@@ -8,6 +8,7 @@
 		<include path="/**.jpg" />
 		<include path="/**.gif" />
 		<include path="/**.png" />
+		<include path="/favicon.ico" />
 	</static-files>
 	<resource-files />
 	<system-properties />
