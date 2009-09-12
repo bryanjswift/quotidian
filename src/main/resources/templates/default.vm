@@ -19,7 +19,7 @@
 					<label class="context" for="context">Context</label>
 					<input id="context" type="text" name="context" value="Provide some context.." />
 				</fieldset>
-				<button id="add" name="add" value="add">Send to storage</button>
+				<button id="add" name="add" value="add" type="submit">Send to storage</button>
 			</form>
 			<h2>Recent Quotes</h2>
 			<ul>
