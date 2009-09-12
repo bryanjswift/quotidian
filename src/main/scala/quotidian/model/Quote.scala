@@ -27,9 +27,8 @@ class Quote(
 		case _ => false
 	}
 	override def hashCode = 41 * (41 * (41 + text.hashCode) + source.hashCode) + context.hashCode
-	override def toString = {
-		Quote.Kind + all.mkString("(",",",")")
-	}
+	override def toString = Quote.Kind + all.mkString("(",",",")")
+	def asXml = <quote><id>{id}</id><text>{text}</text><source>{source}</source><context>{context}</context></quote>
 }
 
 object Quote extends Logging {
