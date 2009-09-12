@@ -1,6 +1,6 @@
 package quotidian.persistence.datastore
 
-import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,Query}
+import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,KeyFactory,Query}
 import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit}
 import basic.persistence.{Persister,Savable}
 import java.io.Serializable
@@ -21,13 +21,16 @@ object DatastorePersister extends Persister with Logging {
 		datastore.put(entity)
 	}
 	def get(table:String,id:Serializable):Savable = {
-		if (id.isInstanceOf[Key]) {
-			val mapFcn = PersisterHelper.fetch(table)
-			val entity = datastore.get(id.asInstanceOf[Key])
-			mapFcn(PersisterHelper.toXml(entity))
+		val mapFcn = PersisterHelper.fetch(table)
+		val key = if (id.isInstanceOf[Key]) {
+			id.asInstanceOf[Key]
+		} else if (id.isInstanceOf[Long] || id.isInstanceOf[Int]) {
+			KeyFactory.createKey(table,id.asInstanceOf[Long])
 		} else {
 			throw new IllegalArgumentException("id must be of type com.google.appengine.api.datastore.Key")
 		}
+		val entity = datastore.get(key)
+		mapFcn(PersisterHelper.toXml(entity))
 	}
 	def all(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING))
