@@ -6,9 +6,8 @@
 			this.el = document.id(el);
 			this.label = $$('label[for=' + this.el.get('id') + ']');
 			this.defaultText = this.label.get('text');
-			this.el.set('value',this.defaultText)
+			this.el.set('value',this.defaultText).addClass(this.inputClass)
 						 .addEvents({focus:this.focus.bind(this),blur:this.blur.bind(this)});
-			this.el.addClass(this.inputClass);
 			this.label.addClass(this.labelClass);
 		},
 		blur: function() {
