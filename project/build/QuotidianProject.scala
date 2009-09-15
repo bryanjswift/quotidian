@@ -12,6 +12,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// repository locations
 	val javaNet = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
+	val scalaToolsSnapshots = "Scala Tools Snapshot Repository" at "http://scala-tools.org/repo-snapshots/"
 
 	// dependencies for compiling
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
@@ -24,7 +25,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// Dependencies for testing
 	val junit = "junit" % "junit" % "4.5" % "test->default"
-	val specs = "org.scala-tools.testing" % "specs" % "1.5.0" % "test->default"
+	val specs = "org.scala-tools.testing" % "specs" % "1.6.1-SNAPSHOT" % "test->default"
 
 	// App Engine paths
 	val gaeSharedJars = Path.fromFile(gaeHome.value) / "lib" / "shared" * "*.jar"
