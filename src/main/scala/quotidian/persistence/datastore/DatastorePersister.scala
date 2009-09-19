@@ -1,11 +1,11 @@
 package quotidian.persistence.datastore
 
 import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,KeyFactory,Query}
-import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit}
+import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit,withOffset}
 import basic.persistence.{Persister,Savable}
 import java.io.Serializable
 import java.util.Calendar
-import quotidian.Logging
+import quotidian.{Logging,UnsupportedMethodException}
 import scala.collection.jcl.Conversions._
 
 object DatastorePersister extends Persister with Logging {
@@ -35,21 +35,22 @@ object DatastorePersister extends Persister with Logging {
 	def all(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING))
 		val mapFcn = PersisterHelper.fetch(table)
-		val entities = query.asList(withLimit(10))
+		val entities = query.asList(withLimit(Integer.MAX_VALUE))
 		val savables = for {
 			val entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
 		savables.toList
 	}
 	def count(table:String) = datastore.prepare(new Query(table)).countEntities
-	def search(table:String,field:String,value:Any):List[Savable] = {
-		val query = datastore.prepare(new Query(table).addFilter(field,Query.FilterOperator.EQUAL,value))
+	def search(table:String,field:String,value:Any):List[Savable] =
+		throw new UnsupportedMethodException("search not implemented for the Datastore")
+	def some(table:String,count:Int,offset:Int):List[Savable] = {
+		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING))
 		val mapFcn = PersisterHelper.fetch(table)
-		val entities = query.asList(withLimit(10))
+		val entities = query.asList(withOffset(offset).limit(count))
 		val savables = for {
 			val entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
 		savables.toList
 	}
-	def some(table:String,count:Int,offset:Int):List[Savable] = all(table)
 }
