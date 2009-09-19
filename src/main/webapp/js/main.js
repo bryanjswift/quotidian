@@ -1,9 +1,10 @@
 (function() {
+	var $ = document.id;
 	var TextAsLabelInput = new Class({
 		inputClass: 'defaultText',
 		labelClass: 'textAsLabel',
 		initialize: function(el) {
-			this.el = document.id(el);
+			this.el = el.el ? el.el : $(el);
 			this.label = $$('label[for=' + this.el.get('id') + ']');
 			this.defaultText = this.label.get('text');
 			this.el.set('value',this.defaultText).addClass(this.inputClass)
@@ -25,4 +26,10 @@
 	var text = new TextAsLabelInput('text');
 	var source = new TextAsLabelInput('source');
 	var context = new TextAsLabelInput('context');
+	function redrawElement() {
+		var el = $(this);
+		el.setStyle('height',el.getSize().y - 1);
+		el.removeAttribute.delay(25,el,['style']);
+	}
+	addEvent('domready',redrawElement.bind('primary'));
 })();
