@@ -9,9 +9,6 @@ import org.specs.Specification
 
 class DatastoreSpecification extends Specification {
 	val directoryName = "target/index"
-	val proxy = new ApiProxyLocalImpl(new File("./target/")){ }
-	proxy.setProperty(LocalDatastoreService.NO_STORAGE_PROPERTY,true.toString)
-	val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
 	private class GaeEnvironment(private val requestNamespace:String) extends Environment {
 		def this() = this("")
 		def getAppId = "Quotidian Specs"
@@ -25,6 +22,8 @@ class DatastoreSpecification extends Specification {
 	}
 	def datastoreSetup:Unit = {
 		val env = new GaeEnvironment
+		val proxy = new ApiProxyLocalImpl(new File("./target/")) { }
+		proxy.setProperty(LocalDatastoreService.NO_STORAGE_PROPERTY,true.toString)
 		ApiProxy.setEnvironmentForCurrentThread(env)
 		ApiProxy.setDelegate(proxy)
 	}
@@ -32,7 +31,11 @@ class DatastoreSpecification extends Specification {
 		ApiProxy.setDelegate(null)
 		ApiProxy.setEnvironmentForCurrentThread(null)
 	}
-	def datastoreCleanup:Unit = service.clearProfiles
+	def datastoreCleanup:Unit = {
+		val proxy = ApiProxy.getDelegate.asInstanceOf[ApiProxyLocalImpl]
+		val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
+		service.clearProfiles
+	}
 	def filesystemCleanup:Unit = {
 		val file = new File(directoryName)
 		if (file.exists) file.delete
