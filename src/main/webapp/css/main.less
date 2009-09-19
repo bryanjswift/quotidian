@@ -7,7 +7,7 @@
 // Site Mixins
 .bodyText { color: @bodyColor; font: normal 1em @defaultFaces; }
 /* Reset */
-body, h1, h2, h3, h4, h5, h6, p, ul, li, fieldset, input, textarea, button { margin: 0; padding: 0; }
+body, h1, h2, h3, h4, h5, h6, p, ul, li, fieldset, input, textarea, button, blockquote { margin: 0; padding: 0; }
 fieldset, input, textarea, button { border: none; background: none; }
 h1, h2, h3, h4, h5, h6, p { font-size: 1em; line-height: 1; }
 /* General Styles */
@@ -22,8 +22,7 @@ html[xmlns] .clearfix { display: block; }
 * html .clearfix { height: 1%; }
 /* Styles */
 #primary { position: relative; margin: 0 5%; width: 65%; }
-form {
-	position: relative; display: block; padding: 0 5%;
+form { position: relative; display: block; padding: 0 5%;
 	// nested rules
 	label { display: block; margin: 0.5em 0 0; }
 	label.textAsLabel { margin: 0; height: 0.5em; visibility: hidden; overflow: hidden; }
@@ -32,9 +31,16 @@ textarea, input, button { margin: 0.6em 0 0; padding: 0.2em 0.5em 0; height: 1.2
 textarea, input { display: block; border-bottom: 1px solid @borderColor; width: 100%; }
 textarea.defaultText, input.defaultText { color: @borderColor; }
 textarea.expandingTextarea { overflow: hidden; }
-textarea:focus, input:focus { background: @borderColor; }
-button { display: block; padding: 0 0.3em; border: 2px solid @borderColor; height: 2em; cursor: pointer; background: @buttonBackground; }
+textarea:focus, input:focus { background: @borderColor; outline: 2px solid @headerColor; -moz-outline: 2px solid @headerColor; }
+button { display: block; padding: 0 0.3em; border: 2px solid @borderColor; margin-left: 0.7em; height: 2em; cursor: pointer; background: @buttonBackground; }
 #secondary { position: absolute; top: 0; right: 0; width: 20%; }
-ul li { }
-ul li blockquote { }
-ul li blockquote p { }
+ul { list-style: none; 
+	li { padding: 0 0 0 5%; margin: 0.8em 0 0.8em; list-style: none;
+		// nested rules
+		blockquote { padding: 0 5% 0 0; margin: 0 0 0.3em; font-size: 1.1em; }
+		cite { margin: 0.5em 0.9em; font-size: 0.9em; font-style: italic; }
+		.context { margin: 0.5em 1em; font-size: 0.8em; }
+	}
+}
+// Firefox Selection styles
+*::-moz-selection { color: #fff; background: @headerColor; }
