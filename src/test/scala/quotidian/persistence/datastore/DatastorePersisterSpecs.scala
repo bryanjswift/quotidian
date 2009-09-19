@@ -30,16 +30,16 @@ object DatastorePersisterSpecs extends DatastoreSpecification {
 	"counting all Savables" should {
 		datastoreCleanup.after
 		"return 0 with none saved" >> {
-			0 mustEqual DatastorePersister.count(Quote.Kind)
+			DatastorePersister.count(Quote.Kind) mustEqual 0
 		}
 		"return 1 with one saved" >> {
 			val id1 = DatastorePersister.save(q1)
-			1 mustEqual DatastorePersister.count(Quote.Kind)
+			DatastorePersister.count(Quote.Kind) mustEqual 1
 		}
 		"return 2 with two saved" >> {
 			val id1 = DatastorePersister.save(q1)
 			val id2 = DatastorePersister.save(q2)
-			2 mustEqual DatastorePersister.count(Quote.Kind)
+			DatastorePersister.count(Quote.Kind) mustEqual 2
 		}
 	}
 	"retrieving all Savables" should {
@@ -48,7 +48,7 @@ object DatastorePersisterSpecs extends DatastoreSpecification {
 			val id1 = DatastorePersister.save(q1)
 			val id2 = DatastorePersister.save(q2)
 			val savables = DatastorePersister.all(Quote.Kind)
-			2 mustEqual savables.size
+			savables.size mustEqual 2
 			savables must containAll(List(q1,q2))
 		}
 	}
