@@ -9,13 +9,17 @@
 		<div id="primary">
 			<h1>Quote 'em on it</h1>
 			<form action="/quote" method="post">
-				<label class="text" for="text">Text</label>
-				<textarea id="text" name="text"></textarea>
-				<label class="source" for="source">Source</label>
-				<input id="source" type="text" name="source" />
-				<label class="context" for="context">Context</label>
-				<input id="context" type="text" name="context" />
-				<button id="add" name="add" value="add">Add Quote</button>
+				<fieldset>
+					<label class="text" for="text">Words to remember...</label>
+					<textarea id="text" name="text"></textarea>
+				</fieldset>
+				<fieldset>
+					<label class="source" for="source">The wordsmith..</label>
+					<input id="source" type="text" name="source" />
+					<label class="context" for="context">Provide some context..</label>
+					<input id="context" type="text" name="context" />
+				</fieldset>
+				<button id="add" name="add" value="add" type="submit">Send to storage</button>
 			</form>
 			<h2>Recent Quotes</h2>
 			<ul>
@@ -30,11 +34,7 @@
 				#end
 			</ul>
 		</div>
-		<div id="secondary">
-			<h2>Search</h2>
-			<input id="search" type="text" name="search" />
-			<button id="go" name="submit" value="go">Go</button>
-		</div>
+		<script type="text/javascript" src="/js/mootools-1.2.3-core.js"></script>
 		<script type="text/javascript" src="/js/main.js"></script>
 	</body>
 </html>
