@@ -7,17 +7,33 @@ import quotidian.web.controller.{QuoteController,SearchController}
 import velocity.{VelocityHelper,VelocityView}
 
 class QuoteServlet extends HttpServlet {
-	override def doGet(request:Request, response:Response) {
+	val labels = Map(
+		Quote.Text -> "*Words to remember...",
+		Quote.Source -> "The wordsmith..",
+		Quote.Context -> "Provide some context..")
+	override def doGet(request:Request, response:Response) = doGet(request,response,Nil)
+	def doGet(request:Request,response:Response,errors:List[String]) = {
 		val view = new VelocityView("templates/default.vm")
-		view.render(Map("quotes" -> QuoteServlet.qc.page(1)),request,response)
+		view.render(Map("quotes" -> QuoteServlet.qc.page(1),"errors" -> errors) ++ labels,request,response)
 	}
 	override def doPost(request:Request, response:Response) {
-		val text = request.getParameterValues(Quote.Text)(0)
-		val source = request.getParameterValues(Quote.Source)(0)
-		val context = request.getParameterValues(Quote.Context)(0)
-		val quote = new Quote(text,source,context)
-		QuoteServlet.qc.save(quote)
-		response.sendRedirect("/")
+		def getParameter(param:String,default:String) = {
+			val value = request.getParameter(param)
+			if (value == "" || value == default) None else Some(value)
+		}
+		val text = getParameter(Quote.Text,labels(Quote.Text))
+		val source = getParameter(Quote.Source,labels(Quote.Source))
+		val context = getParameter(Quote.Context,labels(Quote.Context))
+		var errors:List[String] = Nil
+		try {
+			val quote = new Quote(text.get,source.getOrElse(""),context.getOrElse(""))
+			QuoteServlet.qc.save(quote)
+		} catch {
+			case nsee:NoSuchElementException =>
+				errors = "\"" + labels(Quote.Text) + "\" is required." :: errors
+		}
+		if (errors.length > 0) { doGet(request,response,errors) }
+		else { response.sendRedirect("/") }
 	}
 }
 

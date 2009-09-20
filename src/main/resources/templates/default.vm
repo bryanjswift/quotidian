@@ -8,15 +8,18 @@
 	<body>
 		<div id="primary">
 			<h1>Quote 'em on it</h1>
-			<form action="/quote" method="post">
+			<form action="/" method="post">
+				#foreach ($error in $errors)
+					<p class="error">$error</p>
+				#end
 				<fieldset>
-					<label class="text" for="text">Words to remember...</label>
+					<label class="text" for="text">$text</label>
 					<textarea id="text" name="text"></textarea>
 				</fieldset>
 				<fieldset>
-					<label class="source" for="source">The wordsmith..</label>
+					<label class="source" for="source">$source</label>
 					<input id="source" type="text" name="source" />
-					<label class="context" for="context">Provide some context..</label>
+					<label class="context" for="context">$context</label>
 					<input id="context" type="text" name="context" />
 				</fieldset>
 				<button id="add" name="add" value="add" type="submit">Send to storage</button>
