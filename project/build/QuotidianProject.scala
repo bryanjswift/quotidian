@@ -32,7 +32,7 @@ class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val gaeTestingJars = Path.fromFile(gaeHome.value) / "lib" / "impl" * "*.jar"
 
 	// simple-scala-persistence
-	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*.jar"
+	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*3.jar"
 
 	val jars = gaeSharedJars +++ simpleScalaPersistence
 	val testingJars = gaeTestingJars
