@@ -2,7 +2,7 @@ import java.io.File
 import sbt._
 import Process._
 
-class QuotidianProject(info:ProjectInfo) extends DefaultWebProject(info) {
+class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// locate the Home directory
 	val userHome = system[File]("user.home")
 	// define custom property
