@@ -9,7 +9,7 @@ import velocity.{VelocityHelper,VelocityView}
 class QuoteServlet extends HttpServlet {
 	override def doGet(request:Request, response:Response) {
 		val view = new VelocityView("templates/default.vm")
-		view.render(Map("quotes" -> QuoteServlet.qc.all),request,response)
+		view.render(Map("quotes" -> QuoteServlet.qc.page(1)),request,response)
 	}
 	override def doPost(request:Request, response:Response) {
 		val text = request.getParameterValues(Quote.Text)(0)
@@ -17,7 +17,7 @@ class QuoteServlet extends HttpServlet {
 		val context = request.getParameterValues(Quote.Context)(0)
 		val quote = new Quote(text,source,context)
 		QuoteServlet.qc.save(quote)
-		response.sendRedirect("/quote")
+		response.sendRedirect("/")
 	}
 }
 
