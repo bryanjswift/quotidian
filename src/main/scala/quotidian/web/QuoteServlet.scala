@@ -1,7 +1,7 @@
 package quotidian.web
 
 import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
-import quotidian.ConfigFactory
+import quotidian.Config
 import quotidian.model.Quote
 import quotidian.web.controller.{QuoteController,SearchController}
 import velocity.{VelocityHelper,VelocityView}
@@ -38,6 +38,6 @@ class QuoteServlet extends HttpServlet {
 }
 
 object QuoteServlet {
-	val qc = ConfigFactory.objectForProperty[QuoteController]("quote.controller")
-	val sc = ConfigFactory.objectForProperty[SearchController]("search.controller")
+	val qc = Config.objectForProperty[QuoteController]("quote.controller")
+	val sc = Config.objectForProperty[SearchController]("search.controller")
 }
