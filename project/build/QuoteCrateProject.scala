@@ -6,7 +6,7 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// locate the Home directory
 	val userHome = system[File]("user.home")
 	// define custom property
-	val defaultGaeHome = userHome.value + "/Documents/src/gae/" + "appengine-java-sdk-1.2.5"
+	val defaultGaeHome = userHome.value + "/Documents/src/gae/" + "appengine-java-sdk-1.3.1"
 	val gaeHome = propertyOptional[String](defaultGaeHome)
 	val lessCompiler = propertyOptional[String]("lessc")
 
@@ -25,16 +25,13 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// Dependencies for testing
 	val junit = "junit" % "junit" % "4.5" % "test->default"
-	val specs = "org.scala-tools.testing" % "specs" % "1.6.1-SNAPSHOT" % "test->default"
+	val specs = "org.scala-tools.testing" % "specs" % "1.6.2" % "test->default"
 
 	// App Engine paths
 	val gaeSharedJars = Path.fromFile(gaeHome.value) / "lib" / "shared" * "*.jar"
 	val gaeTestingJars = Path.fromFile(gaeHome.value) / "lib" / "impl" * "*.jar"
 
-	// simple-scala-persistence
-	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*3.jar"
-
-	val jars = gaeSharedJars +++ simpleScalaPersistence
+	val jars = gaeSharedJars
 	val testingJars = gaeTestingJars
 
 	// if lessc is on $PATH, call it on any outdated .less files in webappPath
@@ -60,7 +57,7 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// compile with App Engine jars
 	override def compileClasspath = super.compileClasspath +++ jars
 	// webapp classpath with App Engine jars
-	override def webappClasspath = super.webappClasspath +++ simpleScalaPersistence
+	override def webappClasspath = super.webappClasspath
 	// add App Engine jars to console classpath
 	override def consoleClasspath = super.consoleClasspath +++ jars +++ testingJars
 	// compile tests with App Engine jars

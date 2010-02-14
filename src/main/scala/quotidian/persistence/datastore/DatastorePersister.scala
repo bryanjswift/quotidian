@@ -6,7 +6,7 @@ import basic.persistence.{Persister,Savable}
 import java.io.Serializable
 import java.util.Calendar
 import quotidian.{Logging,UnsupportedMethodException}
-import scala.collection.jcl.Conversions._
+import scala.collection.JavaConversions
 
 object DatastorePersister extends Persister with Logging {
 	private val DateCreated = "datecreated"
@@ -14,9 +14,9 @@ object DatastorePersister extends Persister with Logging {
 	def all(table:String):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING))
 		val mapFcn = PersisterHelper.fetch(table)
-		val entities = query.asList(withLimit(Integer.MAX_VALUE))
+		val entities = JavaConversions.asIterable(query.asList(withLimit(Integer.MAX_VALUE)))
 		val savables = for {
-			val entity <- entities
+			entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
 		savables.toList
 	}
@@ -50,9 +50,9 @@ object DatastorePersister extends Persister with Logging {
 	def some(table:String,count:Int,offset:Int):List[Savable] = {
 		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING))
 		val mapFcn = PersisterHelper.fetch(table)
-		val entities = query.asList(withOffset(offset).limit(count))
+		val entities = JavaConversions.asIterable(query.asList(withOffset(offset).limit(count)))
 		val savables = for {
-			val entity <- entities
+			entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
 		savables.toList
 	}

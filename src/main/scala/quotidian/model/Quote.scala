@@ -8,7 +8,7 @@ import quotidian.Logging
 import quotidian.persistence.datastore.PersisterHelper
 import scala.xml.NodeSeq
 
-@Entity{val name = "Quote"}
+@Entity(name = "Quote")
 class Quote(
 	val id:Serializable,
 	@Persistent val text:String,
@@ -37,7 +37,7 @@ object Quote extends Logging {
 	val Kind = "Quote"
 	val Source = "source"
 	val Text = "text"
-	PersisterHelper.register(Kind,fromXml)
+	PersisterHelper.register(Kind,fromXml(_))
 	def apply(text:String,source:String,context:String) = new Quote(text,source,context)
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
