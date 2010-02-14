@@ -12,8 +12,10 @@ import quotidian.model.Quote
 abstract class QuoteController extends Logging {
 	protected def persister:Persister
 	protected def directory:Directory
+	protected def MaxPerPage:Int
 	protected def writer:IndexWriter = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
-	def all:List[Quote] = savablesToQuotes(persister.all(Quote.Kind))
+	def all:List[Quote] = persister.all(Quote.Kind)
+	def delete(id:Serializable):Unit = persister.delete(Quote.Kind,id)
 	def get(id:Serializable):Quote = persister.get(Quote.Kind,id).asInstanceOf[Quote]
 	def random:Quote = {
 		val quotes = all
@@ -31,9 +33,11 @@ abstract class QuoteController extends Logging {
 		}
 		key
 	}
-	private def savablesToQuotes(savables:List[Savable]):List[Quote] = {
+	def page(pageNumber:Int):List[Quote] = persister.some(Quote.Kind,MaxPerPage,(pageNumber - 1) * MaxPerPage)
+	implicit private def savables2quotes(savables:List[Savable]):List[Quote] = {
 		for {
 			savable <- savables
 		} yield savable.asInstanceOf[Quote]
 	}
+	implicit private def savable2quote(savable:Savable):Quote = savable.asInstanceOf[Quote]
 }

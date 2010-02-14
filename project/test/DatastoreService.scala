@@ -9,7 +9,9 @@ import org.apache.lucene.store._
 import quotidian.search._
 
 object DatastoreService {
-	class GaeEnvironment(private val requestNamespace:String) extends Environment {
+	val proxy = new ApiProxyLocalImpl(new File("./target/")){ }
+	val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
+	private class GaeEnvironment(private val requestNamespace:String) extends Environment {
 		def this() = this("")
 		def getAppId = "Quotidian Specs"
 		def getVersionId = "1.0"
@@ -20,8 +22,6 @@ object DatastoreService {
 		def isAdmin = throw new UnsupportedOperationException()
 		def getAttributes = new java.util.HashMap[String,Object]()
 	}
-	val proxy = new ApiProxyLocalImpl(new File("./target/")){ }
-	val service = proxy.getService("datastore_v3").asInstanceOf[LocalDatastoreService]
 	def start = {
 		proxy.setProperty(LocalDatastoreService.NO_STORAGE_PROPERTY,true.toString)
 		ApiProxy.setEnvironmentForCurrentThread(new GaeEnvironment)

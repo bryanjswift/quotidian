@@ -23,6 +23,7 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 		dir
 	}
 	"A new DatastoreDirectory" should {
+		shareVariables()
 		doLast {
 			datastoreCleanup
 		}

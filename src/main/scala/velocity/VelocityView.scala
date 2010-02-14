@@ -2,7 +2,6 @@ package velocity
 
 import java.util.{ArrayList,List => JList,Properties}
 import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServletResponse => Response}
-import scala.collection.jcl.Conversions.unconvertList
 import org.apache.velocity.{Template,VelocityContext}
 import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.context.Context
@@ -16,7 +15,7 @@ object VelocityHelper {
 
 private[velocity] class IterableWrapper[T](iterable:Iterable[T]) extends java.lang.Iterable[T] {
 	def iterator() = new java.util.Iterator[T] {
-		private val delegate = iterable.elements
+		private val delegate = iterable.iterator
 		def hasNext = delegate.hasNext
 		def next() = delegate.next
 		def remove = {

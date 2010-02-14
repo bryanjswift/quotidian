@@ -3,6 +3,7 @@ package quotidian.search
 import com.google.appengine.api.datastore.{DatastoreServiceFactory,Entity,EntityNotFoundException}
 import java.util.ConcurrentModificationException
 import org.apache.lucene.store.{Lock,LockFactory}
+import quotidian.Logging
 
 class DatastoreLockFactory extends LockFactory with Logging {
 	private var locks = Map[String,Lock]()
