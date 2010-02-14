@@ -33,7 +33,7 @@ abstract class QuoteController extends Logging {
 		}
 		key
 	}
-	def page(pageNumber:Int):List[Quote] = persister.some(Quote.Kind,MaxPerPage,0)
+	def page(pageNumber:Int):List[Quote] = persister.some(Quote.Kind,MaxPerPage,(pageNumber - 1) * MaxPerPage)
 	implicit private def savables2quotes(savables:List[Savable]):List[Quote] = {
 		for {
 			savable <- savables
