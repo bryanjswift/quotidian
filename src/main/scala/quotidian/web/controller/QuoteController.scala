@@ -24,14 +24,14 @@ abstract class QuoteController extends Logging {
 	}
 	def save(quote:Quote):Serializable = {
 		val key = persister.save(quote)
+		// Invoke something to index the quote
+		// Task queue or direct writing
 		/*
 		val w = writer
 		try {
 			w.addDocument(quote)
 			w.commit
-		} finally {
-			w.close
-		}
+		} finally { w.close }
 		*/
 		key
 	}
