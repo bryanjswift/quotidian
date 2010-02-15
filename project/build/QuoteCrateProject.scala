@@ -6,9 +6,10 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// locate the Home directory
 	val userHome = system[File]("user.home")
 	// define custom property
-	val defaultGaeHome = userHome.value + "/Documents/src/gae/" + "appengine-java-sdk-1.2.5"
+	val defaultGaeHome = userHome.value + "/Documents/src/gae/" + "appengine-java-sdk-1.3.1"
 	val gaeHome = propertyOptional[String](defaultGaeHome)
 	val lessCompiler = propertyOptional[String]("lessc")
+	lazy val gaePath = Path.fromFile(gaeHome.value)
 
 	// repository locations
 	val javaNet = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
@@ -27,8 +28,8 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val specs = "org.scala-tools.testing" % "specs" % "1.6.1" % "test->default"
 
 	// App Engine paths
-	val gaeSharedJars = Path.fromFile(gaeHome.value) / "lib" / "shared" * "*.jar"
-	val gaeTestingJars = Path.fromFile(gaeHome.value) / "lib" / "impl" * "*.jar"
+	val gaeSharedJars = gaePath / "lib" / "shared" * "*.jar"
+	val gaeTestingJars = gaePath / "lib" / "impl" * "*.jar" +++ gaePath / "lib" / "testing" * "*.jar"
 
 	val jars = gaeSharedJars
 	val testingJars = gaeTestingJars

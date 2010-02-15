@@ -8,3 +8,4 @@ project/boot
 src/main/webapp/css/*.css
 tags
 target
+WEB-INF
