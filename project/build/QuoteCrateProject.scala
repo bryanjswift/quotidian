@@ -12,7 +12,6 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// repository locations
 	val javaNet = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
-	val scalaToolsSnapshots = "Scala Tools Snapshot Repository" at "http://scala-tools.org/repo-snapshots/"
 
 	// dependencies for compiling
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
@@ -24,17 +23,14 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val jersey = "com.sun.jersey" % "jersey-server" % "1.1.2-ea"
 
 	// Dependencies for testing
-	val junit = "junit" % "junit" % "4.5" % "test->default"
-	val specs = "org.scala-tools.testing" % "specs" % "1.6.1-SNAPSHOT" % "test->default"
+	val junit = "junit" % "junit" % "4.7" % "test->default"
+	val specs = "org.scala-tools.testing" % "specs" % "1.6.1" % "test->default"
 
 	// App Engine paths
 	val gaeSharedJars = Path.fromFile(gaeHome.value) / "lib" / "shared" * "*.jar"
 	val gaeTestingJars = Path.fromFile(gaeHome.value) / "lib" / "impl" * "*.jar"
 
-	// simple-scala-persistence
-	val simpleScalaPersistence = "simple-scala-persistence" / "target" * "*3.jar"
-
-	val jars = gaeSharedJars +++ simpleScalaPersistence
+	val jars = gaeSharedJars
 	val testingJars = gaeTestingJars
 
 	// if lessc is on $PATH, call it on any outdated .less files in webappPath
@@ -60,7 +56,7 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	// compile with App Engine jars
 	override def compileClasspath = super.compileClasspath +++ jars
 	// webapp classpath with App Engine jars
-	override def webappClasspath = super.webappClasspath +++ simpleScalaPersistence
+	override def webappClasspath = super.webappClasspath
 	// add App Engine jars to console classpath
 	override def consoleClasspath = super.consoleClasspath +++ jars +++ testingJars
 	// compile tests with App Engine jars
