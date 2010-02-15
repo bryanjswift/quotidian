@@ -24,6 +24,7 @@ abstract class QuoteController extends Logging {
 	}
 	def save(quote:Quote):Serializable = {
 		val key = persister.save(quote)
+		/*
 		val w = writer
 		try {
 			w.addDocument(quote)
@@ -31,6 +32,7 @@ abstract class QuoteController extends Logging {
 		} finally {
 			w.close
 		}
+		*/
 		key
 	}
 	def page(pageNumber:Int):List[Quote] = persister.some(Quote.Kind,MaxPerPage,0)
