@@ -1,6 +1,7 @@
 .classpath
 .manager
 .project
+.session
 bin
 lib_managed
 project/build/target
