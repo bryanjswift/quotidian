@@ -1,5 +1,27 @@
-h1. Working Title: Quotidian
+h1. Quote Crate
 
-This is a my version of "Alex Payne's Quotidian idea":quotidian
+*A place to store and organize quotations.* Or it will be. The goal is to create
+a RESTful API for saving and searching quotes on the web. Currently it is pretty
+primitive as you can only save them, but they are being properly indexed as of
+"v2":v2 which proved to be far more of a challenge than I expected.
 
-[quotidian]http://ideas.al3x.net/quotidian
+[v2]http://github.com/bryanjswift/quotidian/tree/v2
+
+h2. Implementation
+
+In my opinion the cool thing about this is the somewhat low-level implementation
+of Lucene I created to write information into Google's Datastore. The code for
+this currently sits in the quotidian.search package though I would like to split
+it into it's own project.
+
+h2. Inspiration
+
+This stemmed from of Alex Payne's "Open Ideas" or "Unfinished Ideas" which he
+termed "Quotidian":quotidian. When I read his quick post about it I was struck
+and went to work on it almost immediately figuring I could have a working version
+up on the (at the time) newly released Google App Engine for Java pretty quickly.
+Man was I wrong. A key component of this application is the ability to search
+for stored quotes which is something that proved difficult with the immediately
+available tools.
+
+[quotidian]http://al3x.net/2009/06/15/quotidian.html
