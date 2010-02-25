@@ -30,6 +30,7 @@ class DatastoreDirectory extends Directory with Logging {
 }
 
 object DatastoreDirectory {
+	val index = com.google.appengine.api.datastore.KeyFactory.createKey("index","index")
 	private val datastore = DatastoreServiceFactory.getDatastoreService()
 	private def delete(name:String):Unit = {
 		if (!fileExists(name)) throw new IOException("No file called {name} exists")

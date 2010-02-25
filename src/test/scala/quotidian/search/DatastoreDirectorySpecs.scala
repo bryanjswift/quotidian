@@ -8,7 +8,7 @@ import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.store.Directory
 import quotidian.DatastoreSpecification
 
-object DatastoreDirectorySpecs extends DatastoreSpecification {
+class DatastoreDirectorySpecs extends DatastoreSpecification {
 	val docsToAdd = 500
 	def setup = {
 		val dir = new DatastoreDirectory

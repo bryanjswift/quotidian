@@ -8,7 +8,7 @@ import quotidian.DatastoreSpecification
 import quotidian.model.Quote
 import quotidian.search.DatastoreDirectory
 
-object DatastoreControllerSpecs extends DatastoreSpecification {
+class DatastoreControllerSpecs extends DatastoreSpecification {
 	val quoteController = new DatastoreQuoteController
 	val searchController = new DatastoreSearchController
 	val q1 = Quote("I like oysters but they never make me think 'I want dick in me'.","Mary Lee","A barbeque after some drinks")
@@ -63,6 +63,18 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 		"find Quotes by text" >> {
 			quoteController.save(q1)
 			searchController.searchText("dick").length must beGreaterThan(0)
+		}
+	}
+	"Saving ten (10) Quotes" should {
+		datastoreCleanup.after
+		"not throw an error" >> {
+			val key = quoteController.save(q1)
+			quoteController.save(q2)
+			quoteController.save(q3)
+			for (i <- 0 to 50) {
+				quoteController.save(Quote("This is a test","Test source","test context"))
+			}
+			quoteController.get(key) must_== q1
 		}
 	}
 }

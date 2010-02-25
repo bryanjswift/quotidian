@@ -2,7 +2,7 @@ package quotidian.model
 
 import org.specs.Specification
 
-object QuoteSpecs extends Specification {
+class QuoteSpecs extends Specification {
 	def have = addToSusVerb("have")
 	"Quote with same values" should have {
 		val q1 = new Quote("This is a quote","This is a source","This is some context")

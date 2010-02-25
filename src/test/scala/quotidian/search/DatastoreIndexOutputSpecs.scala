@@ -4,7 +4,7 @@ import java.util.Calendar
 import org.apache.lucene.store.{FSDirectory,IndexInput,IndexOutput}
 import quotidian.DatastoreSpecification
 
-object DatastoreIndexOutputSpecs extends DatastoreSpecification {
+class DatastoreIndexOutputSpecs extends DatastoreSpecification {
 	val filename = "1.fdx"
 	val rand = new scala.util.Random(System.currentTimeMillis)
 	"A DatastoreIndexOutput" should {

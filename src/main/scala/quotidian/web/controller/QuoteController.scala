@@ -3,7 +3,7 @@ package quotidian.web.controller
 import basic.persistence.{Persister,Savable}
 import java.io.Serializable
 import org.apache.lucene.analysis.standard.StandardAnalyzer
-import org.apache.lucene.index.IndexWriter
+import org.apache.lucene.index.{IndexWriter,SerialMergeScheduler}
 import org.apache.lucene.index.IndexWriter.MaxFieldLength.UNLIMITED
 import org.apache.lucene.store.Directory
 import quotidian.Logging
@@ -24,13 +24,14 @@ abstract class QuoteController extends Logging {
 	}
 	def save(quote:Quote):Serializable = {
 		val key = persister.save(quote)
+		// Invoke something to index the quote
+		// Task queue or direct writing
 		val w = writer
+		w.setMergeScheduler(new SerialMergeScheduler)
 		try {
 			w.addDocument(quote)
 			w.commit
-		} finally {
-			w.close
-		}
+		} finally { w.close }
 		key
 	}
 	def page(pageNumber:Int):List[Quote] = persister.some(Quote.Kind,MaxPerPage,(pageNumber - 1) * MaxPerPage)

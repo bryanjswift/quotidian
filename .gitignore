@@ -1,10 +1,13 @@
 .classpath
 .manager
 .project
+.session
 bin
 lib_managed
 project/build/target
 project/boot
+quotidian.*
 src/main/webapp/css/*.css
 tags
 target
+WEB-INF

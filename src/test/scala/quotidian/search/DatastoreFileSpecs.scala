@@ -3,7 +3,7 @@ package quotidian.search
 import com.google.appengine.api.datastore.Blob
 import quotidian.DatastoreSpecification
 
-object DatastoreFileSpecs extends DatastoreSpecification {
+class DatastoreFileSpecs extends DatastoreSpecification {
 	"An empty file" should {
 		val byte = 15.toByte
 		"have a position at the start" >> {
