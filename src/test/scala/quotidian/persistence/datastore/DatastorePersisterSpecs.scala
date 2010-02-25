@@ -4,7 +4,7 @@ import java.io.Serializable
 import quotidian.DatastoreSpecification
 import quotidian.model.Quote
 
-object DatastorePersisterSpecs extends DatastoreSpecification {
+class DatastorePersisterSpecs extends DatastoreSpecification {
 	val q1 = Quote("This is a test","source","context")
 	val q2 = Quote("Another test","source2","context2")
 	"saving a Savable" should {

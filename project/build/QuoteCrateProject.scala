@@ -25,7 +25,7 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// Dependencies for testing
 	val junit = "junit" % "junit" % "4.7" % "test->default"
-	val specs = "org.scala-tools.testing" % "specs" % "1.6.1" % "test->default"
+	val specs = "org.scala-tools.testing" % "specs" % "1.6.2" % "test->default"
 
 	// App Engine paths
 	val gaeSharedJars = gaePath / "lib" / "shared" * "*.jar"
