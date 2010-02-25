@@ -43,7 +43,6 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 			val key = quoteController.save(q1)
 			key must notBeNull
 		}
-		/*
 		"have a searcher with a reader with terms" >> {
 			quoteController.save(q1)
 			val terms = searchController.searcher.getIndexReader.terms
@@ -65,6 +64,5 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 			quoteController.save(q1)
 			searchController.searchText("dick").length must beGreaterThan(0)
 		}
-		*/
 	}
 }
