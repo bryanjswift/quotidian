@@ -6,6 +6,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.index.{IndexWriter,SerialMergeScheduler}
 import org.apache.lucene.index.IndexWriter.MaxFieldLength.UNLIMITED
 import org.apache.lucene.store.Directory
+import org.apache.lucene.util.Version
 import quotidian.Logging
 import quotidian.model.Quote
 
@@ -13,7 +14,7 @@ abstract class QuoteController extends Logging {
 	protected def persister:Persister
 	protected def directory:Directory
 	protected def MaxPerPage:Int
-	protected def writer:IndexWriter = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
+	protected def writer:IndexWriter = new IndexWriter(directory,new StandardAnalyzer(Version.LUCENE_30),UNLIMITED)
 	def all:List[Quote] = persister.all(Quote.Kind)
 	def delete(id:Serializable):Unit = persister.delete(Quote.Kind,id)
 	def get(id:Serializable):Quote = persister.get(Quote.Kind,id).asInstanceOf[Quote]

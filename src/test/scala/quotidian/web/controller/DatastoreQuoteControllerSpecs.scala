@@ -4,6 +4,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.index.{IndexReader,IndexWriter,Term}
 import org.apache.lucene.index.IndexWriter.MaxFieldLength.UNLIMITED
 import org.apache.lucene.search.{FuzzyQuery,IndexSearcher,TermQuery}
+import org.apache.lucene.util.Version
 import quotidian.DatastoreSpecification
 import quotidian.model.Quote
 import quotidian.search.DatastoreDirectory
@@ -18,7 +19,7 @@ class DatastoreControllerSpecs extends DatastoreSpecification {
 		datastoreCleanup.after
 		"be able to have Quotes written to it" >> {
 			val directory = new DatastoreDirectory
-			val writer = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
+			val writer = new IndexWriter(directory,new StandardAnalyzer(Version.LUCENE_30),UNLIMITED)
 			writer.addDocument(q1)
 			writer.commit
 			val searcher = new IndexSearcher(directory)
@@ -29,7 +30,7 @@ class DatastoreControllerSpecs extends DatastoreSpecification {
 		}
 		"be able to find Quotes written to it" >> {
 			val directory = new DatastoreDirectory()
-			val writer = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
+			val writer = new IndexWriter(directory,new StandardAnalyzer(Version.LUCENE_30),UNLIMITED)
 			writer.addDocument(q1)
 			writer.commit
 			val searcher = new IndexSearcher(directory)

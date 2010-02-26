@@ -32,7 +32,7 @@ class DatastoreDirectorySpecs extends DatastoreSpecification {
 		val filename = "test"
 		val bytes = "This is a string to write".getBytes
 		"contain no files" >> {
-			0 mustEqual directory.list.length
+			0 mustEqual directory.listAll.length
 		}
 		"be able to create new files" >> {
 			val output = directory.createOutput(filename)
@@ -63,7 +63,7 @@ class DatastoreDirectorySpecs extends DatastoreSpecification {
 			modified must beLessThan(now)
 		}
 		"be able to list file names" >> {
-			val filenames = directory.list
+			val filenames = directory.listAll
 			1 mustEqual filenames.length
 			filenames.toList mustContain(filename)
 		}

@@ -1,7 +1,7 @@
 package quotidian.search
 
 import com.google.appengine.api.datastore.{Blob,Entity}
-import java.io.IOException
+import java.io.{File,IOException}
 import java.util.Calendar
 import org.apache.lucene.store.{FSDirectory,IndexInput,IndexOutput}
 import quotidian.DatastoreSpecification
@@ -24,7 +24,7 @@ class DatastoreIndexInputSpecs extends DatastoreSpecification {
 		var dso:IndexOutput = null
 		var dsi:IndexInput = null
 		doBefore {
-			fsd = FSDirectory.getDirectory(directoryName)
+			fsd = FSDirectory.open(new File(directoryName))
 			fso = fsd.createOutput(filename)
 			dsd = new DatastoreDirectory
 			dso = dsd.createOutput(filename)

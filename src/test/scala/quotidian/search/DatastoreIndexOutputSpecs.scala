@@ -1,5 +1,6 @@
 package quotidian.search
 
+import java.io.File
 import java.util.Calendar
 import org.apache.lucene.store.{FSDirectory,IndexInput,IndexOutput}
 import quotidian.DatastoreSpecification
@@ -15,7 +16,7 @@ class DatastoreIndexOutputSpecs extends DatastoreSpecification {
 		var dso:IndexOutput = null
 		var dsi:IndexInput = null
 		doBefore {
-			fsd = FSDirectory.getDirectory(directoryName)
+			fsd = FSDirectory.open(new File(directoryName))
 			fso = fsd.createOutput(filename)
 			fsi = fsd.openInput(filename)
 			dsd = new DatastoreDirectory
