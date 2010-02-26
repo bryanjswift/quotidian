@@ -15,7 +15,8 @@ class Quote(
 	@(Persistent @getter) val text:String,
 	@(Persistent @getter) val source:String,
 	@(Persistent @getter) val context:String
-) extends Savable {
+) extends Savable with Logging {
+	debug("created Quote : " + this.toString)
 	def this(text:String,source:String,context:String) = this(0,text,source,context)
 	private lazy val all = List(text,source,context)
 	private def canEqual(a:Any) = a.isInstanceOf[Quote]
