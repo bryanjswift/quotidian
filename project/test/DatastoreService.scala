@@ -1,4 +1,5 @@
 import com.google.appengine.api.datastore.dev.LocalDatastoreService
+import com.google.appengine.api.labs.taskqueue.dev.LocalTaskQueue
 import com.google.appengine.tools.development.testing.{LocalDatastoreServiceTestConfig,LocalServiceTestHelper}
 import java.io.File
 import java.util.zip.{Checksum,CRC32}
@@ -9,6 +10,7 @@ import quotidian.search._
 object DatastoreService {
 	val helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig())
 	val service = LocalServiceTestHelper.getLocalService(LocalDatastoreService.PACKAGE).asInstanceOf[LocalDatastoreService]
+	val taskQueue = LocalServiceTestHelper.getLocalService(LocalTaskQueue.PACKAGE).asInstanceOf[LocalTaskQueue]
 	def start = {
 		service.start
 	}
