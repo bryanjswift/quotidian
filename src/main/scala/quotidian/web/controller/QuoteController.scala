@@ -27,15 +27,19 @@ abstract class QuoteController extends Logging {
 		val key = persister.save(quote)
 		// Invoke something to index the quote
 		// Task queue or direct writing
+		index(quote)
+		key
+	}
+	def index(quote:Quote) {
 		val w = writer
 		w.setMergeScheduler(new SerialMergeScheduler)
 		try {
 			w.addDocument(quote)
 			w.commit
 		} finally { w.close }
-		key
 	}
 	def page(pageNumber:Int):List[Quote] = persister.some(Quote.Kind,MaxPerPage,(pageNumber - 1) * MaxPerPage)
+
 	implicit private def savables2quotes(savables:List[Savable]):List[Quote] = {
 		for {
 			savable <- savables
