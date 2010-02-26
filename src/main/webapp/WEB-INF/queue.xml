@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queue-entries>
+	<queue>
+		<name>index-quote</name>
+		<rate>6/s</rate>
+		<bucket-size>6</bucket-size>
+	</queue>
+</queue-entries>

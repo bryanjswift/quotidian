@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>Quote Crate</display-name>
+<!-- Primary servlet to store and retrieve quotes -->
 	<servlet>
 		<servlet-name>quote</servlet-name>
 		<servlet-class>quotidian.web.QuoteServlet</servlet-class>
@@ -9,6 +10,27 @@
 		<servlet-name>quote</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
+<!-- Task queue servlet to index quotes with Lucene -->
+	<servlet>
+		<servlet-name>index quotes</servlet-name>
+		<servlet-class>quotidian.web.QuoteIndexServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>index quotes</servlet-name>
+		<url-pattern>/task/index-quote</url-pattern>
+	</servlet-mapping>
+<!-- make task urls only accessible by admins -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>taskurls</web-resource-name>
+			<url-pattern>/_ah/queue</url-pattern>
+			<url-pattern>/task/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+<!-- list of default paths -->
 	<welcome-file-list>
 		<welcome-file>index</welcome-file>
 	</welcome-file-list>
