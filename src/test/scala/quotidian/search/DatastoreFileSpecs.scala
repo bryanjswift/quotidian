@@ -36,12 +36,12 @@ class DatastoreFileSpecs extends DatastoreSpecification {
 			val file = DatastoreFile()
 			val bits = new Array[Byte](15)
 			file.write(bytes,0,15).seek(0).read(bits,0,15)
-			bits must containInOrder(bytes)
+			bits.toList must containInOrder(bytes.toList)
 		}
 		"provide an entity with the written bytes contained" >> {
 			val file = DatastoreFile().write(bytes,0,15)
 			val bits = file.entity.getProperty(DatastoreFile.Contents).asInstanceOf[Blob].getBytes
-			bits must containInOrder(bytes)
+			bits.toList must containInOrder(bytes.toList)
 		}
 		"have a length equal to the number of bytes written" >> {
 			val file = DatastoreFile().write(bytes,0,15)

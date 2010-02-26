@@ -55,7 +55,7 @@ class DatastoreIndexInputSpecs extends DatastoreSpecification {
 			val bytes = oAndB._2
 			val bits = new Array[Byte](bytes.length)
 			dsi.readBytes(bits,0,length)
-			bits must containInOrder(bytes)
+			bits.toList must containInOrder(bytes.toList)
 		}
 		"read as any other IndexInput" >> {
 			implicit def i2b(i:Int) = i.toByte
