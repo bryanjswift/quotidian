@@ -11,6 +11,7 @@ object Config {
 		Quote.Text -> "*Words to remember...",
 		Quote.Source -> "The wordsmith..",
 		Quote.Context -> "Provide some context..")
+	val IndexQuoteQueue = "index-quote"
 	def apply(property:String) = properties.getProperty(property)
 	def objectForProperty[T](property:String) = Class.forName(apply(property)).getConstructor().newInstance().asInstanceOf[T]
 	val qc = objectForProperty[QuoteController]("quote.controller")
