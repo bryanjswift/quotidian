@@ -11,3 +11,4 @@ src/main/webapp/css/*.css
 tags
 target
 WEB-INF
+!src/main/webapp/WEB-INF
