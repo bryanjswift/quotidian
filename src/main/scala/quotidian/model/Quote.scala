@@ -6,15 +6,17 @@ import java.io.Serializable
 import org.apache.lucene.document.{Document,Field}
 import quotidian.Logging
 import quotidian.persistence.datastore.PersisterHelper
+import scala.annotation.target.getter
 import scala.xml.NodeSeq
 
 @Entity(name = "Quote")
 class Quote(
 	val id:Serializable,
-	@Persistent val text:String,
-	@Persistent val source:String,
-	@Persistent val context:String
-) extends Savable {
+	@(Persistent @getter) val text:String,
+	@(Persistent @getter) val source:String,
+	@(Persistent @getter) val context:String
+) extends Savable with Logging {
+	debug("created Quote : " + this.toString)
 	def this(text:String,source:String,context:String) = this(0,text,source,context)
 	private lazy val all = List(text,source,context)
 	private def canEqual(a:Any) = a.isInstanceOf[Quote]
@@ -42,7 +44,11 @@ object Quote extends Logging {
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
 	private def fromXml(xml:NodeSeq):Quote = {
-		new Quote((xml \\ Id)(0).text,(xml \\ Text)(0).text,(xml \\ Source)(0).text,(xml \\ Context)(0).text)
+		new Quote(
+			(xml \\ Id)(0).text,
+			(xml \\ Text)(0).text,
+			(xml \\ Source)(0).text,
+			(xml \\ Context)(0).text)
 	}
 	implicit def quote2document(quote:Quote):Document = {
 		val document = new Document()

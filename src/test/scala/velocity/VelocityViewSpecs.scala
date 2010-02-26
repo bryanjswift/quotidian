@@ -3,7 +3,7 @@ package velocity
 import java.io.{PrintWriter,StringWriter}
 import org.specs.Specification
 
-object VelocityViewSpecs extends Specification {
+class VelocityViewSpecs extends Specification {
 	class Request extends DummyRequest { }
 	class Response extends DummyResponse {
 		val writer = new StringWriter()

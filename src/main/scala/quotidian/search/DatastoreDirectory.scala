@@ -16,7 +16,7 @@ class DatastoreDirectory extends Directory with Logging {
 	def fileExists(name:String):Boolean = DatastoreDirectory.fileExists(name)
 	def fileLength(name:String):Long = fileByName(name).length
 	def fileModified(name:String):Long = fileByName(name).dateModified
-	def list:Array[String] = DatastoreDirectory.listFiles
+	def listAll:Array[String] = DatastoreDirectory.listFiles
 	def openInput(name:String):IndexInput = new DatastoreIndexInput(this,fileByName(name))
 	def renameFile(from:String,to:String):Unit = {
 		if (!DatastoreDirectory.fileExists(from)) throw new IOException("No file called {from} exists")
@@ -30,6 +30,7 @@ class DatastoreDirectory extends Directory with Logging {
 }
 
 object DatastoreDirectory {
+	val index = com.google.appengine.api.datastore.KeyFactory.createKey("index","index")
 	private val datastore = DatastoreServiceFactory.getDatastoreService()
 	private def delete(name:String):Unit = {
 		if (!fileExists(name)) throw new IOException("No file called {name} exists")

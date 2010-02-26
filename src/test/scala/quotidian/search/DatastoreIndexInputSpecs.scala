@@ -1,12 +1,12 @@
 package quotidian.search
 
 import com.google.appengine.api.datastore.{Blob,Entity}
-import java.io.IOException
+import java.io.{File,IOException}
 import java.util.Calendar
 import org.apache.lucene.store.{FSDirectory,IndexInput,IndexOutput}
 import quotidian.DatastoreSpecification
 
-object DatastoreIndexInputSpecs extends DatastoreSpecification {
+class DatastoreIndexInputSpecs extends DatastoreSpecification {
 	val filename = "1.fdx"
 	val length = 40
 	val rand = new scala.util.Random(System.currentTimeMillis)
@@ -24,7 +24,7 @@ object DatastoreIndexInputSpecs extends DatastoreSpecification {
 		var dso:IndexOutput = null
 		var dsi:IndexInput = null
 		doBefore {
-			fsd = FSDirectory.getDirectory(directoryName)
+			fsd = FSDirectory.open(new File(directoryName))
 			fso = fsd.createOutput(filename)
 			dsd = new DatastoreDirectory
 			dso = dsd.createOutput(filename)
@@ -55,7 +55,7 @@ object DatastoreIndexInputSpecs extends DatastoreSpecification {
 			val bytes = oAndB._2
 			val bits = new Array[Byte](bytes.length)
 			dsi.readBytes(bits,0,length)
-			bits must containInOrder(bytes)
+			bits.toList must containInOrder(bytes.toList)
 		}
 		"read as any other IndexInput" >> {
 			implicit def i2b(i:Int) = i.toByte

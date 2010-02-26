@@ -32,6 +32,8 @@ object DatastorePersister extends Persister with Logging {
 			id.asInstanceOf[Key]
 		} else if (id.isInstanceOf[Long] || id.isInstanceOf[Int]) {
 			KeyFactory.createKey(table,id.asInstanceOf[Long])
+		} else if (id.isInstanceOf[String]) {
+			KeyFactory.stringToKey(id.asInstanceOf[String])
 		} else {
 			throw new IllegalArgumentException("id must be of type com.google.appengine.api.datastore.Key")
 		}
