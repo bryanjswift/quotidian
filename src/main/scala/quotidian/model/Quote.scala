@@ -6,14 +6,15 @@ import java.io.Serializable
 import org.apache.lucene.document.{Document,Field}
 import quotidian.Logging
 import quotidian.persistence.datastore.PersisterHelper
+import scala.annotation.target.getter
 import scala.xml.NodeSeq
 
 @Entity(name = "Quote")
 class Quote(
 	val id:Serializable,
-	@Persistent val text:String,
-	@Persistent val source:String,
-	@Persistent val context:String
+	@(Persistent @getter) val text:String,
+	@(Persistent @getter) val source:String,
+	@(Persistent @getter) val context:String
 ) extends Savable {
 	def this(text:String,source:String,context:String) = this(0,text,source,context)
 	private lazy val all = List(text,source,context)

@@ -65,7 +65,7 @@ class DatastoreControllerSpecs extends DatastoreSpecification {
 			searchController.searchText("dick").length must beGreaterThan(0)
 		}
 	}
-	"Saving ten (10) Quotes" should {
+	"Saving fifty (50) Quotes" should {
 		datastoreCleanup.after
 		"not throw an error" >> {
 			val key = quoteController.save(q1)
