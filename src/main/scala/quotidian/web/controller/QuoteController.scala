@@ -7,7 +7,7 @@ import org.apache.lucene.index.{IndexWriter,SerialMergeScheduler}
 import org.apache.lucene.index.IndexWriter.MaxFieldLength.UNLIMITED
 import org.apache.lucene.store.Directory
 import org.apache.lucene.util.Version
-import quotidian.Logging
+import quotidian.{Config,Logging}
 import quotidian.model.Quote
 
 abstract class QuoteController extends Logging {
@@ -15,6 +15,7 @@ abstract class QuoteController extends Logging {
 	protected def directory:Directory
 	protected def MaxPerPage:Int
 	protected def writer:IndexWriter = new IndexWriter(directory,new StandardAnalyzer(Version.LUCENE_30),UNLIMITED)
+	def enqueue(id:Serializable):Unit
 	def all:List[Quote] = persister.all(Quote.Kind)
 	def delete(id:Serializable):Unit = persister.delete(Quote.Kind,id)
 	def get(id:Serializable):Quote = persister.get(Quote.Kind,id).asInstanceOf[Quote]
@@ -23,13 +24,7 @@ abstract class QuoteController extends Logging {
 		val position = (quotes.length * Math.random).toInt
 		quotes(position)
 	}
-	def save(quote:Quote):Serializable = {
-		val key = persister.save(quote)
-		// Invoke something to index the quote
-		// Task queue or direct writing
-		index(quote)
-		key
-	}
+	def save(quote:Quote) = persister.save(quote)
 	def index(quote:Quote) {
 		val w = writer
 		w.setMergeScheduler(new SerialMergeScheduler)
@@ -39,6 +34,12 @@ abstract class QuoteController extends Logging {
 		} finally { w.close }
 	}
 	def page(pageNumber:Int):List[Quote] = persister.some(Quote.Kind,MaxPerPage,(pageNumber - 1) * MaxPerPage)
+
+	private[controller] def saveAndIndex(quote:Quote) = {
+		val key = save(quote)
+		index(quote)
+		key
+	}
 
 	implicit private def savables2quotes(savables:List[Savable]):List[Quote] = {
 		for {

@@ -41,39 +41,39 @@ class DatastoreControllerSpecs extends DatastoreSpecification {
 	"A controller" should {
 		datastoreCleanup.after
 		"save a quote" >> {
-			val key = quoteController.save(q1)
+			val key = quoteController.saveAndIndex(q1)
 			key must notBeNull
 		}
 		"have a searcher with a reader with terms" >> {
-			quoteController.save(q1)
+			quoteController.saveAndIndex(q1)
 			val terms = searchController.searcher.getIndexReader.terms
 			terms.next mustEqual true
 		}
 		"find Quotes by source" >> {
-			quoteController.save(q1)
-			quoteController.save(q2)
-			quoteController.save(q3)
+			quoteController.saveAndIndex(q1)
+			quoteController.saveAndIndex(q2)
+			quoteController.saveAndIndex(q3)
 			searchController.searchSource("Mary").length must beGreaterThan(0)
 			searchController.search("(source:Mary Lee)").length must beGreaterThan(0)
 			searchController.searchSource("Mary Lee").length must beGreaterThan(0)
 		}
 		"find Quotes by context" >> {
-			quoteController.save(q1)
+			quoteController.saveAndIndex(q1)
 			searchController.searchContext("barbeque").length must beGreaterThan(0)
 		}
 		"find Quotes by text" >> {
-			quoteController.save(q1)
+			quoteController.saveAndIndex(q1)
 			searchController.searchText("dick").length must beGreaterThan(0)
 		}
 	}
 	"Saving fifty (50) Quotes" should {
 		datastoreCleanup.after
 		"not throw an error" >> {
-			val key = quoteController.save(q1)
-			quoteController.save(q2)
-			quoteController.save(q3)
+			val key = quoteController.saveAndIndex(q1)
+			quoteController.saveAndIndex(q2)
+			quoteController.saveAndIndex(q3)
 			for (i <- 0 to 50) {
-				quoteController.save(Quote("This is a test","Test source","test context"))
+				quoteController.saveAndIndex(Quote("This is a test","Test source","test context"))
 			}
 			quoteController.get(key) must_== q1
 		}
