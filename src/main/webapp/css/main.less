@@ -1,9 +1,10 @@
 // Site Variables
-@bodyColor: #333333;
-@borderColor: @bodyColor * 4.6;
-@buttonBackground: @bodyColor * 4;
-@errorColor: #de3333;
+@bodyColor: #1c1c1e;
+@borderColor: #8c827b;
+@buttonBackground: #cccccc;
+@errorColor: #fd6b3c;
 @headerColor: #5b83ad;
+@inputBackground: #eaeaea;
 @defaultFaces: Helvetica, Arial, sans-serif;
 // Site Mixins
 .bodyText { color: @bodyColor; font: normal 1em @defaultFaces; }
@@ -12,8 +13,8 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li, fieldset, input, textarea, button, bloc
 fieldset, input, textarea, button { border: none; background: none; }
 h1, h2, h3, h4, h5, h6, p { font-size: 1em; line-height: 1; }
 /* General Styles */
-body { margin: 0; color: @bodyColor; background: #fff; font: normal 16px @defaultFaces; }
-h1, h2, h3 { color: @headerColor; }
+body { margin: 0; color: @bodyColor; background: #eeeeee; font: normal 16px @defaultFaces; }
+h1, h2, h3 { line-height: 1; color: @headerColor; }
 h1 { margin: 0.75em 0 0; font-size: 3.5em; }
 h2 { margin: 1em 0 0; font-size: 2em; }
 /* General Classes */
@@ -24,8 +25,10 @@ html[xmlns] .clearfix { display: block; }
 /* Styles */
 h1 a, h1 a:link, h1 a:visited { text-decoration: none; color: @headerColor; }
 h1 a:hover { color: @bodyColor; }
+p { margin: 0.5em 1em; }
 #primary { position: relative; margin: 0 5%; width: 65%; }
-.error { margin: 0.5em 0 -0.5em; font-style: italic; color: @errorColor; }
+.searchError { font-style: italic; color: @errorColor; }
+.error { margin: 0.5em 0 -0.5em; .searchError; }
 form { position: relative; display: block; padding: 0 5%;
 	// nested rules
 	label { display: block; margin: 0.5em 0 0; }
@@ -35,16 +38,26 @@ textarea, input, button { margin: 0.6em 0 0; padding: 0.2em 0.5em 0; height: 1.2
 textarea, input { display: block; border-bottom: 1px solid @borderColor; width: 100%; }
 textarea.defaultText, input.defaultText { color: @borderColor; }
 textarea.expandingTextarea { overflow: hidden; }
-textarea:focus, input:focus { background: @borderColor; outline: 2px solid @headerColor; -moz-outline: 2px solid @headerColor; }
-button { display: block; padding: 0 0.3em; border: 2px solid @borderColor; margin-left: 0.7em; height: 2em; cursor: pointer; background: @buttonBackground; }
-#secondary { position: absolute; top: 0; right: 0; width: 20%; }
+textarea:focus, input:focus {
+	border-color: @inputBackground; background: @inputBackground;
+	outline: 2px solid @headerColor; -moz-outline: 2px solid @headerColor;
+}
+button {
+	display: block; padding: 0 0.3em; border: 2px solid @borderColor; margin-left: 0.7em;
+	height: 2em; cursor: pointer; background: @buttonBackground;
+}
 ul { list-style: none; 
-	li { padding: 0 0 0 5%; margin: 0.8em 0 0.8em; list-style: none;
+	li { padding: 0.6em 0 0.4em 3%; border-left: 2px solid @headerColor; margin: 0.3em 0 0 2%; list-style: none;
 		// nested rules
-		blockquote { padding: 0 5% 0 0; margin: 0 0 0.3em; font-size: 1.1em; }
+		blockquote { padding: 0 5% 0 0; margin: 0 0 0.3em; font-size: 1.1em;
+			// nested rules
+			p { margin: 0; }
+		}
 		cite { margin: 0.5em 0.9em; font-size: 0.9em; font-style: italic; }
-		.context { margin: 0.5em 1em; font-size: 0.8em; }
+		.context { margin: 0.5em 1em 0; font-size: 0.8em; }
 	}
 }
+#secondary { position: fixed; top: 0; right: 0; padding: 0 5% 0 0; width: 20%; }
+#secondary h2 { margin: 1.91em 0 0.15em; }
 // Firefox Selection styles
 *::-moz-selection { color: #fff; background: @headerColor; }
