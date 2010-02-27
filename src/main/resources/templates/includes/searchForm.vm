@@ -1,0 +1,9 @@
+<form id="secondary" action="/search" method="get">
+	<h2>Search</h2>
+	<fieldset>
+		<label class="text" for="search">$search</label>
+		<input id="search" type="text" name="search" />
+		<button id="find" name="find" value="find" type="submit">Find it!</button>
+	</fieldset>
+</form>
+
