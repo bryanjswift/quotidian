@@ -11,7 +11,8 @@ object Config {
 		Quote.Text -> "*Words to remember...",
 		Quote.Source -> "The wordsmith..",
 		Quote.Context -> "Provide some context..",
-		Search.Key -> "Find some words..")
+		Search.Key -> "Find some words..",
+		Search.Empty -> "You need to tell us what you're looking for!")
 	val IndexQuoteQueue = "index-quote"
 	def apply(property:String) = properties.getProperty(property)
 	def objectForProperty[T](property:String) = Class.forName(apply(property)).getConstructor().newInstance().asInstanceOf[T]

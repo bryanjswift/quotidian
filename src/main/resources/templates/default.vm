@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div id="primary">
-			<h1>Quote Crate</h1>
+			<h1><a href="/">Quote Crate</a></h1>
 			<form action="/" method="post">
 				#foreach ($error in $errors)
 					<p class="error">$error</p>
@@ -26,19 +26,27 @@
 				<button id="add" name="add" value="add" type="submit">Crate it!</button>
 			</form>
 			<h2>Recent</h2>
-			<ul>
-				#foreach ($quote in $quotes)
-					<li>
-						<blockquote cite="$quote.source()">
-							<p>$quote.text()</p>
-						</blockquote>
-						<cite>$quote.source()</cite>
-						<p class="context">$quote.context()</p>
-					</li>
-				#end
-			</ul>
+			#if (quotes.size() > 0)
+				<ul>
+					#foreach ($quote in $quotes)
+						<li>
+							<blockquote cite="$quote.source()">
+								<p>$quote.text()</p>
+							</blockquote>
+							<cite>$quote.source()</cite>
+							<p class="context">$quote.context()</p>
+						</li>
+					#end
+				</ul>
+			#else
+				<p>No quotes to display.</p>
+			#end
 		</div>
 		<form id="secondary" action="/search" method="post">
+			<h2>Search</h2>
+			#if ($searchError && $searchError != "")
+				<p class="searchError">$searchError</p>
+			#end
 			<fieldset>
 				<label class="text" for="search">$search</label>
 				<input id="search" type="text" name="search" />

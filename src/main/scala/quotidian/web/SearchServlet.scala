@@ -15,7 +15,7 @@ class SearchServlet extends HttpServlet with Logging {
 		val q = http(Search.Key,Labels(Search.Key))
 		val context = q match {
 			case None =>
-				Map("quotes" -> Nil,"searchError" -> Labels(Search.Empty),"query" -> q)
+				Map("quotes" -> Config.qc.page(1),"searchError" -> Labels(Search.Empty),"query" -> q)
 			case Some(query) =>
 				Map("quotes" -> Config.sc.search(query),"searchError" -> "","query" -> query)
 		}
