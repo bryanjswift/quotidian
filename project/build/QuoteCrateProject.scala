@@ -18,7 +18,7 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 	val javaNet = "Java.net Repository for Maven" at "http://download.java.net/maven/2/"
 
 	// dependencies for compiling
-	val velocity = "org.apache.velocity" % "velocity" % "1.6.1"
+	val velocity = "org.apache.velocity" % "velocity" % "1.6.2"
 	val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.2.1"
 	val commonsCollections = "commons-collections" % "commons-collections" % "3.2.1"
 	val commonsLang = "commons-lang" % "commons-lang" % "2.4"
