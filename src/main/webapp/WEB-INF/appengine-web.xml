@@ -10,8 +10,17 @@
 		<include path="/**.png" />
 		<include path="/favicon.ico" />
 	</static-files>
-	<resource-files />
-	<system-properties />
+	<resource-files>
+		<exclude path="/**.js" />
+		<exclude path="/**.css" />
+		<exclude path="/**.jpg" />
+		<exclude path="/**.gif" />
+		<exclude path="/**.png" />
+		<exclude path="/favicon.ico" />
+	</resource-files>
+	<system-properties>
+		<property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties" />
+	</system-properties>
 	<env-variables />
 </appengine-web-app>
 
