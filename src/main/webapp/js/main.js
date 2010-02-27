@@ -45,6 +45,7 @@
 	var text = new TextAsLabelInput(new ExpandingTextarea('text'));
 	var source = new TextAsLabelInput('source');
 	var context = new TextAsLabelInput('context');
+	var search = new TextAsLabelInput('search');
 	function redrawElement() {
 		var el = $(this);
 		el.setStyle('height',el.getSize().y - 1);

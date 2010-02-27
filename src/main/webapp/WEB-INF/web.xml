@@ -19,6 +19,15 @@
 		<servlet-name>index quotes</servlet-name>
 		<url-pattern>/task/index-quote</url-pattern>
 	</servlet-mapping>
+<!-- Servlet for search results -->
+	<servlet>
+		<servlet-name>search</servlet-name>
+		<servlet-class>quotidian.web.SearchServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>search</servlet-name>
+		<url-pattern>/search</url-pattern>
+	</servlet-mapping>
 <!-- make task urls only accessible by admins -->
 	<security-constraint>
 		<web-resource-collection>

@@ -1,3 +1,6 @@
 [submodule "simple-scala-persistence"]
 	path = simple-scala-persistence
 	url = git://github.com/bryanjswift/simple-scala-persistence.git
+[submodule "simple-velocity"]
+	path = simple-velocity
+	url = git@github.com:bryanjswift/simple-velocity.git

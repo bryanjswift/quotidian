@@ -6,7 +6,7 @@ import quotidian.Logging
 class HttpHelper(request:Request,response:Response) extends Logging {
 	def apply(param:String,default:String = "") = {
 		val value = request.getParameter(param)
-		if (value == "" || value == default) None else Some(value)
+		if (value == null || value == "" || value == default) None else Some(value)
 	}
 }
 
