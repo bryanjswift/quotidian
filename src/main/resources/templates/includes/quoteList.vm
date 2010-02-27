@@ -3,7 +3,7 @@
 		#foreach ($quote in $quotes)
 			<li>
 				<blockquote cite="$quote.source()">
-					<p>$quote.text()</p>
+					<p><strong>&#0147;</strong> $quote.text() <strong>&#0148;</strong></p>
 				</blockquote>
 				#if ($quote.source() != "")
 					<cite>$quote.source()</cite>
