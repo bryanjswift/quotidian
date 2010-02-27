@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Quote Crate</title>
+		<meta name="description" content="A place to store and organize quotations." />
 		<link type="text/css" rel="stylesheet" href="/css/main.css" />
 	</head>
 	<body>
