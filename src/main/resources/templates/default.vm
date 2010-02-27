@@ -1,39 +1,58 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<title>Hello Quotes</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Quote Crate</title>
+		<meta name="description" content="A place to store and organize quotations." />
 		<link type="text/css" rel="stylesheet" href="/css/main.css" />
 	</head>
 	<body>
 		<div id="primary">
-			<h1>Quote 'em on it</h1>
-			<form action="/quote" method="post">
+			<h1><a href="/">Quote Crate</a></h1>
+			<form action="/" method="post">
+				#foreach ($error in $errors)
+					<p class="error">$error</p>
+				#end
 				<fieldset>
-					<label class="text" for="text">Words to remember...</label>
+					<label class="text" for="text">$text</label>
 					<textarea id="text" name="text"></textarea>
 				</fieldset>
 				<fieldset>
-					<label class="source" for="source">The wordsmith..</label>
+					<label class="source" for="source">$source</label>
 					<input id="source" type="text" name="source" />
-					<label class="context" for="context">Provide some context..</label>
+					<label class="context" for="context">$context</label>
 					<input id="context" type="text" name="context" />
 				</fieldset>
-				<button id="add" name="add" value="add" type="submit">Send to storage</button>
+				<button id="add" name="add" value="add" type="submit">Crate it!</button>
 			</form>
-			<h2>Recent Quotes</h2>
-			<ul>
-				#foreach ($quote in $quotes)
-					<li>
-						<blockquote cite="$quote.source()">
-							<p>$quote.text()</p>
-						</blockquote>
-						<cite>$quote.source()</cite>
-						<p class="context">$quote.context()</p>
-					</li>
-				#end
-			</ul>
+			<h2>Recent</h2>
+			#if (quotes.size() > 0)
+				<ul>
+					#foreach ($quote in $quotes)
+						<li>
+							<blockquote cite="$quote.source()">
+								<p>$quote.text()</p>
+							</blockquote>
+							<cite>$quote.source()</cite>
+							<p class="context">$quote.context()</p>
+						</li>
+					#end
+				</ul>
+			#else
+				<p>No quotes to display.</p>
+			#end
 		</div>
+		<form id="secondary" action="/search" method="post">
+			<h2>Search</h2>
+			#if ($searchError && $searchError != "")
+				<p class="searchError">$searchError</p>
+			#end
+			<fieldset>
+				<label class="text" for="search">$search</label>
+				<input id="search" type="text" name="search" />
+				<button id="find" name="find" value="find" type="submit">Find it!</button>
+			</fieldset>
+		</form>
 		<script type="text/javascript" src="/js/mootools-1.2.3-core.js"></script>
 		<script type="text/javascript" src="/js/main.js"></script>
 	</body>

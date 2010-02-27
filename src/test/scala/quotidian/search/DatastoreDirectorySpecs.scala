@@ -8,7 +8,7 @@ import org.apache.lucene.search.IndexSearcher
 import org.apache.lucene.store.Directory
 import quotidian.DatastoreSpecification
 
-object DatastoreDirectorySpecs extends DatastoreSpecification {
+class DatastoreDirectorySpecs extends DatastoreSpecification {
 	val docsToAdd = 500
 	def setup = {
 		val dir = new DatastoreDirectory
@@ -32,7 +32,7 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 		val filename = "test"
 		val bytes = "This is a string to write".getBytes
 		"contain no files" >> {
-			0 mustEqual directory.list.length
+			0 mustEqual directory.listAll.length
 		}
 		"be able to create new files" >> {
 			val output = directory.createOutput(filename)
@@ -63,9 +63,9 @@ object DatastoreDirectorySpecs extends DatastoreSpecification {
 			modified must beLessThan(now)
 		}
 		"be able to list file names" >> {
-			val filenames = directory.list
+			val filenames = directory.listAll
 			1 mustEqual filenames.length
-			filenames mustContain(filename)
+			filenames.toList mustContain(filename)
 		}
 	}
 	"A setup Directory" should {

@@ -4,11 +4,12 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer
 import org.apache.lucene.index.{IndexReader,IndexWriter,Term}
 import org.apache.lucene.index.IndexWriter.MaxFieldLength.UNLIMITED
 import org.apache.lucene.search.{FuzzyQuery,IndexSearcher,TermQuery}
+import org.apache.lucene.util.Version
 import quotidian.DatastoreSpecification
 import quotidian.model.Quote
 import quotidian.search.DatastoreDirectory
 
-object DatastoreControllerSpecs extends DatastoreSpecification {
+class DatastoreControllerSpecs extends DatastoreSpecification {
 	val quoteController = new DatastoreQuoteController
 	val searchController = new DatastoreSearchController
 	val q1 = Quote("I like oysters but they never make me think 'I want dick in me'.","Mary Lee","A barbeque after some drinks")
@@ -18,7 +19,7 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 		datastoreCleanup.after
 		"be able to have Quotes written to it" >> {
 			val directory = new DatastoreDirectory
-			val writer = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
+			val writer = new IndexWriter(directory,new StandardAnalyzer(Version.LUCENE_30),UNLIMITED)
 			writer.addDocument(q1)
 			writer.commit
 			val searcher = new IndexSearcher(directory)
@@ -29,7 +30,7 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 		}
 		"be able to find Quotes written to it" >> {
 			val directory = new DatastoreDirectory()
-			val writer = new IndexWriter(directory,new StandardAnalyzer(),UNLIMITED)
+			val writer = new IndexWriter(directory,new StandardAnalyzer(Version.LUCENE_30),UNLIMITED)
 			writer.addDocument(q1)
 			writer.commit
 			val searcher = new IndexSearcher(directory)
@@ -40,29 +41,41 @@ object DatastoreControllerSpecs extends DatastoreSpecification {
 	"A controller" should {
 		datastoreCleanup.after
 		"save a quote" >> {
-			val key = quoteController.save(q1)
+			val key = quoteController.saveAndIndex(q1)
 			key must notBeNull
 		}
 		"have a searcher with a reader with terms" >> {
-			quoteController.save(q1)
+			quoteController.saveAndIndex(q1)
 			val terms = searchController.searcher.getIndexReader.terms
 			terms.next mustEqual true
 		}
 		"find Quotes by source" >> {
-			quoteController.save(q1)
-			quoteController.save(q2)
-			quoteController.save(q3)
+			quoteController.saveAndIndex(q1)
+			quoteController.saveAndIndex(q2)
+			quoteController.saveAndIndex(q3)
 			searchController.searchSource("Mary").length must beGreaterThan(0)
 			searchController.search("(source:Mary Lee)").length must beGreaterThan(0)
 			searchController.searchSource("Mary Lee").length must beGreaterThan(0)
 		}
 		"find Quotes by context" >> {
-			quoteController.save(q1)
+			quoteController.saveAndIndex(q1)
 			searchController.searchContext("barbeque").length must beGreaterThan(0)
 		}
 		"find Quotes by text" >> {
-			quoteController.save(q1)
+			quoteController.saveAndIndex(q1)
 			searchController.searchText("dick").length must beGreaterThan(0)
+		}
+	}
+	"Saving fifty (50) Quotes" should {
+		datastoreCleanup.after
+		"not throw an error" >> {
+			val key = quoteController.saveAndIndex(q1)
+			quoteController.saveAndIndex(q2)
+			quoteController.saveAndIndex(q3)
+			for (i <- 0 to 50) {
+				quoteController.saveAndIndex(Quote("This is a test","Test source","test context"))
+			}
+			quoteController.get(key) must_== q1
 		}
 	}
 }

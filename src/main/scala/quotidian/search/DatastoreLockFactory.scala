@@ -3,6 +3,7 @@ package quotidian.search
 import com.google.appengine.api.datastore.{DatastoreServiceFactory,Entity,EntityNotFoundException}
 import java.util.ConcurrentModificationException
 import org.apache.lucene.store.{Lock,LockFactory}
+import quotidian.Logging
 
 class DatastoreLockFactory extends LockFactory with Logging {
 	private var locks = Map[String,Lock]()
@@ -23,7 +24,7 @@ class DatastoreLockFactory extends LockFactory with Logging {
 }
 
 class DatastoreLock(private val lockName:String) extends Lock with Logging {
-	private val lock = new Entity(DatastoreLock.Kind,lockName)
+	private val lock = new Entity(DatastoreLock.Kind,lockName,DatastoreDirectory.index)
 	def isLocked:Boolean = {
 		try {
 			DatastoreLock.datastore.get(lock.getKey)

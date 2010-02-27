@@ -2,6 +2,7 @@
 @bodyColor: #333333;
 @borderColor: @bodyColor * 4.6;
 @buttonBackground: @bodyColor * 4;
+@errorColor: #de3333;
 @headerColor: #5b83ad;
 @defaultFaces: Helvetica, Arial, sans-serif;
 // Site Mixins
@@ -21,7 +22,10 @@ h2 { margin: 1em 0 0; font-size: 2em; }
 html[xmlns] .clearfix { display: block; }
 * html .clearfix { height: 1%; }
 /* Styles */
+h1 a, h1 a:link, h1 a:visited { text-decoration: none; color: @headerColor; }
+h1 a:hover { color: @bodyColor; }
 #primary { position: relative; margin: 0 5%; width: 65%; }
+.error { margin: 0.5em 0 -0.5em; font-style: italic; color: @errorColor; }
 form { position: relative; display: block; padding: 0 5%;
 	// nested rules
 	label { display: block; margin: 0.5em 0 0; }

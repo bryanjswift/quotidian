@@ -14,7 +14,7 @@ import quotidian.Logging
 	* @param ent				savable datastore representation of the file */
 class DatastoreFile(val position:Int, private val bytes:List[Byte], private val ent:Entity) extends Logging {
 	/** Default constructor, no entity is provided so a new one is created */
-	private def this() = this(0,List[Byte](),new Entity(Kind))
+	private def this() = this(0,List[Byte](),new Entity(Kind,DatastoreDirectory.index))
 	/** Constructor with entity, initial position and an array
 		* @param position		starting position for reading/writing from bytes
 		* @param bytes			array of bytes representing the starting data of this file
@@ -64,7 +64,7 @@ class DatastoreFile(val position:Int, private val bytes:List[Byte], private val 
 		* @return file with the new pointer set
 		* @throws IllegalArgumentException when pos is greater than scala.Math.MAX_INT */
 	def seek(pos:Long):DatastoreFile = {
-		if (pos > scala.Math.MAX_INT) throw new IOException("pos is too large to be used as an array index")
+		if (pos > scala.Int.MaxValue) throw new IOException("pos is too large to be used as an array index")
 		else seek(pos.asInstanceOf[Int])
 	}
 	/** Sets a property on the underlying Entity
@@ -119,7 +119,7 @@ object DatastoreFile {
 	def apply(position:Int,bytes:List[Byte],entity:Entity):DatastoreFile = new DatastoreFile(position,bytes,entity)
 	def apply(filename:String):DatastoreFile = {
 		val bytes = List[Byte]()
-		val entity = new Entity(Kind)
+		val entity = new Entity(Kind,DatastoreDirectory.index)
 		entity.setProperty(Filename,filename)
 		entity.setProperty(Contents,new Blob(bytes.toArray))
 		apply(entity)
