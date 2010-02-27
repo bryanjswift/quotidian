@@ -8,8 +8,8 @@ import velocity.{VelocityHelper,VelocityView}
 
 class QuoteServlet extends HttpServlet with Logging {
 	val Labels = Config.Labels
-	override def doGet(request:Request, response:Response) = doGet(request,response,Nil)
-	def doGet(request:Request,response:Response,errors:List[String]) = {
+	override def doGet(request:Request, response:Response) { doGet(request,response,Nil) }
+	def doGet(request:Request,response:Response,errors:List[String]) {
 		val view = new VelocityView("templates/default.vm")
 		view.render(Map("quotes" -> Config.qc.page(1),"errors" -> errors) ++ Labels,request,response)
 	}
