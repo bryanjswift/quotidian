@@ -34,6 +34,7 @@ class Quote(
 }
 
 object Quote extends Logging {
+	val All = "all"
 	val Context = "context"
 	val Id = "id"
 	val Kind = "Quote"
@@ -53,6 +54,7 @@ object Quote extends Logging {
 	implicit def quote2document(quote:Quote):Document = {
 		val document = new Document()
 		document.add(new Field(Id,quote.id.toString,Field.Store.YES,Field.Index.NO))
+		document.add(new Field(All,List(quote.text,quote.source,quote.context).mkString(" "),Field.Store.YES,Field.Index.ANALYZED))
 		document.add(new Field(Text,quote.text,Field.Store.YES,Field.Index.ANALYZED))
 		document.add(new Field(Source,quote.source,Field.Store.YES,Field.Index.ANALYZED))
 		document.add(new Field(Context,quote.context,Field.Store.YES,Field.Index.ANALYZED))

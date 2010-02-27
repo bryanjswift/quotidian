@@ -15,7 +15,7 @@ abstract class SearchController extends Logging {
 	def searchSource(source:String):Array[Quote] = search(Quote.Source + ":" + source)
 	def searchText(text:String):Array[Quote] = search(Quote.Text + ":" + text)
 	def search(query:String):Array[Quote] = {
-		val parser = new QueryParser(Version.LUCENE_30,Quote.Text,new StandardAnalyzer(Version.LUCENE_30))
+		val parser = new QueryParser(Version.LUCENE_30,Quote.All,new StandardAnalyzer(Version.LUCENE_30))
 		search(parser.parse(query))
 	}
 	private def search(query:Query):Array[Quote] = {
