@@ -26,21 +26,7 @@
 				<button id="add" name="add" value="add" type="submit">Crate it!</button>
 			</form>
 			<h2>Recent</h2>
-			#if (quotes.size() > 0)
-				<ul>
-					#foreach ($quote in $quotes)
-						<li>
-							<blockquote cite="$quote.source()">
-								<p>$quote.text()</p>
-							</blockquote>
-							<cite>$quote.source()</cite>
-							<p class="context">$quote.context()</p>
-						</li>
-					#end
-				</ul>
-			#else
-				<p>No quotes to display.</p>
-			#end
+			#parse("templates/includes/quoteList.vm")
 		</div>
 		<form id="secondary" action="/search" method="post">
 			<h2>Search</h2>
