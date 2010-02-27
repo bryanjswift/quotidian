@@ -1,0 +1,20 @@
+#if ($quotes.size() > 0)
+	<ul>
+		#foreach ($quote in $quotes)
+			<li>
+				<blockquote cite="$quote.source()">
+					<p>$quote.text()</p>
+				</blockquote>
+				#if ($quote.source() != "")
+					<cite>$quote.source()</cite>
+				#end
+				#if ($quote.context() != "")
+					<p class="context">$quote.context()</p>
+				#end
+			</li>
+		#end
+	</ul>
+#else
+	<p id="noQuotes">No quotes to display.</p>
+#end
+
