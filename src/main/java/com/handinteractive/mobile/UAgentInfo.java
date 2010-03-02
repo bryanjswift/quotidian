@@ -4,6 +4,10 @@
 // by Anthony Hand, is licensed under a Creative Commons 
 // Attribution 3.0 United States License.
 //
+// Updated 01 March 2010 by Bryan J Swift
+//   - Remove un-needed if statements instead just returning the boolean
+//     inside the if clause
+//
 // Updated 14 December 2009 by A Hand
 //   - Added the method for detecting BlackBerry Touch
 //		devices like the Storm 1 and 2.
@@ -253,12 +257,10 @@ public class UAgentInfo {
     public boolean detectPalmOS() {
         //Most devices nowadays report as 'Palm', but some older ones reported as Blazer or Xiino.
         if (userAgent.indexOf(devicePalm) != -1 || userAgent.indexOf(engineBlazer) != -1 ||
-                userAgent.indexOf(engineXiino) != -1) {
+                userAgent.indexOf(engineXiino) != -1 && !detectPalmWebOS()) {
             //Make sure it's not WebOS first
-            if (detectPalmWebOS())
-				return false;
-			else 
-	            return true;
+            if (detectPalmWebOS()) { return false; }
+            else { return true; }
         }
         return false;
     }
@@ -363,11 +365,8 @@ public class UAgentInfo {
      * Detects if the current device is a Nintendo game device.
      */
     public boolean detectNintendo() {
-        if (userAgent.indexOf(deviceNintendo) != -1 || userAgent.indexOf(deviceWii) != -1 ||
-                userAgent.indexOf(deviceNintendoDs) != -1) {
-            return true;
-        }
-        return false;
+        return userAgent.indexOf(deviceNintendo) != -1 || userAgent.indexOf(deviceWii) != -1 ||
+            userAgent.indexOf(deviceNintendoDs) != -1;
     }
 
     /**
@@ -381,32 +380,21 @@ public class UAgentInfo {
      * Detects if the current device is an Internet-capable game console.
      */
     public boolean detectGameConsole() {
-        if (detectSonyPlaystation() || detectNintendo() || detectXbox()) {
-            return true;
-        }
-        return false;
+        return detectSonyPlaystation() || detectNintendo() || detectXbox();
     }
 
     /**
      * Detects if the current device supports MIDP, a mobile Java technology.
      */
     public boolean detectMidpCapable() {
-        if (userAgent.indexOf(deviceMidp) != -1 || httpAccept.indexOf(deviceMidp) != -1) {
-            return true;
-        }
-        return false;
+        return userAgent.indexOf(deviceMidp) != -1 || httpAccept.indexOf(deviceMidp) != -1;
     }
 
     /**
      * Detects if the current device is on one of the Maemo-based Nokia Internet Tablets.
      */
     public boolean detectMaemoTablet() {
-        if (userAgent.indexOf(maemo) != -1) {
-            return true;
-        } else if (userAgent.indexOf(maemoTablet) != -1 && userAgent.indexOf(linux) != -1) {
-            return true;
-        }
-        return false;
+        return (userAgent.indexOf(maemo) != -1 || (userAgent.indexOf(maemoTablet) != -1 && userAgent.indexOf(linux) != -1));
     }
 
     /**
