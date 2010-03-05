@@ -47,6 +47,8 @@
 */
 package com.handinteractive.mobile;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * The DetectSmartPhone class encapsulates information about
  *   a browser's connection to your web site. 
@@ -143,6 +145,17 @@ public class UAgentInfo {
         if (httpAccept != null) {
             this.httpAccept = httpAccept.toLowerCase();
         }
+    }
+
+    /**
+     * Initialize the userAgent and httpAccept variables by getting the headers
+     * from the HttpServletRequest
+     *
+     * @param request the HttpServletRequest to get the header information from
+     */
+    public UAgentInfo(HttpServletRequest request) {
+        this.userAgent = request.getHeader("User-Agent");
+        this.httpAccept = request.getHeader("Accept");
     }
 
     /**
