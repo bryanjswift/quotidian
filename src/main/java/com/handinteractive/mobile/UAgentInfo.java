@@ -154,8 +154,7 @@ public class UAgentInfo {
      * @param request the HttpServletRequest to get the header information from
      */
     public UAgentInfo(HttpServletRequest request) {
-        this.userAgent = request.getHeader("User-Agent");
-        this.httpAccept = request.getHeader("Accept");
+        this(request.getHeader("User-Agent"),request.getHeader("Accept"));
     }
 
     /**
