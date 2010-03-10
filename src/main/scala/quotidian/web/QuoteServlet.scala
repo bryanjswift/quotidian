@@ -4,17 +4,18 @@ import javax.servlet.http.{HttpServlet, HttpServletRequest => Request, HttpServl
 import quotidian.{Config,Logging}
 import quotidian.model.Quote
 import quotidian.web.controller.{QuoteController,SearchController}
-import velocity.{VelocityHelper,VelocityView}
+import velocity.VelocityView
 
-class QuoteServlet extends HttpServlet with Logging {
+class QuoteServlet extends QcServlet with Logging {
+	override lazy val html = "templates/default.vm"
 	val Labels = Config.Labels
-	override def doGet(request:Request, response:Response) { doGet(request,response,Nil) }
-	def doGet(request:Request,response:Response,errors:List[String]) {
-		val view = new VelocityView("templates/default.vm")
-		view.render(Map("quotes" -> Config.qc.page(1),"errors" -> errors) ++ Labels,request,response)
-	}
+
+	override def processGet(http:HttpHelper) = processGet(http,Nil)
+	def processGet(http:HttpHelper,errors:List[String]) =
+		Map("quotes" -> Config.qc.page(1),"errors" -> errors) ++ Labels
+
 	override def doPost(request:Request, response:Response) {
-		val http = HttpHelper(request,response)
+		val http = new QuoteServlet.this.HttpHelper(request,response)
 		val text = http(Quote.Text,Labels(Quote.Text))
 		val source = http(Quote.Source,Labels(Quote.Source))
 		val context = http(Quote.Context,Labels(Quote.Context))
@@ -30,8 +31,11 @@ class QuoteServlet extends HttpServlet with Logging {
 			case nsee:NoSuchElementException =>
 				errors = "\"" + Labels(Quote.Text) + "\" is required." :: errors
 		}
-		if (errors.length > 0) { doGet(request,response,errors) }
-		else { response.sendRedirect("/") }
+		if (errors.length > 0) { 
+			val context = processGet(http,errors)
+			val view = new VelocityView(http.view)
+    	view.render(context,request,response)
+		} else { response.sendRedirect("/") }
 	}
 }
 
