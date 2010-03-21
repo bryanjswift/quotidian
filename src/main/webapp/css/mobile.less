@@ -1,0 +1,28 @@
+// Site Variables
+@bodyColor: #1c1c1e;
+@borderColor: #8c827b;
+@buttonBackground: #cccccc;
+@errorColor: #fd6b3c;
+@headerColor: #5b83ad;
+@inputBackground: #eaeaea;
+@defaultFaces: Helvetica, Arial, sans-serif;
+// Site Mixins
+.bodyText { color: @bodyColor; font: normal 1em @defaultFaces; }
+/* Reset */
+body, h1, h2, h3, h4, h5, h6, p, ul, li, fieldset, input, textarea, button, blockquote { margin: 0; padding: 0; }
+fieldset, input, textarea, button { border: none; background: none; }
+h1, h2, h3, h4, h5, h6, p { font-size: 1em; line-height: 1; }
+/* General Styles */
+body { margin: 0; color: @bodyColor; background: #eeeeee; font: normal 16px @defaultFaces; }
+h1, h2, h3 { line-height: 1; color: @headerColor; }
+h1 { margin: 0.75em 0 0; font-size: 3.5em; }
+h2 { margin: 1em 0 0; font-size: 2em; }
+/* General Classes */
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; line-height: 0; }
+.clearfix { display: inline-block; }
+html[xmlns] .clearfix { display: block; }
+* html .clearfix { height: 1%; }
+/* Styles */
+h1 a, h1 a:link, h1 a:visited { text-decoration: none; color: @headerColor; }
+h1 a:hover { color: @bodyColor; }
+p { margin: 0.5em 1em; }
