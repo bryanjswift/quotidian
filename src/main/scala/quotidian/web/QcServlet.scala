@@ -10,6 +10,7 @@ trait QcServlet extends HttpServlet {
   lazy val html = "templates/default.vm"
   lazy val json = "templates/default.json.vm"
   lazy val xml = "templates/default.xml.vm"
+	lazy val plist = "templates/default.plist.vm"
 
   override def doGet(request:Request, response:Response) = handleRequest(request,response,processGet(_))
   override def doPost(request:Request, response:Response) = handleRequest(request,response,processPost(_))
@@ -23,7 +24,7 @@ trait QcServlet extends HttpServlet {
     view.render(context,request,response)
   }
 
-	private val uriRE = new Regex("(.*?)(xml|html|json)?$","uri","format")
+	private val uriRE = new Regex("(.*?)(xml|html|json|plist)?$","uri","format")
 	private val dataRE = new Regex("(.*?)/([^/]*)$","path","data")
 
   class HttpHelper(val request:Request,val response:Response) extends Logging {
@@ -44,6 +45,7 @@ trait QcServlet extends HttpServlet {
 		lazy val view = format match {
 			case "xml" => xml
 			case "json" => json
+			case "plist" => plist
 			case _ => html
 		}
   
