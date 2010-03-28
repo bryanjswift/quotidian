@@ -7,27 +7,27 @@ import scala.util.matching.Regex
 import velocity.VelocityView
 
 trait QcServlet extends HttpServlet {
-  lazy val html = "templates/default.vm"
-  lazy val json = "templates/default.json.vm"
-  lazy val xml = "templates/default.xml.vm"
+	lazy val html = "templates/default.vm"
+	lazy val json = "templates/default.json.vm"
+	lazy val xml = "templates/default.xml.vm"
 	lazy val plist = "templates/default.plist.vm"
 
-  override def doGet(request:Request, response:Response) = handleRequest(request,response,processGet(_))
-  override def doPost(request:Request, response:Response) = handleRequest(request,response,processPost(_))
+	override def doGet(request:Request, response:Response) = handleRequest(request,response,processGet(_))
+	override def doPost(request:Request, response:Response) = handleRequest(request,response,processPost(_))
 
-  def processGet(http:HttpHelper) = Map[String,Any]()
-  def processPost(http:HttpHelper) = Map[String,Any]()
-  def handleRequest(request:Request,response:Response,processor:(HttpHelper) => Map[String,Any]) = {
-    val http = new HttpHelper(request,response)
-    val context = processor(http) + ("UserAgentInfo" -> new UAgentInfo(request))
+	def processGet(http:HttpHelper) = Map[String,Any]()
+	def processPost(http:HttpHelper) = Map[String,Any]()
+	def handleRequest(request:Request,response:Response,processor:(HttpHelper) => Map[String,Any]) = {
+		val http = new HttpHelper(request,response)
+		val context = processor(http) + ("UserAgentInfo" -> new UAgentInfo(request))
 		val view = new VelocityView(http.view)
-    view.render(context,request,response)
-  }
+		view.render(context,request,response)
+	}
 
 	private val uriRE = new Regex("(.*?)(xml|html|json|plist)?$","uri","format")
 	private val dataRE = new Regex("(.*?)/([^/]*)$","path","data")
 
-  class HttpHelper(val request:Request,val response:Response) extends Logging {
+	class HttpHelper(val request:Request,val response:Response) extends Logging {
 		// pretty impossible to not match this RE
 		private val uriMatch = uriRE.findFirstMatchIn(request.getRequestURI).get
 		private val uri = trim(uriMatch.group("uri"))
@@ -48,16 +48,16 @@ trait QcServlet extends HttpServlet {
 			case "plist" => plist
 			case _ => html
 		}
-  
-    def apply(param:String,default:String = "") = {
-      val value = request.getParameter(param)
-      if (value == null || value == "" || value == default) None else Some(value)
-    }
+	
+		def apply(param:String,default:String = "") = {
+			val value = request.getParameter(param)
+			if (value == null || value == "" || value == default) None else Some(value)
+		}
 		private def trim(str:String) =
 			if (str.length > 0 && str.last == '/') {
 				str.substring(0,str.length - 1)
 			} else {
 				str
 			}
-  }
+	}
 }

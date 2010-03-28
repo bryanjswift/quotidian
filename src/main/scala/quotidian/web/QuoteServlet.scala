@@ -34,7 +34,7 @@ class QuoteServlet extends QcServlet with Logging {
 		if (errors.length > 0) { 
 			val context = processGet(http,errors)
 			val view = new VelocityView(http.view)
-    	view.render(context,request,response)
+			view.render(context,request,response)
 		} else { response.sendRedirect("/") }
 	}
 }
