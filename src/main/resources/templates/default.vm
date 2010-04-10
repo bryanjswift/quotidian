@@ -11,6 +11,7 @@
 			<meta name="viewport" content="width=320,initial-scale=1.0,user-scalable=no" />
 		#end
 		#if ($UserAgentInfo.detectAndroid())
+			<meta name="viewport" content="width=device-width; initial-scale=0.80; minimum-scale=0.80; maximum-scale=0.80;"/>
 		#end
 		#if ($UserAgentInfo.detectIphone() || $UserAgentInfo.detectAndroid())
 			<link type="text/css" rel="stylesheet" href="/css/mobile.css" />
