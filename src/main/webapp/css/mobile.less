@@ -26,3 +26,13 @@ html[xmlns] .clearfix { display: block; }
 h1 a, h1 a:link, h1 a:visited { text-decoration: none; color: @headerColor; }
 h1 a:hover { color: @bodyColor; }
 p { margin: 0.5em 1em; }
+label, textarea, input { display: block; width: 100%; }
+label:first-child { margin-top: 1em; }
+textarea, input { display: block; margin: 0.5em 0; border: 1px solid @borderColor; width: 100%; }
+button {
+	display: block; margin: 1em 0; border: 2px solid @borderColor; padding: 0 0.3em; height: 2em; cursor: pointer;
+	background: @buttonBackground;
+}
+#primary { margin: 0 2%; }
+#secondary { display: none; }
+
