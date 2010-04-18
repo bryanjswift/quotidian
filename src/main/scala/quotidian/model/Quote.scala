@@ -3,6 +3,7 @@ package quotidian.model
 import basic.persistence.{Savable}
 import basic.persistence.annotations.{Entity,Persistent}
 import java.io.Serializable
+import java.util.Calendar
 import org.apache.lucene.document.{Document,Field}
 import quotidian.Logging
 import quotidian.persistence.datastore.PersisterHelper
@@ -14,10 +15,13 @@ class Quote(
 	val id:Serializable,
 	@(Persistent @getter) val text:String,
 	@(Persistent @getter) val source:String,
-	@(Persistent @getter) val context:String
+	@(Persistent @getter) val context:String,
+	val dateCreated:Long
 ) extends Savable with Logging {
 	debug("created Quote : " + this.toString)
-	def this(text:String,source:String,context:String) = this(0,text,source,context)
+	def this(id:Serializable,text:String,source:String,context:String) =
+		this(id,text,source,context,Calendar.getInstance.getTimeInMillis)
+	def this(text:String,source:String,context:String) = this(0,text,source,context,Calendar.getInstance.getTimeInMillis)
 	private lazy val all = List(text,source,context)
 	private def canEqual(a:Any) = a.isInstanceOf[Quote]
 	def equals(q:Quote) = {
@@ -45,11 +49,20 @@ object Quote extends Logging {
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
 	private def fromXml(xml:NodeSeq):Quote = {
-		new Quote(
-			(xml \\ Id)(0).text,
-			(xml \\ Text)(0).text,
-			(xml \\ Source)(0).text,
-			(xml \\ Context)(0).text)
+		if ((xml \\ "datecreated").length > 0) { 
+			new Quote(
+				(xml \\ Id)(0).text,
+				(xml \\ Text)(0).text,
+				(xml \\ Source)(0).text,
+				(xml \\ Context)(0).text,
+				(xml \\ "datecreated")(0).text.toLong)
+		} else {
+			new Quote(
+				(xml \\ Id)(0).text,
+				(xml \\ Text)(0).text,
+				(xml \\ Source)(0).text,
+				(xml \\ Context)(0).text)
+		}
 	}
 	implicit def quote2document(quote:Quote):Document = {
 		val document = new Document()
