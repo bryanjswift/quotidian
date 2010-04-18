@@ -11,8 +11,15 @@ class QuoteServlet extends QcServlet with Logging {
 	val Labels = Config.Labels
 
 	override def processGet(http:HttpHelper) = processGet(http,Nil)
-	def processGet(http:HttpHelper,errors:List[String]) =
-		Map("quotes" -> Config.qc.page(1),"errors" -> errors) ++ Labels
+	def processGet(http:HttpHelper,errors:List[String]) = {
+		val pageNumber = http("page").getOrElse("1")
+		Map(
+			"quotes" -> Config.qc.page(pageNumber.toInt),
+			"errors" -> errors,
+			"maxPerPage" -> Config.MaxPerPage,
+			"page" -> pageNumber
+		) ++ Labels
+	}
 
 	override def doPost(request:Request, response:Response) {
 		val http = new QuoteServlet.this.HttpHelper(request,response)
@@ -35,7 +42,9 @@ class QuoteServlet extends QcServlet with Logging {
 			val context = processGet(http,errors)
 			val view = new VelocityView(http.view)
 			view.render(context,request,response)
-		} else { response.sendRedirect("/") }
+		} else {
+			response.sendRedirect("/")
+		}
 	}
 }
 
