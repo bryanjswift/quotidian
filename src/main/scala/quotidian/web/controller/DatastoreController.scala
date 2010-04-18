@@ -11,7 +11,7 @@ import quotidian.search.DatastoreDirectory
 trait DatastoreController {
 	protected val persister = DatastoreController.persister
 	protected val directory = DatastoreController.directory
-	protected val MaxPerPage = 10
+	protected lazy val MaxPerPage = Config.MaxPerPage
 }
 
 private object DatastoreController {
