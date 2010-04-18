@@ -49,20 +49,13 @@ object Quote extends Logging {
 	def apply(id:Serializable,text:String,source:String,context:String) = new Quote(id,text,source,context)
 	def apply(xml:NodeSeq):Quote = fromXml(xml)
 	private def fromXml(xml:NodeSeq):Quote = {
-		if ((xml \\ "datecreated").length > 0) { 
-			new Quote(
-				(xml \\ Id)(0).text,
-				(xml \\ Text)(0).text,
-				(xml \\ Source)(0).text,
-				(xml \\ Context)(0).text,
-				(xml \\ "datecreated")(0).text.toLong)
-		} else {
-			new Quote(
-				(xml \\ Id)(0).text,
-				(xml \\ Text)(0).text,
-				(xml \\ Source)(0).text,
-				(xml \\ Context)(0).text)
-		}
+		new Quote(
+			(xml \\ Id)(0).text,
+			(xml \\ Text)(0).text,
+			(xml \\ Source)(0).text,
+			(xml \\ Context)(0).text,
+			if ((xml \\ "datecreated").length > 0) { (xml \\ "datecreated")(0).text.toLong }
+			else { Calendar.getInstance.getTimeInMillis })
 	}
 	implicit def quote2document(quote:Quote):Document = {
 		val document = new Document()
