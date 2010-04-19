@@ -18,4 +18,5 @@ object Config {
 	def objectForProperty[T](property:String) = Class.forName(apply(property)).getConstructor().newInstance().asInstanceOf[T]
 	val qc = objectForProperty[QuoteController]("quote.controller")
 	val sc = objectForProperty[SearchController]("search.controller")
+	val MaxPerPage = 10
 }
