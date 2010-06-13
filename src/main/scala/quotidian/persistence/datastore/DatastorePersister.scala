@@ -1,6 +1,7 @@
 package quotidian.persistence.datastore
 
 import com.google.appengine.api.datastore.{DatastoreService,DatastoreServiceFactory,Entity,Key,KeyFactory,Query}
+import com.google.appengine.api.datastore.Query.FilterOperator
 import com.google.appengine.api.datastore.FetchOptions.Builder.{withLimit,withOffset}
 import basic.persistence.{Persister,Savable}
 import java.io.Serializable
@@ -53,6 +54,17 @@ object DatastorePersister extends Persister with Logging {
 		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING))
 		val mapFcn = PersisterHelper.fetch(table)
 		val entities = JavaConversions.asIterable(query.asList(withOffset(offset).limit(count)))
+		val savables = for {
+			entity <- entities
+		} yield mapFcn(PersisterHelper.toXml(entity))
+		savables.toList
+	}
+	def some(table:String,count:Int,before:Long):List[Savable] = {
+		val query = datastore.prepare(new Query(table).addSort(DateCreated,Query.SortDirection.DESCENDING)
+				.addFilter(DateCreated,FilterOperator.LESS_THAN,before)
+			)
+		val mapFcn = PersisterHelper.fetch(table)
+		val entities = JavaConversions.asIterable(query.asList(withLimit(count)))
 		val savables = for {
 			entity <- entities
 		} yield mapFcn(PersisterHelper.toXml(entity))
