@@ -4,3 +4,6 @@
 [submodule "simple-velocity"]
 	path = simple-velocity
 	url = git@github.com:bryanjswift/simple-velocity.git
+[submodule "gaelucene"]
+	path = gaelucene
+	url = git@github.com:bryanjswift/gaelucene.git
