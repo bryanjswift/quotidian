@@ -19,11 +19,12 @@ class QuoteCrateProject(info:ProjectInfo) extends DefaultWebProject(info) {
 
 	// dependencies for compiling
 	val velocity = "org.apache.velocity" % "velocity" % "1.6.2"
-	val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.2.1"
+	val simpleVelocity = "bryanjswift" %% "simple-velocity" % "0.2.2" from "http://github.com/downloads/bryanjswift/simple-velocity/simple-velocity_2.8.0.Beta1-0.2.2.jar"
 	val commonsCollections = "commons-collections" % "commons-collections" % "3.2.1"
 	val commonsLang = "commons-lang" % "commons-lang" % "2.4"
 	// Lucene
 	val luceneCore = "org.apache.lucene" % "lucene-core" % "3.0.1"
+	val gaeLucenet = "com.bryanjswift.lucene" % "gae-lucene_2.8.0.Beta1" % "0.1.1" from "http://github.com/downloads/bryanjswift/gaelucene/gae-lucene_2.8.0.Beta1-0.1.1.jar"
 	// Jersey
 	val jersey = "com.sun.jersey" % "jersey-server" % "1.1.2-ea"
 

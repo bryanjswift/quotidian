@@ -5,7 +5,7 @@ import java.io.File
 import java.util.zip.{Checksum,CRC32}
 import org.apache.lucene.index._
 import org.apache.lucene.store._
-import quotidian.search._
+import com.bryanjswift.lucene.store.gae._
 
 object DatastoreService {
 	val helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig())

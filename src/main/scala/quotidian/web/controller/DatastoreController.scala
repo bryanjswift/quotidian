@@ -6,7 +6,7 @@ import java.io.Serializable
 import quotidian.Config
 import quotidian.model.Quote
 import quotidian.persistence.datastore.DatastorePersister
-import quotidian.search.DatastoreDirectory
+import com.bryanjswift.lucene.store.gae.DatastoreDirectory
 
 trait DatastoreController {
 	protected val persister = DatastoreController.persister

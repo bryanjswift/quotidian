@@ -10,9 +10,10 @@ primitive as you can only save them, but they are being properly indexed as of
 h2. Implementation
 
 In my opinion the cool thing about this is the somewhat low-level implementation
-of Lucene I created to write information into Google's Datastore. The code for
-this currently sits in the quotidian.search package though I would like to split
-it into it's own project.
+of Lucene I created to write index information into Google's Datastore. The code for
+this currently sits in the "gaelucene repository":gaelucene.
+
+[gaelucene]http://github.com/bryanjswift/gaelucene
 
 h2. Inspiration
 

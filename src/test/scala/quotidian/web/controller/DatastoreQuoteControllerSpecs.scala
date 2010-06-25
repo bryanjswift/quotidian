@@ -7,7 +7,7 @@ import org.apache.lucene.search.{FuzzyQuery,IndexSearcher,TermQuery}
 import org.apache.lucene.util.Version
 import quotidian.DatastoreSpecification
 import quotidian.model.Quote
-import quotidian.search.DatastoreDirectory
+import com.bryanjswift.lucene.store.gae.DatastoreDirectory
 
 class DatastoreControllerSpecs extends DatastoreSpecification {
 	val quoteController = new DatastoreQuoteController
