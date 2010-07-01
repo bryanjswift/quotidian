@@ -7,6 +7,13 @@ primitive as you can only save them, but they are being properly indexed as of
 
 [v2]http://github.com/bryanjswift/quotidian/tree/v2
 
+h2. Contributing
+
+Fork, commit, pull request. Like you do. Or bugs can be logged in the
+"Quote Crate Lighthouse":lighthouse.
+
+[lighthouse]http://bryanjswift.lighthouseapp.com/projects/55447-quote-crate/overview
+
 h2. Implementation
 
 In my opinion the cool thing about this is the somewhat low-level implementation
